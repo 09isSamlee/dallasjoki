@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>FT CS - Dallas FF</title>
   <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Oxanium:wght@300;400;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+  
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
     :root {
@@ -30,7 +34,6 @@
     .back-btn{color:var(--muted);text-decoration:none;font-family:'Rajdhani';font-weight:600;text-transform:uppercase;font-size:0.9rem;letter-spacing:1px;transition:color 0.2s;display:flex;align-items:center;gap:0.4rem;}
     .back-btn:hover{color:var(--accent);}
 
-    .page-header{background:none;padding:0;}
     .header-banner-container{width:100%;overflow:hidden;line-height:0;}
     .header-static-img{width:100%;height:180px;display:block;object-fit:cover;object-position:center;}
 
@@ -38,224 +41,59 @@
     .order-container{display:grid;grid-template-columns:1fr 360px;gap:2.5rem;align-items:start;}
     .order-steps{display:flex;flex-direction:column;gap:1.8rem;}
 
-    /* STEP CARD */
     .step-card{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(21,101,192,0.07);transition:border-color 0.3s,box-shadow 0.2s;}
     .step-card.done{border-color:#66bb6a;box-shadow:0 4px 20px rgba(76,175,80,0.12);}
     .step-header{background:linear-gradient(135deg,rgba(21,101,192,0.05),rgba(66,165,245,0.05));padding:1.1rem 1.5rem;display:flex;align-items:center;gap:1rem;border-bottom:1px solid var(--border);}
-    .step-number{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-weight:800;font-family:'Oxanium';font-size:1rem;flex-shrink:0;transition:background 0.3s;}
+    .step-number{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-weight:800;font-family:'Oxanium';font-size:1rem;transition:background 0.3s;}
     .step-card.done .step-number{background:linear-gradient(135deg,#388e3c,#66bb6a);}
     .step-title{font-family:'Rajdhani';font-size:1.2rem;font-weight:700;color:var(--text);letter-spacing:0.5px;}
     .step-subtitle{font-size:0.78rem;color:var(--muted);margin-top:2px;}
     .step-body{padding:1.5rem;}
 
-    /* PKG CARDS */
     .pkg-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:1rem;}
     .pkg-card{background:var(--bg);border:2px solid var(--border);border-radius:14px;padding:1.1rem 0.9rem;text-align:center;cursor:pointer;transition:all 0.22s;position:relative;user-select:none;}
     .pkg-card:hover:not(.disabled){border-color:var(--accent2);background:rgba(30,136,229,0.06);transform:translateY(-3px);box-shadow:0 6px 18px rgba(21,101,192,0.15);}
     .pkg-card.selected{border-color:var(--accent);background:rgba(21,101,192,0.09);box-shadow:0 0 0 3px rgba(21,101,192,0.14);}
     .pkg-card.selected::after{content:'✓';position:absolute;top:-10px;right:-10px;width:22px;height:22px;background:var(--accent);color:#fff;border-radius:50%;font-weight:bold;font-size:0.75rem;display:flex;align-items:center;justify-content:center;}
-    .pkg-card.disabled{opacity:0.4;cursor:not-allowed;pointer-events:none;}
     .pkg-card.full{background:#fff3f3;border-color:#ffcdd2;cursor:not-allowed;pointer-events:none;}
 
-    /* SLOT PENUH OVERLAY */
-    .pkg-card.full .slot-full-label{display:flex;}
     .slot-full-label{display:none;position:absolute;inset:0;background:rgba(211,47,47,0.1);border-radius:12px;align-items:center;justify-content:center;font-family:'Rajdhani';font-weight:800;font-size:0.72rem;color:var(--danger);letter-spacing:2px;}
+    .pkg-card.full .slot-full-label{display:flex;}
 
     .pkg-icon{font-size:1.5rem;margin-bottom:0.45rem;}
     .pkg-title{font-family:'Rajdhani';font-size:0.97rem;font-weight:700;color:var(--text);line-height:1.3;margin-bottom:0.2rem;}
     .pkg-sub{font-size:0.72rem;color:var(--muted);}
     .pkg-price{font-family:'Oxanium';font-size:1.05rem;font-weight:800;color:var(--accent);margin-top:0.4rem;}
 
-    /* SLOT BADGE */
     .slot-badge{display:inline-flex;align-items:center;gap:3px;font-size:0.68rem;font-weight:700;font-family:'Rajdhani';letter-spacing:0.5px;padding:2px 8px;border-radius:100px;margin-top:0.4rem;}
     .slot-ok{background:#e8f5e9;color:#2e7d32;border:1px solid #a5d6a7;}
     .slot-low{background:#fff8e1;color:#e65100;border:1px solid #ffcc02;}
     .slot-empty{background:#ffebee;color:var(--danger);border:1px solid #ef9a9a;}
 
-    /* HINT BOX */
     .hint-box{display:flex;align-items:flex-start;gap:0.6rem;padding:0.8rem 1rem;border-radius:10px;background:rgba(21,101,192,0.07);border:1px solid rgba(21,101,192,0.15);font-size:0.84rem;color:var(--muted);margin-bottom:1.2rem;line-height:1.5;}
-    .hint-box.warn{background:#fff8e1;border-color:#ffe082;color:#7a5000;}
-    .hint-box.err{background:#ffebee;border-color:#ffcdd2;color:var(--danger);}
-    .hint-icon{font-size:1rem;flex-shrink:0;margin-top:1px;}
 
-    /* FORMS */
-    .input-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;}
     .form-group{display:flex;flex-direction:column;gap:0.5rem;}
     .form-label{font-family:'Rajdhani';font-size:0.82rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1.2px;}
-    .form-input,.form-select{background:var(--bg);border:1.5px solid var(--border);border-radius:10px;color:var(--text);font-size:0.95rem;padding:0.75rem 1rem;font-family:'Inter';transition:all 0.2s;outline:none;}
-    .form-input:focus,.form-select:focus{border-color:var(--accent);background:var(--surface);box-shadow:0 0 0 3px rgba(21,101,192,0.1);}
-    .form-input::placeholder{color:var(--muted);}
+    .form-input{background:var(--bg);border:1.5px solid var(--border);border-radius:10px;color:var(--text);padding:0.75rem 1rem;outline:none;}
 
-    /* SUMMARY */
-    .summary-wrapper{position:sticky;top:90px;}
-    .summary-card{background:var(--surface);border:1.5px solid var(--border);border-radius:18px;padding:1.8rem;box-shadow:0 6px 28px rgba(21,101,192,0.1);}
+    .summary-card{background:var(--surface);border:1.5px solid var(--border);border-radius:18px;padding:1.8rem;box-shadow:0 6px 28px rgba(21,101,192,0.1);position:sticky;top:90px;}
     .sum-title{font-family:'Oxanium';font-size:1.2rem;font-weight:800;color:var(--accent);margin-bottom:1.2rem;padding-bottom:0.8rem;border-bottom:2px solid var(--bg3);}
-    .sum-row{display:flex;justify-content:space-between;margin-bottom:0.9rem;font-size:0.9rem;align-items:flex-start;gap:0.5rem;}
-    .sum-label{color:var(--muted);font-family:'Rajdhani';font-weight:600;text-transform:uppercase;font-size:0.78rem;letter-spacing:1px;padding-top:2px;}
-    .sum-value{font-weight:600;color:var(--text);text-align:right;font-size:0.9rem;}
-    .sum-divider{height:1px;background:var(--bg3);margin:1rem 0;}
-    .sum-total-label{font-family:'Rajdhani';font-size:0.85rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:0.4rem;}
+    .sum-row{display:flex;justify-content:space-between;margin-bottom:0.9rem;font-size:0.9rem;}
     .sum-total-value{font-family:'Oxanium';font-size:2.1rem;color:var(--accent);font-weight:800;}
 
-    /* PROGRESS DOTS */
-    .step-progress{display:flex;gap:0.4rem;margin-bottom:1rem;}
-    .step-dot{flex:1;height:6px;border-radius:3px;background:var(--bg3);transition:background 0.3s;}
-    .step-dot.done{background:var(--accent);}
+    .btn-submit{width:100%;font-family:'Rajdhani';font-size:1.05rem;font-weight:700;padding:1rem;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;border-radius:10px;cursor:pointer;box-shadow:0 6px 20px rgba(21,101,192,0.35);}
+    .btn-submit:disabled{opacity:0.4;cursor:not-allowed;}
 
-    .btn-submit{width:100%;font-family:'Rajdhani';font-size:1.05rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:1rem;margin-top:1.2rem;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;border-radius:10px;cursor:pointer;transition:all 0.25s;box-shadow:0 6px 20px rgba(21,101,192,0.35);}
-    .btn-submit:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 10px 28px rgba(21,101,192,0.5);}
-    .btn-submit:disabled{opacity:0.4;cursor:not-allowed;transform:none;box-shadow:none;}
+    .modal-overlay {position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(13, 27, 62, 0.85); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 10000; opacity: 0; transition: opacity 0.3s ease;}
+    .modal-overlay.show { display: flex; opacity: 1; }
+    .modal-content {background: var(--surface); border-radius: 24px; width: 95%; max-width: 480px; max-height: 90vh; overflow-y: auto; padding: 20px;}
+    .inv-details {text-align: left; background: var(--bg); padding: 1.2rem; border-radius: 12px; margin: 1rem 0; font-size: 0.95rem; border: 1px dashed var(--accent3);}
+    .qr-placeholder img {width: 200px; height: 200px; border-radius: 10px; border: 4px solid var(--accent3); padding: 5px; background: #fff;}
 
-    /* MODAL */
-   /* CSS UNTUK POP-UP MODAL */
-.modal-overlay {
-  position: fixed; 
-  top: 0; left: 0; 
-  width: 100%; height: 100%;
-  background: rgba(13, 27, 62, 0.85); 
-  backdrop-filter: blur(8px);
-  display: none; /* Sembunyi secara default */
-  align-items: center; 
-  justify-content: center; 
-  z-index: 10000;
-  opacity: 0; 
-  transition: opacity 0.3s ease;
-}
-
-.modal-overlay.show { 
-  display: flex; 
-  opacity: 1; 
-}
-
-.modal-content {
-  background: var(--surface);
-  border-radius: 24px;
-  width: 95%;
-  max-width: 480px; /* Ukuran lebar proporsional */
-  max-height: 90vh;
-  overflow-y: auto;
-  position: relative;
-  transform: translateY(20px);
-  transition: transform 0.3s ease;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-}
-
-.modal-overlay.show .modal-content { 
-  transform: translateY(0); 
-}
-
-/* Bagian Invoice di dalam Pop-up */
-.inv-details {
-  background: var(--bg);
-  padding: 1.2rem;
-  border-radius: 15px;
-  margin: 1rem 0;
-  border: 1px dashed var(--accent);
-  text-align: left;
-  font-size: 0.95rem;
-}
-
-.inv-details div {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 5px;
-}
-
-.qr-placeholder img {
-  width: 200px;
-  height: 200px;
-  border-radius: 10px;
-  border: 4px solid #fff;
-}
-/* Tambahan: Pastikan SweetAlert2 selalu paling depan (di atas modal) */
-.swal2-container {
-  z-index: 20000 !important;
-}
-
-.modal-content {
-  background: var(--surface);
-  border-radius: 20px;
-  width: 95%;           /* Menggunakan lebih banyak ruang di layar HP */
-  max-width: 500px;     /* Ukuran maksimal ditingkatkan dari 420px ke 500px */
-  max-height: 90vh;
-  overflow-y: auto;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-  transform: translateY(20px);
-  transition: transform 0.3s ease;
-  padding: 0;           /* Pastikan padding utama diatur di header & body */
-}
-
-/* Pastikan body modal memiliki ruang yang cukup */
-.modal-body {
-  padding: 1.5rem;      /* Memberikan ruang agar konten tidak mepet ke pinggir */
-  text-align: center;
-}
-
-/* Pastikan detail invoice terbaca dengan jelas */
-.inv-details {
-  text-align: left;
-  background: var(--bg);
-  padding: 1.2rem;
-  border-radius: 12px;
-  margin: 1rem 0;
-  font-size: 1rem;      /* Ukuran font sedikit diperbesar */
-  border: 1px dashed var(--accent3);
-}
-
-.modal-overlay.show .modal-content { 
-  transform: translateY(0); 
-}
-    .modal-header{background:linear-gradient(135deg,var(--accent),var(--accent2));padding:1.5rem;color:#fff;text-align:center;position:relative;}
-    .modal-header h2{font-family:'Oxanium';font-size:1.4rem;margin:0;font-weight:800;}
-    .close-modal{position:absolute;right:1.5rem;top:1.2rem;color:#fff;font-size:1.8rem;cursor:pointer;line-height:1;opacity:0.8;}
-    .close-modal:hover{opacity:1;}
-    .modal-body{padding:1.5rem;text-align:center;}
-    .invoice-status{display:inline-block;background:#fff3cd;color:#856404;padding:0.5rem 1.2rem;border-radius:50px;font-size:0.85rem;font-weight:bold;margin-bottom:1.5rem;}
-    .qr-placeholder{margin:1rem 0;}
-    .qr-placeholder img{width:180px;height:180px;border-radius:12px;border:3px solid var(--accent3);padding:8px;background:#fff;}
-    .qr-placeholder p{font-size:0.85rem;color:var(--muted);margin-top:0.8rem;font-weight:500;}
-    .inv-details{text-align:left;background:var(--bg);padding:1.2rem;border-radius:12px;margin:1.5rem 0;font-size:0.9rem;border:1px dashed var(--accent3);}
-    .inv-details p{margin-bottom:0.6rem;display:flex;justify-content:space-between;border-bottom:1px solid var(--bg3);padding-bottom:0.4rem;}
-    .inv-details p:last-child{margin-bottom:0;border-bottom:none;padding-bottom:0;}
-    .upload-tf-section{margin:1.5rem 0;border:2px dashed var(--accent3);padding:1.2rem;border-radius:12px;background:#f8fbff;text-align:center;}
-    .upload-label{font-family:'Rajdhani';font-weight:700;color:var(--accent);font-size:0.9rem;display:block;margin-bottom:10px;}
-    .upload-tf-section input[type="file"]{font-size:0.8rem;color:var(--muted);width:100%;}
-    .warning-text{color:var(--danger);font-size:11px;margin-top:5px;font-weight:600;display:block;}
-    .inv-total{font-family:'Oxanium';font-size:1.6rem;font-weight:800;color:var(--accent);margin-top:1rem;}
-    .modal-footer{padding:0 1.5rem 1.5rem;}
-    .pay-icon-img{width:55px;height:auto;max-height:40px;object-fit:contain;margin-bottom:0.5rem;display:block;margin-left:auto;margin-right:auto;}
-
-    @media(max-width:1024px){.order-container{grid-template-columns:1fr;}.summary-wrapper{position:static;}nav,.order-section{padding-left:2rem;padding-right:2rem;}}
-    @media(max-width:640px){.input-grid{grid-template-columns:1fr;}.order-section{padding:2rem 1.5rem 4rem;}nav{padding:1rem 1.5rem;}.pkg-grid{grid-template-columns:repeat(2,1fr);}}
+    @media(max-width:1024px){.order-container{grid-template-columns:1fr;}}
+    @media(max-width:640px){.pkg-grid{grid-template-columns:repeat(2,1fr);}}
   </style>
 </head>
-<div id="checkout-modal" class="modal-overlay">
-  <div class="modal-content">
-    <div style="padding: 20px; text-align: center;">
-      <h2 style="font-family:'Oxanium'; margin-top:0;">INVOICE PEMBAYARAN</h2>
-      
-      <div id="inv-details" class="inv-details">
-        </div>
-
-      <div class="qr-placeholder">
-        <img src="URL_QRIS_ANDA_DI_SINI" alt="QRIS">
-        <p style="font-size: 0.8rem; color: var(--muted); margin-top: 10px;">Silakan Scan QRIS di atas</p>
-      </div>
-
-      <div style="margin-top: 15px; text-align: left;">
-        <label style="font-weight: bold; font-size: 0.9rem;">Upload Bukti Transfer:</label>
-        <input type="file" id="bukti-tf-file" accept="image/*" style="width:100%; margin-top:5px;">
-      </div>
-
-      <button id="btn-konfirmasi" onclick="kirimKeTelegram()" class="btn-submit" style="width:100%; margin-top:20px; padding: 15px; border-radius: 12px; background: var(--accent); color: white; border: none; font-weight: bold; cursor: pointer;">
-        KONFIRMASI BAYAR ✓
-      </button>
-      
-      <button onclick="closeModal()" style="margin-top: 10px; background: none; border: none; color: var(--muted); cursor: pointer;">Batal</button>
-    </div>
-  </div>
-</div>
-</div>
 <body>
 
 <nav>
@@ -266,291 +104,173 @@
   <a href="index.html" class="back-btn">← Kembali ke Beranda</a>
 </nav>
 
-<div class="page-header">
-  <div class="header-banner-container">
-    <img src="assets/banner2.jpg" alt="Banner" class="header-static-img">
-  </div>
+<div class="header-banner-container">
+  <img src="assets/banner2.jpg" alt="Banner" class="header-static-img">
 </div>
 
 <section class="order-section">
   <div class="order-container">
     <div class="order-steps">
-
-      <!-- ══ PAKET 1: JENIS & HARGA ══ -->
       <div class="step-card" id="card-p1">
         <div class="step-header">
           <div class="step-number" id="num-p1">1</div>
-          <div>
-            <div class="step-title">Paket 1 — Jenis & Harga</div>
-            <div class="step-subtitle">Pilih fee dan PP per ronde</div>
-          </div>
+          <div><div class="step-title">Paket 1 — Jenis & Harga</div></div>
         </div>
         <div class="step-body">
-          <div class="hint-box">
-            <span class="hint-icon">💡</span>
-            <span><b>Fee</b> = biaya yang kamu bayar ke booster per ronde. <b>PP</b> = poin CS yang kamu dapat per ronde menang.</span>
-          </div>
           <div class="pkg-grid" id="grid-p1">
             <div class="pkg-card" onclick="selectP1(this,'fee 2k pp 6k',2000)">
               <div class="pkg-icon">💰</div>
               <div class="pkg-title">Fee 2K · PP 6K</div>
-              <div class="pkg-sub">Per ronde</div>
               <div class="pkg-price">Rp 2.000</div>
             </div>
             <div class="pkg-card" onclick="selectP1(this,'fee 5k pp 15k',5000)">
               <div class="pkg-icon">💎</div>
               <div class="pkg-title">Fee 5K · PP 15K</div>
-              <div class="pkg-sub">Per ronde</div>
               <div class="pkg-price">Rp 5.000</div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- ══ PAKET 2: FORMASI ══ -->
       <div class="step-card" id="card-p2">
         <div class="step-header">
           <div class="step-number" id="num-p2">2</div>
-          <div>
-            <div class="step-title">Paket 2 — Formasi CS</div>
-            <div class="step-subtitle">Pilih jumlah pemain per tim</div>
-          </div>
+          <div><div class="step-title">Paket 2 — Formasi CS</div></div>
         </div>
         <div class="step-body">
-          <div class="hint-box">
-            <span class="hint-icon">⚔️</span>
-            <span>Pilih formasi pertandingan Clash Squad sesuai kebutuhan.</span>
-          </div>
           <div class="pkg-grid" id="grid-p2">
             <div class="pkg-card" onclick="selectP2(this,'1VS1')">
               <div class="pkg-icon">🧍</div>
               <div class="pkg-title">1 VS 1</div>
-              <div class="pkg-sub">Solo duel</div>
             </div>
             <div class="pkg-card" onclick="selectP2(this,'2VS2')">
               <div class="pkg-icon">👥</div>
               <div class="pkg-title">2 VS 2</div>
-              <div class="pkg-sub">Duo</div>
             </div>
             <div class="pkg-card" onclick="selectP2(this,'4vs4')">
               <div class="pkg-icon">👥</div>
               <div class="pkg-title">4 vs 4</div>
-              <div class="pkg-sub">Trio</div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- ══ PAKET 3: JAM SESI + SLOT LIMIT ══ -->
       <div class="step-card" id="card-p3">
         <div class="step-header">
           <div class="step-number" id="num-p3">3</div>
-          <div>
-            <div class="step-title">Paket 3 — Pilih Jam Sesi</div>
-            <div class="step-subtitle">Maks. 4 order per jam · Reset tiap hari</div>
-          </div>
+          <div><div class="step-title">Paket 3 — Pilih Jam Sesi</div></div>
         </div>
         <div class="step-body">
-          <div class="hint-box" id="slot-warn" style="display:none;">
-            <span class="hint-icon">🔴</span>
-            <span id="slot-warn-msg">Jam ini penuh. Pilih jam lain.</span>
-          </div>
-          <div class="pkg-grid" id="grid-p3"><!-- render by JS --></div>
-          <div style="font-size:0.76rem;color:var(--muted);margin-top:1rem;text-align:center;">
-            🔄 Slot diperbarui real-time &nbsp;·&nbsp; ⏰ Reset otomatis setiap hari pukul 00:00
-          </div>
+          <div class="pkg-grid" id="grid-p3"></div>
         </div>
       </div>
 
-      <!-- ══ DATA DIRI ══ -->
       <div class="step-card" id="card-data">
         <div class="step-header">
           <div class="step-number">4</div>
-          <div class="step-title">Data WAJIB ISI BUAT KIRIM GB FT</div>
-        </div>
-            <div class="form-group" style="grid-column:1/-1;">
-              <label class="form-label">No. WhatsApp Aktif</label>
-              <input type="tel" id="acc-wa" class="form-input" placeholder="0812xxxx" inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'')"/>
-            </div>
-          </div>
-          <p style="font-size:0.8rem;color:var(--muted);margin-top:1rem;">WAJIB MENGISI.</p>
-        </div>
-      </div>
-
-      <!-- ══ PEMBAYARAN ══ -->
-      <div class="step-card">
-        <div class="step-header">
-          <div class="step-number">5</div>
-          <div class="step-title">Metode Pembayaran</div>
+          <div class="step-title">Data WhatsApp</div>
         </div>
         <div class="step-body">
-          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:1rem;">
-            <div class="pkg-card selected" style="pointer-events:none;">
-              <img src="assets/qris.png" alt="QRIS" class="pay-icon-img" onerror="this.outerHTML='<div style=font-size:1.5rem>📱</div>'">
-              <div class="pkg-title">QRIS</div>
-              <div class="pkg-sub">Semua E-Wallet / M-Banking</div>
-            </div>
+          <div class="form-group">
+            <label class="form-label">No. WhatsApp Aktif</label>
+            <input type="tel" id="acc-wa" class="form-input" placeholder="0812xxxx" oninput="this.value=this.value.replace(/[^0-9]/g,'')"/>
           </div>
         </div>
-      </div>
-
-    </div><!-- /order-steps -->
-
-    <!-- ══ SUMMARY SIDEBAR ══ -->
-    <div class="summary-wrapper">
-      <div class="summary-card">
-        <div class="sum-title">📋 Ringkasan Pesanan</div>
-
-        <div class="step-progress">
-          <div class="step-dot" id="dot1"></div>
-          <div class="step-dot" id="dot2"></div>
-          <div class="step-dot" id="dot3"></div>
-        </div>
-        <p style="font-size:0.78rem;color:var(--muted);margin-bottom:1.2rem;text-align:center;" id="progress-hint">
-          Pilih ketiga paket untuk melanjutkan
-        </p>
-
-        <div class="sum-row">
-          <span class="sum-label">Paket 1</span>
-          <span class="sum-value" id="sum-p1">—</span>
-        </div>
-        <div class="sum-row">
-          <span class="sum-label">Formasi</span>
-          <span class="sum-value" id="sum-p2">—</span>
-        </div>
-        <div class="sum-row">
-          <span class="sum-label">Jam Sesi</span>
-          <span class="sum-value" id="sum-p3">—</span>
-        </div>
-        <div class="sum-row">
-          <span class="sum-label">Slot Tersisa</span>
-          <span class="sum-value" id="sum-slot">—</span>
-        </div>
-        <div class="sum-divider"></div>
-        <div class="sum-total-label">Total Per Ronde</div>
-        <div class="sum-total-value" id="sum-total">Rp 0</div>
-
-        <button class="btn-submit" id="btn-order" onclick="submitOrder()" disabled>
-          Proses Pesanan 💳
-        </button>
-        <p style="font-size:0.73rem;color:var(--muted);margin-top:0.8rem;text-align:center;line-height:1.5;">
-          ⚠️ Wajib pilih <b>Paket 1 + Paket 2 + Paket 3</b><br>sebelum bisa order
-        </p>
       </div>
     </div>
 
+    <div class="summary-wrapper">
+      <div class="summary-card">
+        <div class="sum-title">📋 Ringkasan</div>
+        <div class="sum-row"><span>Paket 1</span><span id="sum-p1">—</span></div>
+        <div class="sum-row"><span>Formasi</span><span id="sum-p2">—</span></div>
+        <div class="sum-row"><span>Jam Sesi</span><span id="sum-p3">—</span></div>
+        <div class="sum-total-value" id="sum-total">Rp 0</div>
+        <button class="btn-submit" id="btn-order" onclick="submitOrder()" disabled>Proses Pesanan 💳</button>
+      </div>
+    </div>
   </div>
 </section>
 
-<!-- ══ CHECKOUT MODAL ══ -->
 <div id="checkout-modal" class="modal-overlay">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h2>Invoice Pesanan FT CS</h2>
-      <span class="close-modal" onclick="closeModal()">×</span>
+  <div class="modal-content" style="text-align: center;">
+    <h2 style="font-family:'Oxanium'; margin-bottom: 15px;">INVOICE PEMBAYARAN</h2>
+    <div id="inv-details" class="inv-details"></div>
+    <div class="qr-placeholder">
+      <img src="assets/qris.png" alt="QRIS">
+      <p style="font-size: 0.8rem; color: var(--muted); margin-top: 10px;">Silakan Scan QRIS</p>
     </div>
-    <div class="modal-body">
-      <div class="invoice-status">Menunggu Pembayaran</div>
-      <p style="font-family:'Rajdhani';font-weight:700;color:var(--muted);text-transform:uppercase;">
-        Order ID: <strong id="inv-order-id" style="color:var(--text);"></strong>
-      </p>
-      <div class="qr-placeholder" id="qr-container">
-        <img src="assets/qris.png" alt="QRIS" onerror="this.src='https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=DALLAS-FTCS'"/>
-        <p>Scan QRIS di atas untuk membayar</p>
-      </div>
-      <div class="upload-tf-section" id="upload-section">
-        <span class="upload-label">📤 Upload Bukti Transfer</span>
-        <input type="file" id="bukti-tf-file" accept="image/*">
-        <span class="warning-text">Wajib melampirkan foto bukti transfer!</span>
-      </div>
-      <div class="inv-details" id="inv-details"></div>
-      <div class="inv-total" id="inv-total-price"></div>
+    <div style="margin-top: 15px; text-align: left;">
+      <label style="font-weight: bold; font-size: 0.9rem;">Upload Bukti Transfer:</label>
+      <input type="file" id="bukti-tf-file" accept="image/*" style="width:100%; margin-top:5px;">
     </div>
-    <div class="modal-footer">
-      <button class="btn-submit" onclick="kirimKeTelegram()" id="btn-konfirmasi">
-        Saya Sudah Bayar & Kirim
-      </button>
-    </div>
+    <button id="btn-konfirmasi" onclick="kirimKeTelegram()" class="btn-submit" style="margin-top:20px;">KONFIRMASI BAYAR ✓</button>
+    <button onclick="closeModal()" style="margin-top: 10px; background: none; border: none; color: var(--muted); cursor: pointer;">Batal</button>
   </div>
 </div>
 
 <script>
-// ══════════════════════════════════════════════════
-//  CONFIG
-// ══════════════════════════════════════════════════
-const TELEGRAM_TOKEN   = '8074314633:AAHBAVptcU-P496oJJHoWyyc8JpB1pVZf04';
+// FIREBASE CONFIG
+const firebaseConfig = {
+  apiKey: "AIzaSyBkwQMwJqGKmI1ng8m-tSXUKf0xNqJC0hg",
+  authDomain: "dallas-2cde6.firebaseapp.com",
+  projectId: "dallas-2cde6",
+  storageBucket: "dallas-2cde6.firebasestorage.app",
+  messagingSenderId: "1022457000757",
+  appId: "1:1022457000757:web:2f2833a5628b04849ed27c",
+  measurementId: "G-BFZC48YZZG",
+  databaseURL: "https://dallas-2cde6-default-rtdb.firebaseio.com"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+const TELEGRAM_TOKEN = '8074314633:AAHBAVptcU-P496oJJHoWyyc8JpB1pVZf04';
 const TELEGRAM_CHAT_ID = '-1003881733798';
 const MAX_SLOT = 4;
 const JAM_LIST = ['15:00','16:00','17:00','18:00','19:00','20:00','21:00'];
 
-// ══════════════════════════════════════════════════
-//  STATE
-// ══════════════════════════════════════════════════
 const state = { p1:null, p2:null, p3:null, orderId:'' };
+let globalSlots = {}; 
+const todayKey = new Date().toISOString().slice(0,10);
 
-// ══════════════════════════════════════════════════
-//  SLOT STORAGE (localStorage — per hari)
-// ══════════════════════════════════════════════════
-function todayKey() {
-  return 'ftcs_' + new Date().toISOString().slice(0,10);
-}
-function loadSlots() {
-  try { const r = localStorage.getItem(todayKey()); return r ? JSON.parse(r) : {}; }
-  catch(e) { return {}; }
-}
-function getCount(jam) { return loadSlots()[jam] || 0; }
-function incrementSlot(jam) {
-  const s = loadSlots(); s[jam] = (s[jam]||0)+1;
-  try { localStorage.setItem(todayKey(), JSON.stringify(s)); } catch(e){}
+// REAL-TIME LISTENER
+function listenToSlots() {
+  db.ref('slots/' + todayKey).on('value', (snap) => {
+    globalSlots = snap.val() || {};
+    renderJam();
+  });
 }
 
-// ══════════════════════════════════════════════════
-//  RENDER JAM GRID
-// ══════════════════════════════════════════════════
+function getCount(jam) { return globalSlots[jam] || 0; }
+
 function renderJam() {
   const grid = document.getElementById('grid-p3');
   grid.innerHTML = JAM_LIST.map(jam => {
     const used = getCount(jam);
     const sisa = MAX_SLOT - used;
-    const full  = sisa <= 0;
-    const low   = !full && sisa === 1;
-    const sel   = state.p3 === jam;
-
-    const badge = full
-      ? `<div class="slot-badge slot-empty">🔴 PENUH</div>`
-      : low
-        ? `<div class="slot-badge slot-low">🟡 Sisa ${sisa} slot</div>`
-        : `<div class="slot-badge slot-ok">🟢 Sisa ${sisa} slot</div>`;
-
+    const full = sisa <= 0;
+    const sel  = state.p3 === jam;
     return `
-      <div class="pkg-card${sel?' selected':''}${full?' full':''}"
-           onclick="${full?'showSlotFull()':'selectP3(this,\''+jam+'\')'}">
+      <div class="pkg-card${sel?' selected':''}${full?' full':''}" onclick="${full?'':'selectP3(this,\''+jam+'\')'}">
         <div class="slot-full-label">PENUH</div>
         <div class="pkg-icon">🕐</div>
         <div class="pkg-title">${jam}</div>
-        ${badge}
+        <div class="slot-badge ${full?'slot-empty':(sisa===1?'slot-low':'slot-ok')}">
+          ${full?'🔴 PENUH':(sisa===1?'🟡 Sisa 1 slot':'🟢 Sisa '+sisa+' slot')}
+        </div>
       </div>`;
   }).join('');
 }
 
-function showSlotFull() {
-  const w = document.getElementById('slot-warn');
-  document.getElementById('slot-warn-msg').textContent = 'Jam ini sudah penuh (4/4 slot). Pilih jam lain!';
-  w.className = 'hint-box err';
-  w.style.display = 'flex';
-  setTimeout(() => w.style.display='none', 3000);
-}
-
-// ══════════════════════════════════════════════════
-//  PILIH PAKET
-// ══════════════════════════════════════════════════
 function selectP1(el, label, price) {
   document.querySelectorAll('#grid-p1 .pkg-card').forEach(c=>c.classList.remove('selected'));
   el.classList.add('selected');
   state.p1 = { label, price };
   document.getElementById('sum-p1').textContent = label;
   document.getElementById('sum-total').textContent = 'Rp '+price.toLocaleString('id-ID');
-  markDone('card-p1','num-p1');
+  document.getElementById('card-p1').classList.add('done');
+  document.getElementById('num-p1').textContent = '✓';
   updateProgress();
 }
 
@@ -559,83 +279,37 @@ function selectP2(el, formasi) {
   el.classList.add('selected');
   state.p2 = formasi;
   document.getElementById('sum-p2').textContent = formasi;
-  markDone('card-p2','num-p2');
+  document.getElementById('card-p2').classList.add('done');
+  document.getElementById('num-p2').textContent = '✓';
   updateProgress();
 }
 
 function selectP3(el, jam) {
-  // Double-check slot
-  if (getCount(jam) >= MAX_SLOT) { showSlotFull(); return; }
-  document.getElementById('slot-warn').style.display = 'none';
-  document.querySelectorAll('#grid-p3 .pkg-card').forEach(c=>c.classList.remove('selected'));
-  el.classList.add('selected');
   state.p3 = jam;
-  const sisa = MAX_SLOT - getCount(jam);
+  renderJam();
   document.getElementById('sum-p3').textContent = jam;
-  document.getElementById('sum-slot').textContent = sisa+' / '+MAX_SLOT+' tersisa';
-  markDone('card-p3','num-p3');
+  document.getElementById('card-p3').classList.add('done');
+  document.getElementById('num-p3').textContent = '✓';
   updateProgress();
 }
 
-function markDone(cardId, numId) {
-  document.getElementById(cardId).classList.add('done');
-  document.getElementById(numId).textContent = '✓';
-}
-
-// ══════════════════════════════════════════════════
-//  PROGRESS
-// ══════════════════════════════════════════════════
 function updateProgress() {
-  const done = [!!state.p1, !!state.p2, !!state.p3];
-  done.forEach((d,i) => document.getElementById('dot'+(i+1)).classList.toggle('done',d));
-  const all = done.every(Boolean);
+  const all = !!state.p1 && !!state.p2 && !!state.p3;
   document.getElementById('btn-order').disabled = !all;
-  const left = done.filter(x=>!x).length;
-  document.getElementById('progress-hint').textContent = all
-    ? '✅ Semua paket dipilih! Isi data & pesan.'
-    : `Pilih ${left} paket lagi untuk lanjut`;
 }
 
-// ══════════════════════════════════════════════════
-//  SUBMIT
-// ══════════════════════════════════════════════════
-// Fungsi Submit Order yang disamakan dengan File 2
-// 1. Fungsi untuk Membuka Pop-up
 function submitOrder() {
-  // Validasi Paket
-  if (!state.p1 || !state.p2 || !state.p3) {
-    return Swal.fire({ 
-      icon: 'warning', 
-      title: 'Pilihan Belum Lengkap', 
-      text: 'Harap pilih Paket, Formasi, dan Jam Sesi terlebih dahulu!',
-      confirmButtonColor: '#1565c0'
-    });
-  }
-
-  // Validasi WhatsApp
   const wa = document.getElementById('acc-wa').value.trim();
-  if (!wa || wa.length < 9) {
-    return Swal.fire({ 
-      icon: 'error', 
-      title: 'WhatsApp Wajib Isi', 
-      text: 'Silakan masukkan nomor WhatsApp yang aktif!',
-      confirmButtonColor: '#1565c0'
-    });
-  }
+  if (!wa || wa.length < 9) return Swal.fire('Error','Isi nomor WA!','error');
 
-  // Generate Order ID & Isi Detail Invoice
   state.orderId = 'DLS-FT-' + Math.floor(100000 + Math.random() * 900000);
-  document.getElementById('inv-order-id').innerText = state.orderId;
-  document.getElementById('inv-total-price').innerText = 'Rp ' + state.p1.price.toLocaleString('id-ID');
-  
   document.getElementById('inv-details').innerHTML = `
-    <p><span>Paket:</span> <strong>${state.p1.label}</strong></p>
-    <p><span>Formasi:</span> <strong>${state.p2}</strong></p>
-    <p><span>Sesi:</span> <strong>${state.p3}</strong></p>
-    <p><span>No. WA:</span> <strong>${wa}</strong></p>
+    <p>ID: <b>${state.orderId}</b></p>
+    <p>Paket: <b>${state.p1.label}</b></p>
+    <p>Formasi: <b>${state.p2}</b></p>
+    <p>Sesi: <b>${state.p3}</b></p>
+    <p>WA: <b>${wa}</b></p>
   `;
-
-  // Tampilkan Modal
   const modal = document.getElementById('checkout-modal');
   modal.style.display = 'flex';
   setTimeout(() => modal.classList.add('show'), 10);
@@ -644,43 +318,18 @@ function submitOrder() {
 function closeModal() {
   const modal = document.getElementById('checkout-modal');
   modal.classList.remove('show');
-  setTimeout(() => { modal.style.display = 'none'; }, 300);
+  setTimeout(() => modal.style.display = 'none', 300);
 }
 
-// ══════════════════════════════════════════════════
-//  FUNGSI KIRIM KE TELEGRAM (DENGAN FOTO)
-// ══════════════════════════════════════════════════
 async function kirimKeTelegram() {
   const fileInput = document.getElementById('bukti-tf-file');
+  if (fileInput.files.length === 0) return Swal.fire('Peringatan','Upload bukti transfer!','warning');
+
   const btn = document.getElementById('btn-konfirmasi');
-
-  // Validasi File Gambar
-  if (fileInput.files.length === 0) {
-    return Swal.fire({ 
-      icon: 'warning', 
-      title: 'Bukti Transfer!', 
-      text: 'Harap upload foto bukti transfer Anda.',
-      confirmButtonColor: '#d32f2f'
-    });
-  }
-
-  btn.innerText = 'Mengirim... ⏳';
+  btn.innerText = 'Mengirim...';
   btn.disabled = true;
 
-  const wa = document.getElementById('acc-wa').value.trim();
-
-  // Susun Pesan
-  const caption = 
-    `🚀 *PESANAN BARU FT CS*\n` +
-    `━━━━━━━━━━━━━━━━━━━━\n` +
-    `🆔 *Order ID:* \`${state.orderId}\`\n` +
-    `💰 *Paket:* ${state.p1.label}\n` +
-    `⚔️ *Formasi:* ${state.p2}\n` +
-    `🕐 *Jam Sesi:* ${state.p3}\n` +
-    `📱 *WhatsApp:* ${wa}\n` +
-    `━━━━━━━━━━━━━━━━━━━━\n` +
-    `✅ *Total:* Rp ${state.p1.price.toLocaleString('id-ID')}`;
-
+  const caption = `🚀 *PESANAN BARU*\nID: ${state.orderId}\nPaket: ${state.p1.label}\nSesi: ${state.p3}\nWA: ${document.getElementById('acc-wa').value}`;
   const formData = new FormData();
   formData.append('chat_id', TELEGRAM_CHAT_ID);
   formData.append('photo', fileInput.files[0]);
@@ -688,41 +337,19 @@ async function kirimKeTelegram() {
   formData.append('parse_mode', 'Markdown');
 
   try {
-    const res = await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendPhoto`, { 
-      method: 'POST', 
-      body: formData 
-    });
-
+    const res = await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendPhoto`, { method: 'POST', body: formData });
     if (res.ok) {
-      incrementSlot(state.p3); // Berhasil, kurangi slot jam tersebut
-      Swal.fire({
-        icon: 'success',
-        title: 'Pesanan Terkirim!',
-        text: 'Bukti transfer berhasil dikirim. Admin akan segera memproses dan Harap Menunggu Admin Chat.',
-        confirmButtonColor: '#1565c0'
-      }).then(() => {
-        location.reload();
-      });
-    } else {
-      throw new Error('Telegram API Error');
+      // UPDATE SLOT KE FIREBASE
+      await db.ref('slots/' + todayKey + '/' + state.p3).transaction(curr => (curr || 0) + 1);
+      Swal.fire('Berhasil','Pesanan diproses!','success').then(() => location.reload());
     }
   } catch (err) {
-    console.error(err);
-    Swal.fire({
-      icon: 'error',
-      title: 'Gagal Kirim',
-      text: 'Terjadi kesalahan saat menghubungi server Telegram.',
-      confirmButtonColor: '#1565c0'
-    });
-    btn.innerText = 'Coba Lagi';
+    Swal.fire('Error','Gagal kirim','error');
     btn.disabled = false;
   }
 }
 
-// ══════════════════════════════════════════════════
-//  INIT
-// ══════════════════════════════════════════════════
-window.onload = () => { renderJam(); updateProgress(); };
+window.onload = () => { listenToSlots(); };
 </script>
 </body>
 </html>
