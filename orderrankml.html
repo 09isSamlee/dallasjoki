@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Order Joki Rank - Dallas ML</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Oxanium:wght@300;400;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+  
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <style>
+    .price-card-mini span img { width: 40px; height: 40px; object-fit: contain; display: block; }
+    :root {
+      --bg: #f0f6ff; --bg2: #e4eeff; --bg3: #d6e8ff;
+      --surface: #ffffff; --accent: #1565c0; --accent2: #1e88e5; --accent3: #42a5f5;
+      --gold: #f59e0b; --text: #0d1b3e; --muted: #5a7aaa;
+      --card: #ffffff; --border: rgba(21,101,192,0.15); --glow: 0 8px 32px rgba(21,101,192,0.18);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; min-height: 100vh; }
+
+    nav { padding: 1rem 4rem; background: rgba(255,255,255,0.92); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 16px rgba(21,101,192,0.08); position: sticky; top:0; z-index:100; }
+    .logo-area { display:flex; align-items:center; gap:0.8rem; text-decoration:none; }
+    .logo-img-wrap { width: 40px; height: 40px; background: linear-gradient(135deg, var(--accent), var(--accent3)); border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; box-shadow: 0 4px 12px rgba(21,101,192,0.3); }
+    .logo-text { font-family: 'Oxanium', sans-serif; font-size: 1.4rem; font-weight: 800; color: var(--accent); }
+    .logo-text span { color: var(--accent3); }
+    .back-btn { color: var(--muted); text-decoration: none; font-family: 'Rajdhani'; font-weight: 600; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px; transition: color 0.2s; display:flex; align-items:center; gap:0.4rem; }
+    .back-btn:hover { color: var(--accent); }
+
+    .page-header { background: none; padding: 0; text-align: center; display: block; justify-content: center; align-items: center; }
+    .header-banner-container { width: 100%; max-width: 100%; border-radius: 0; overflow: hidden; line-height: 0; box-shadow: none; }
+    .header-static-img { width: 100%; height: 180px; display: block; object-fit: cover; object-position: center; }
+
+    .order-section { padding: 3rem 4rem 5rem; max-width: 1400px; margin: 0 auto; }
+    .order-container { display: grid; grid-template-columns: 1fr 360px; gap: 2.5rem; align-items: start; }
+    .order-steps { display: flex; flex-direction: column; gap: 1.8rem; }
+
+    .step-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(21,101,192,0.07); transition: box-shadow 0.2s; }
+    .step-card:focus-within { box-shadow: var(--glow); border-color: var(--accent2); }
+    .step-header { background: linear-gradient(135deg, rgba(21,101,192,0.05), rgba(66,165,245,0.05)); padding: 1.1rem 1.5rem; display: flex; align-items: center; gap: 1rem; border-bottom: 1px solid var(--border); }
+    .step-number { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; border-radius: 8px; font-weight: 800; font-family: 'Oxanium'; font-size: 1rem; }
+    .step-title { font-family:'Rajdhani'; font-size:1.2rem; font-weight:700; color:var(--text); letter-spacing:0.5px; }
+    .step-body { padding: 1.5rem; }
+
+    .input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
+    .form-label { font-family:'Rajdhani'; font-size:0.82rem; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:1.2px; }
+    .form-input, .form-select { background: var(--bg); border: 1.5px solid var(--border); border-radius: 10px; color: var(--text); font-size: 0.95rem; padding: 0.75rem 1rem; font-family: 'Inter'; transition: all 0.2s; outline: none; }
+    .form-input:focus, .form-select:focus { border-color: var(--accent); background: var(--surface); box-shadow: 0 0 0 3px rgba(21,101,192,0.1); }
+
+    .service-tabs { display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:1.2rem; }
+    .svc-tab { font-family:'Rajdhani'; font-size:0.8rem; font-weight:700; letter-spacing:1px; text-transform:uppercase; padding:0.4rem 1rem; border-radius:100px; border: 1.5px solid var(--border); background:var(--bg); color:var(--muted); cursor:pointer; transition:all 0.2s; }
+    .svc-tab.active { background:var(--accent); color:#fff; border-color:var(--accent); box-shadow:0 4px 12px rgba(21,101,192,0.3); }
+
+    .price-card-mini { background: #fff; padding: 10px; border-radius: 8px; display: flex; align-items: center; gap: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border: 1px solid var(--border); }
+    .price-card-mini .info .rank { font-size: 0.75rem; font-weight: 700; color: var(--muted); }
+    .price-card-mini .info .price { font-size: 0.9rem; font-weight: 800; color: var(--accent); }
+
+    .qty-control { display:flex; align-items:center; gap:1rem; }
+    .qty-btn { width:38px; height:38px; border-radius:8px; background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff; border:none; font-size:1.2rem; font-weight:bold; cursor:pointer; transition:opacity 0.2s; box-shadow:0 3px 10px rgba(21,101,192,0.3); }
+    .qty-input { width:70px; text-align:center; font-family:'Oxanium'; font-size:1.1rem; font-weight:800; color:var(--accent); }
+    .summary-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: 18px; padding: 1.8rem; box-shadow: 0 6px 28px rgba(21,101,192,0.1); }
+    .sum-title { font-family:'Oxanium'; font-size:1.2rem; font-weight:800; color:var(--accent); margin-bottom:1.5rem; padding-bottom:0.8rem; border-bottom: 2px solid var(--bg3); }
+    .sum-row { display:flex; justify-content:space-between; margin-bottom:0.9rem; font-size:0.9rem; align-items:flex-start; gap:0.5rem; }
+    .sum-label { color:var(--muted); font-family:'Rajdhani'; font-weight:600; text-transform:uppercase; font-size:0.78rem; letter-spacing:1px; padding-top:2px; }
+    .sum-value { font-weight:600; color:var(--text); text-align:right; font-size:0.9rem; }
+    .sum-divider { height:1px; background:var(--bg3); margin:1rem 0; }
+    .sum-total-label { font-family:'Rajdhani'; font-size:0.85rem; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:0.4rem; }
+    .sum-total-value { font-family:'Oxanium'; font-size:2.1rem; color:var(--accent); font-weight:800; }
+    
+    .btn-submit { width:100%; font-family:'Rajdhani'; font-size:1.05rem; font-weight:700; letter-spacing:1px; text-transform:uppercase; padding:1rem; margin-top:1.5rem; background:linear-gradient(135deg, var(--accent), var(--accent2)); color:#fff; border:none; border-radius:10px; cursor:pointer; transition:all 0.25s; box-shadow:0 6px 20px rgba(21,101,192,0.35); }
+
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(13, 27, 62, 0.6); backdrop-filter: blur(5px); display: none; align-items: center; justify-content: center; z-index: 9999; opacity: 0; transition: opacity 0.3s ease; }
+    .modal-overlay.show { opacity: 1; }
+    .modal-content { background: var(--surface); border-radius: 20px; width: 90%; max-width: 420px; overflow-y: auto; max-height: 90vh; box-shadow: 0 20px 40px rgba(0,0,0,0.3); transform: translateY(20px); transition: transform 0.3s ease; }
+    .modal-overlay.show .modal-content { transform: translateY(0); }
+    .modal-header { background: linear-gradient(135deg, var(--accent), var(--accent2)); padding: 1.5rem; color: #fff; text-align: center; position: relative; }
+    .modal-header h2 { font-family: 'Oxanium'; font-size: 1.4rem; margin: 0; font-weight: 800; }
+    .close-modal { position: absolute; right: 1.5rem; top: 1.2rem; color: #fff; font-size: 1.8rem; cursor: pointer; line-height: 1; opacity: 0.8; }
+    .modal-body { padding: 1.5rem; text-align: center; }
+    .invoice-status { display: inline-block; background: #fff3cd; color: #856404; padding: 0.5rem 1.2rem; border-radius: 50px; font-size: 0.85rem; font-weight: bold; margin-bottom: 1.5rem; }
+    .qr-placeholder img { width: 180px; height: 180px; border-radius: 12px; border: 3px solid var(--accent3); padding: 8px; background: #fff; }
+    .upload-tf-section { margin: 1.5rem 0; border: 2px dashed var(--accent3); padding: 1.2rem; border-radius: 12px; background: #f8fbff; text-align: center; }
+    .upload-label { font-family: 'Rajdhani'; font-weight: 700; color: var(--accent); font-size: 0.9rem; display: block; margin-bottom: 10px; }
+    .upload-tf-section input[type="file"] { font-size: 0.8rem; color: var(--muted); width: 100%; }
+    .inv-details { text-align: left; background: var(--bg); padding: 1.2rem; border-radius: 12px; margin: 1.5rem 0; font-size: 0.9rem; border: 1px dashed var(--accent3); }
+    .inv-total { font-family: 'Oxanium'; font-size: 1.6rem; font-weight: 800; color: var(--accent); margin-top: 1rem;}
+    .modal-footer { padding: 0 1.5rem 1.5rem; }
+
+    @media(max-width:1024px) { .order-container{grid-template-columns:1fr;} .summary-wrapper{position:static;} }
+    @media(max-width:640px) { .input-grid{grid-template-columns:1fr;} }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo-area">
+    <div class="logo-img-wrap"><img src="assets/dallas.png" alt="Pemandangan Alam" width="70" height="70"></div>
+    <div class="logo-text">Dallas <span>JOKI ML</span></div>
+  </a>
+  <a href="index.html" class="back-btn">← Kembali ke Beranda</a>
+</nav>
+
+<div class="page-header">
+  <div class="header-banner-container">
+    <img src="assets/banner.jpeg" alt="Banner Dallas Joki" class="header-static-img">
+  </div>
+</div>
+
+<section class="order-section">
+  <div class="order-container">
+    <div class="order-steps">
+
+      <div class="step-card">
+        <div class="step-header">
+          <div class="step-number">1</div>
+          <div class="step-title">Jenis Layanan Mobile Legends</div>
+        </div>
+        <div class="step-body">
+          <div class="form-label" style="margin-bottom:0.8rem;">Jenis Layanan</div>
+          <div class="service-tabs" id="service-tabs"></div>
+        </div>
+      </div>
+
+      <div class="step-card" id="joki-rank-ml-section">
+        <div class="step-header">
+          <div class="step-number">2</div>
+          <div class="step-title">JOKI RANK MOBILE LEGENDS</div>
+        </div>
+        <div class="step-body">
+          <div style="margin-bottom: 2rem; padding: 1rem; background: var(--bg2); border-radius: 12px; border: 1px solid var(--border);">
+            <h4 style="font-family: 'Rajdhani'; margin-bottom: 1rem; color: var(--accent); border-bottom: 2px solid var(--accent3); display: inline-block;">Harga Joki Per Bintang</h4>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px;">
+              <div class="price-card-mini"><span><img src="assets/master.png"></span><div class="info"><div class="rank">Master</div><div class="price">Rp 2.000</div></div></div>
+              <div class="price-card-mini"><span><img src="assets/grandmaster.png"></span><div class="info"><div class="rank">Grandmaster</div><div class="price">Rp 3.000</div></div></div>
+              <div class="price-card-mini"><span><img src="assets/epic.png"></span><div class="info"><div class="rank">Epic</div><div class="price">Rp 4.500</div></div></div>
+              <div class="price-card-mini"><span><img src="assets/legend.png"></span><div class="info"><div class="rank">Legend</div><div class="price">Rp 7.000</div></div></div>
+              <div class="price-card-mini"><span><img src="assets/mythic.png"></span><div class="info"><div class="rank">Mythic</div><div class="price">Rp 9.500</div></div></div>
+              <div class="price-card-mini"><span><img src="assets/honor.png"></span><div class="info"><div class="rank">M. Honor</div><div class="price">Rp 12.000</div></div></div>
+              <div class="price-card-mini"><span><img src="assets/glory.png"></span><div class="info"><div class="rank">M. Glory</div><div class="price">Rp 14.500</div></div></div>
+              <div class="price-card-mini"><span><img src="assets/immortal.png"></span><div class="info"><div class="rank">Immortal</div><div class="price">Rp 17.000</div></div></div>
+            </div>
+          </div>
+          <div class="input-grid">
+            <div class="form-group"><label class="form-label">Rank Awal</label><select id="rank-awal" class="form-select"><option value="">-- Pilih --</option><option value="Master IV">Master IV</option><option value="Master III">Master III</option><option value="Master II">Master II</option><option value="Master I">Master I</option><option value="Grandmaster V">Grandmaster V</option><option value="Grandmaster IV">Grandmaster IV</option><option value="Grandmaster III">Grandmaster III</option><option value="Grandmaster II">Grandmaster II</option><option value="Grandmaster I">Grandmaster I</option><option value="Epic V">Epic V</option><option value="Epic IV">Epic IV</option><option value="Epic III">Epic III</option><option value="Epic II">Epic II</option><option value="Epic I">Epic I</option><option value="Legend V">Legend V</option><option value="Legend IV">Legend IV</option><option value="Legend III">Legend III</option><option value="Legend II">Legend II</option><option value="Legend I">Legend I</option><option value="Mythic">Mythic</option><option value="Mythic Honor">Mythic Honor</option><option value="Mythic Glory">Mythic Glory</option><option value="Mythic Immortal">Mythic Immortal</option></select></div>
+            <div class="form-group"><label class="form-label">Rank Tujuan</label><select id="rank-tujuan" class="form-select"><option value="">-- Pilih --</option><option value="Master IV">Master IV</option><option value="Master III">Master III</option><option value="Master II">Master II</option><option value="Master I">Master I</option><option value="Grandmaster V">Grandmaster V</option><option value="Grandmaster IV">Grandmaster IV</option><option value="Grandmaster III">Grandmaster III</option><option value="Grandmaster II">Grandmaster II</option><option value="Grandmaster I">Grandmaster I</option><option value="Epic V">Epic V</option><option value="Epic IV">Epic IV</option><option value="Epic III">Epic III</option><option value="Epic II">Epic II</option><option value="Epic I">Epic I</option><option value="Legend V">Legend V</option><option value="Legend IV">Legend IV</option><option value="Legend III">Legend III</option><option value="Legend II">Legend II</option><option value="Legend I">Legend I</option><option value="Mythic">Mythic</option><option value="Mythic Honor">Mythic Honor</option><option value="Mythic Glory">Mythic Glory</option><option value="Mythic Immortal">Mythic Immortal</option></select></div>
+            <div class="form-group"><label class="form-label">Bintang Awal</label><input type="number" id="bintang-awal" class="form-input" placeholder="0" min="0"></div>
+            <div class="form-group"><label class="form-label">Bintang Tujuan</label><input type="number" id="bintang-tujuan" class="form-input" placeholder="0" min="1"></div>
+            <div class="form-group" style="grid-column: 1 / -1; text-align: center; margin-top: 1rem;"><button type="button" class="btn-submit" style="width: auto; padding: 0.75rem 2rem;" onclick="hitungHarga()">HITUNG HARGA</button></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-header">
+          <div class="step-number">3</div>
+          <div class="step-title">Lengkapi Data</div>
+        </div>
+        <div class="step-body">
+          <div class="input-grid">
+            <div class="form-group" style="grid-column: 1/-1;"><label class="form-label">Catatan/Keterangan</label><input type="text" id="acc-notes-rank" class="form-input" placeholder="Catatan/Keterangan" /></div>
+            <div class="form-group"><label class="form-label">Login Via</label><select id="acc-login-rank" class="form-select"><option value="Moonton">Moonton</option><option value="Google">Google</option><option value="Facebook">Facebook</option><option value="VK">VK</option></select></div>
+            <div class="form-group"><label class="form-label">Request Hero</label><input type="text" id="acc-herorequest-rank" class="form-input" placeholder="Minimal 3 Hero" /></div>
+            <div class="form-group"><label class="form-label">Email/No HP</label><input type="text" id="acc-id-usn-rank" class="form-input" placeholder="Email/No HP" /></div>
+            <div class="form-group"><label class="form-label">Masukkan Password</label><input type="password" id="acc-pass-rank" class="form-input" placeholder="Masukkan Password" /></div>
+            <div class="form-group" style="grid-column: 1/-1;"><label class="form-label">No. Whatsap</label><input type="text" id="acc-wa-rank" class="form-input" placeholder="0812xxxx" oninput="this.value = this.value.replace(/[^0-9]/g, '')" /></div>
+          </div>
+          <p id="note-joki" style="font-size:0.8rem;color:var(--muted);margin-top:1rem;">🔒 Data akunmu aman & terjamin.</p>
+        </div>
+      </div> 
+
+      <div class="step-card">
+        <div class="step-header"><div class="step-number">4</div><div class="step-title">Jumlah Pembelian</div></div>
+        <div class="step-body">
+          <div class="qty-control">
+            <button class="qty-btn" onclick="changeQty(-1)">−</button>
+            <input type="number" id="order-qty" class="form-input qty-input" value="1" readonly />
+            <button class="qty-btn" onclick="changeQty(1)">+</button>
+            <span style="font-size:0.85rem;color:var(--muted);">paket</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-header"><div class="step-number">5</div><div class="step-title">Metode Pembayaran</div></div>
+        <div class="step-body">
+          <div style="display:flex; gap:1rem;">
+            <div style="background: rgba(21,101,192,0.08); border: 1.5px solid var(--accent); border-radius: 10px; padding: 1rem 0.8rem; text-align:center; box-shadow:0 0 0 3px rgba(21,101,192,0.1); width: 130px;">
+              <img src="assets/qris.png" alt="Logo QRIS" style="width: 55px; height: auto; max-height: 40px; object-fit: contain; margin-bottom: 0.5rem; display: block; margin-left: auto; margin-right: auto;">
+              <div style="font-family:'Rajdhani'; font-size:0.85rem; font-weight:700; color:var(--text);">QRIS</div>
+              <div style="font-size:0.7rem; color:var(--muted); margin-top:0.2rem;">E-Wallet / M-Banking</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="summary-wrapper">
+      <div class="summary-card">
+        <div class="sum-title">📋 Ringkasan Pesanan</div>
+        <div class="sum-row"><span class="sum-label">Game</span><span class="sum-value" id="sum-game">-</span></div>
+        <div class="sum-row"><span class="sum-label">Layanan</span><span class="sum-value" id="sum-svc">-</span></div>
+        <div class="sum-row"><span class="sum-label">Paket</span><span class="sum-value" id="sum-item">-</span></div>
+        <div class="sum-divider"></div>
+        <div class="sum-row"><span class="sum-total-label">Total Pembayaran</span></div>
+        <div class="sum-row"><span class="sum-total-value" id="sum-total">Rp 0</span></div>
+        <button class="btn-submit" onclick="submitOrder()">Proses Sekarang 💳</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="checkout-modal" class="modal-overlay">
+  <div class="modal-content">
+    <div class="modal-header"><h2>Invoice Pesanan</h2><span class="close-modal" onclick="closeModal()">×</span></div>
+    <div class="modal-body">
+      <div class="invoice-status">Menunggu Pembayaran</div>
+      <p>Order ID: <strong id="inv-order-id"></strong></p>
+      <div class="qr-placeholder" style="margin: 1rem 0;"><img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=DALLAS-PAY" alt="QRIS" /><p style="font-size: 0.85rem; color: var(--muted); margin-top: 0.8rem; font-weight: 500;">Scan QRIS untuk membayar</p></div>
+      <div class="upload-tf-section" id="upload-section">
+        <span class="upload-label">📤 Upload Bukti Transfer</span>
+        <input type="file" id="bukti-tf-file" accept="image/*">
+      </div>
+      <div class="inv-details" id="inv-details"></div>
+      <div class="inv-total" id="inv-total-price"></div>
+    </div>
+    <div class="modal-footer"><button class="btn-submit" onclick="kirimKeTelegramDenganFoto()" id="btn-konfirmasi">Konfirmasi Bayar</button></div>
+  </div>
+</div>
+
+<script>
+  const SERVICES = {
+    "Mobile Legends": {
+      "rank": { label:"Rank Boost", pkgs:[] }
+    }
+  };
+
+  const TELEGRAM_TOKEN = '8074314633:AAHBAVptcU-P496oJJHoWyyc8JpB1pVZf04';
+  const TELEGRAM_CHAT_ID = '-1003881733798';
+  let state = { game:'Mobile Legends', svc:'rank', pkg:null, pkgPrice:0, pay:'QRIS', qty:1, orderId:'' };
+
+  window.onload = () => { renderServiceTabs(); updateSummary(); };
+
+  function renderServiceTabs() {
+    const tabs = document.getElementById('service-tabs');
+    tabs.innerHTML = Object.entries(SERVICES[state.game]).map(([key,val]) =>
+      `<button class="svc-tab active">${val.label}</button>`
+    ).join('');
+  }
+
+  function changeQty(d) { if (state.qty + d >= 1) { state.qty += d; document.getElementById('order-qty').value = state.qty; updateSummary(); } }
+
+  function updateSummary() {
+    document.getElementById('sum-game').textContent = state.game;
+    document.getElementById('sum-svc').textContent = SERVICES[state.game][state.svc].label;
+    document.getElementById('sum-item').textContent = state.pkg || '-';
+    document.getElementById('sum-total').textContent = 'Rp ' + (state.pkgPrice * state.qty).toLocaleString('id-ID');
+  }
+
+  // LOGIKA KALKULATOR TETAP DIPERTAHANKAN
+  function hitungHarga() {
+    const r1 = document.getElementById('rank-awal').value;
+    const r2 = document.getElementById('rank-tujuan').value;
+    const b1 = parseInt(document.getElementById('bintang-awal').value) || 0;
+    const b2 = parseInt(document.getElementById('bintang-tujuan').value) || 0;
+    if (!r1 || !r2) return Swal.fire({ icon: 'warning', title: 'Perhatian', text: 'Pilih Rank Awal dan Rank Tujuan!' });
+    
+    const rankOrder = ["Master IV","Master III","Master II","Master I","Grandmaster V","Grandmaster IV","Grandmaster III","Grandmaster II","Grandmaster I","Epic V","Epic IV","Epic III","Epic II","Epic I","Legend V","Legend IV","Legend III","Legend II","Legend I","Mythic","Mythic Honor","Mythic Glory","Mythic Immortal"];
+    const prices = {"Master":2000,"Grandmaster":3000,"Epic":4500,"Legend":7000,"Mythic":9500,"Mythic Honor":12000,"Mythic Glory":14500,"Mythic Immortal":17000};
+    
+    const idx1 = rankOrder.indexOf(r1); const idx2 = rankOrder.indexOf(r2);
+    if (idx2 < idx1) return Swal.fire({ icon: 'error', title: 'Oops', text: 'Rank Tujuan tidak boleh lebih rendah dari Rank Awal!' });
+    
+    let stars = 0;
+    if(r1===r2) stars = b2-b1;
+    else {
+        stars += ((r1.includes("Master")?4:5)-b1)+1;
+        for(let i=idx1+1;i<idx2;i++) stars += (rankOrder[i].includes("Master")?4:5);
+        stars += (b2-1);
+    }
+    if(stars<=0) return Swal.fire({ icon: 'error', title: 'Oops', text: 'Jumlah bintang tidak valid!' });
+    
+    let key = "Master";
+    if(r1.includes("Grandmaster")) key="Grandmaster"; else if(r1.includes("Epic")) key="Epic"; else if(r1.includes("Legend")) key="Legend"; else if(r1.includes("Mythic")) key="Mythic";
+
+    state.pkg = `${r1} ➔ ${r2} (${stars}⭐)`; 
+    state.pkgPrice = stars * prices[key]; 
+    updateSummary();
+    
+    Swal.fire({
+      icon: 'success',
+      title: 'Harga Ditemukan',
+      text: `Total ${stars} Bintang. Silakan lanjutkan pengisian data.`,
+      timer: 1500,
+      showConfirmButton: false
+    });
+  }
+
+  // --- PEMBARUAN FUNGSI SUBMIT ---
+  function submitOrder() {
+    if (!state.pkg) {
+        return Swal.fire({ icon: 'warning', title: 'Oops!', text: 'Silakan klik tombol HITUNG HARGA terlebih dahulu!'});
+    }
+
+    const id = document.getElementById('acc-id-usn-rank').value;
+    const pass = document.getElementById('acc-pass-rank').value;
+    const wa = document.getElementById('acc-wa-rank').value;
+    const loginVia = document.getElementById('acc-login-rank').value;
+
+    if (!id || !pass || !wa) {
+        return Swal.fire({ icon: 'error', title: 'Data Kurang', text: 'Lengkapi Email/No HP, Password, dan No. WhatsApp!'});
+    }
+
+    state.orderId = 'DLS-ML-' + Math.floor(100000 + Math.random()*900000);
+    document.getElementById('inv-order-id').innerText = state.orderId;
+    document.getElementById('inv-total-price').innerText = 'Rp ' + (state.pkgPrice * state.qty).toLocaleString('id-ID');
+
+    // Update Detail Invoice di Modal
+    document.getElementById('inv-details').innerHTML = `
+      <p style="display:flex; justify-content:space-between; border-bottom:1px solid #eee; padding:5px 0;"><span>Game:</span> <strong>${state.game}</strong></p>
+      <p style="display:flex; justify-content:space-between; border-bottom:1px solid #eee; padding:5px 0;"><span>Paket:</span> <strong>${state.pkg}</strong></p>
+      <p style="display:flex; justify-content:space-between; border-bottom:1px solid #eee; padding:5px 0;"><span>Akun:</span> <strong>${id}</strong></p>
+      <p style="display:flex; justify-content:space-between; border-bottom:1px solid #eee; padding:5px 0;"><span>Login Via:</span> <strong>${loginVia}</strong></p>
+    `;
+
+    document.getElementById('checkout-modal').style.display = 'flex';
+    setTimeout(() => document.getElementById('checkout-modal').classList.add('show'), 10);
+  }
+
+  function closeModal() { document.getElementById('checkout-modal').classList.remove('show'); setTimeout(() => document.getElementById('checkout-modal').style.display='none', 300); }
+
+  // --- PEMBARUAN FUNGSI KIRIM (DENGAN POP-UP INFO) ---
+  async function kirimKeTelegramDenganFoto() {
+    const fileInput = document.getElementById('bukti-tf-file');
+    const btn = document.getElementById('btn-konfirmasi');
+
+    if (fileInput.files.length === 0) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Oops...',
+        text: 'Wajib melampirkan foto bukti transfer!',
+        confirmButtonColor: '#1565c0',
+        didOpen: () => { Swal.getContainer().style.zIndex = "10000"; }
+      });
+      return;
+    }
+    
+    btn.innerText = 'Mengirim Bukti... ⏳'; 
+    btn.disabled = true;
+
+    const notes = document.getElementById('acc-notes-rank').value || '-';
+    const loginVia = document.getElementById('acc-login-rank').value;
+    const heroReq = document.getElementById('acc-herorequest-rank').value || '-';
+    const id = document.getElementById('acc-id-usn-rank').value;
+    const pass = document.getElementById('acc-pass-rank').value;
+    const wa = document.getElementById('acc-wa-rank').value;
+
+    const caption = `🔥 *PESANAN BARU ML (RANK JOKI)*\n` +
+                    `----------------------------\n` +
+                    `🆔 *Order ID:* \`${state.orderId}\`\n` +
+                    `📦 *Target:* ${state.pkg}\n` +
+                    `💰 *Total:* Rp ${(state.pkgPrice*state.qty).toLocaleString('id-ID')}\n\n` +
+                    `👤 *DATA LOGIN/KONTAK:* \n` +
+                    `📧 Email/ID: \`${id}\`\n` +
+                    `🔐 Pass: \`${pass}\`\n` +
+                    `🌐 Login Via: ${loginVia}\n` +
+                    `🦸 Request Hero: ${heroReq}\n` +
+                    `📱 WA: ${wa}\n` +
+                    `📝 Catatan: ${notes}\n` +
+                    `----------------------------\n` +
+                    `✅ *Status:* Verifikasi Bukti TF & Proses!`;
+
+    const formData = new FormData();
+    formData.append('chat_id', TELEGRAM_CHAT_ID);
+    formData.append('photo', fileInput.files[0]);
+    formData.append('caption', caption);
+    formData.append('parse_mode', 'Markdown');
+
+    try {
+      const res = await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendPhoto`, { method: 'POST', body: formData });
+      if (res.ok) {
+        document.querySelector('.invoice-status').innerText = '✅ Terkirim & Berhasil';
+        document.querySelector('.invoice-status').style.background = '#d4edda';
+        document.querySelector('.invoice-status').style.color = '#155724';
+
+        Swal.fire({
+          title: 'BERHASIL TERKIRIM!',
+          html: `
+            <div style="text-align: left; font-size: 14px; line-height: 1.6;">
+              <p style="color: #d32f2f; font-weight: bold; text-align: center; font-size: 16px;">⚠️ INFORMASI PENTING JOKI ML</p>
+              <hr>
+              <ul style="padding-left: 20px;">
+                <li>Matikan <b>Verifikasi Device Baru</b> di pengaturan Moonton agar admin mudah login.</li>
+                <li>Jika akun <b>ditabrak / dilogin</b> oleh pemilik selama proses joki berlangsung, maka joki dianggap <b>SELESAI dan uang hangus</b>.</li>
+                <li>Admin akan menghubungi Anda via WhatsApp jika ada kendala login atau jika joki sudah selesai.</li>
+              </ul>
+            </div>
+          `,
+          icon: 'success',
+          confirmButtonText: 'Saya Mengerti',
+          confirmButtonColor: '#1565c0',
+          allowOutsideClick: false,
+          didOpen: () => { Swal.getContainer().style.zIndex = "10000"; }
+        }).then(() => location.reload());
+      } else {
+        throw new Error();
+      }
+    } catch (e) { 
+      Swal.fire({
+          icon: 'error',
+          title: 'Gagal Mengirim',
+          text: 'Periksa koneksi internet Anda atau coba lagi.',
+      });
+      btn.disabled = false; 
+      btn.innerText = 'Konfirmasi Bayar';
+    }
+  }
+</script>
+</body>
+</html>

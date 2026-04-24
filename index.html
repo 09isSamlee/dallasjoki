@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dallas  — Joki Game</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Oxanium:wght@300;400;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #f0f6ff;
+      --bg2: #e4eeff;
+      --bg3: #d6e8ff;
+      --surface: #ffffff;
+      --nav-bg: rgba(255,255,255,0.92);
+      --accent: #1565c0;
+      --accent2: #1e88e5;
+      --accent3: #42a5f5;
+      --gold: #f59e0b;
+      --text: #0d1b3e;
+      --muted: #5a7aaa;
+      --border: rgba(21,101,192,0.15);
+      --card: #ffffff;
+      --glow: 0 8px 32px rgba(21,101,192,0.18);
+      --glow2: 0 4px 20px rgba(21,101,192,0.12);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg2); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+
+    /* PARTICLES */
+    #particles { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+    .particle { position: absolute; border-radius: 50%; animation: float linear infinite; opacity: 0; }
+    @keyframes float { 0%{transform:translateY(100vh);opacity:0} 10%{opacity:0.4} 90%{opacity:0.15} 100%{transform:translateY(-10vh) translateX(20px);opacity:0} }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.85rem 4rem;
+      background: var(--nav-bg);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 2px 20px rgba(21,101,192,0.08);
+    }
+    .logo-area { display: flex; align-items: center; gap: 0.9rem; text-decoration: none; }
+    .logo-img-wrap {
+      width: 44px; height: 44px;
+      background: linear-gradient(135deg, var(--accent), var(--accent3));
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem;
+      box-shadow: 0 4px 12px rgba(21,101,192,0.3);
+      flex-shrink: 0;
+    }
+    /* ── LOGO PLACEHOLDER ─────────────────────────────────────────
+       Ganti konten di dalam .logo-img-wrap dengan <img> tag
+       setelah kamu punya file logo, contoh:
+       <img src="logo.png" alt="Logo" style="width:32px;height:32px;object-fit:contain;border-radius:6px;">
+    ─────────────────────────────────────────────────────────────── */
+    .logo-text { font-family: 'Oxanium', sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--accent); letter-spacing: 1px; }
+    .logo-text span { color: var(--accent3); }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a { font-family: 'Rajdhani', sans-serif; font-size: 0.95rem; font-weight: 600; color: var(--muted); text-decoration: none; text-transform: uppercase; letter-spacing: 1px; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-cta {
+      font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 0.9rem;
+      letter-spacing: 2px; text-transform: uppercase;
+      padding: 0.6rem 1.6rem;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff; border-radius: 8px; text-decoration: none;
+      transition: all 0.2s; box-shadow: 0 4px 15px rgba(21,101,192,0.3);
+    }
+    .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(21,101,192,0.45); }
+
+    /* HERO */
+    .hero {
+      position: relative; z-index: 1;
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding: 8rem 4rem 5rem;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: -1;
+      background:
+        radial-gradient(ellipse 55% 55% at 75% 45%, rgba(66,165,245,0.22) 0%, transparent 65%),
+        radial-gradient(ellipse 45% 50% at 15% 65%, rgba(21,101,192,0.12) 0%, transparent 60%),
+        linear-gradient(160deg, #f0f6ff 0%, #e0eeff 50%, #d4e8ff 100%);
+    }
+    .hero-dots {
+      position: absolute; inset: 0; z-index: -1;
+      background-image: radial-gradient(rgba(21,101,192,0.12) 1.5px, transparent 1.5px);
+      background-size: 32px 32px;
+    }
+    .hero-content { max-width: 640px; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      padding: 0.4rem 1.1rem;
+      background: rgba(21,101,192,0.08);
+      border: 1px solid rgba(21,101,192,0.25);
+      border-radius: 100px;
+      font-family: 'Rajdhani', sans-serif; font-size: 0.85rem; font-weight: 700;
+      color: var(--accent); letter-spacing: 2px; text-transform: uppercase;
+      margin-bottom: 1.8rem;
+      animation: fadeDown 0.8s ease both;
+    }
+    .hero-badge::before { content: ''; width: 7px; height: 7px; background: #22c55e; border-radius: 50%; box-shadow: 0 0 8px #22c55e; animation: blink 1.5s ease infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    h1 { font-family: 'Oxanium', sans-serif; font-size: clamp(2.5rem,5vw,4.2rem); font-weight: 800; line-height: 1.08; margin-bottom: 1.5rem; color: var(--text); animation: fadeUp 0.8s 0.2s ease both; }
+    h1 .line-blue { color: var(--accent); }
+    h1 .line-sky { color: var(--accent3); }
+    .hero-desc { font-size: 1.08rem; line-height: 1.75; color: var(--muted); margin-bottom: 2.5rem; animation: fadeUp 0.8s 0.35s ease both; }
+    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; animation: fadeUp 0.8s 0.5s ease both; }
+    .btn-primary {
+      font-family: 'Rajdhani', sans-serif; font-size: 1rem; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase; padding: 0.9rem 2.2rem;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff; border-radius: 8px; text-decoration: none;
+      transition: all 0.25s; box-shadow: 0 6px 20px rgba(21,101,192,0.35);
+    }
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(21,101,192,0.5); }
+    .btn-ghost {
+      font-family: 'Rajdhani', sans-serif; font-size: 1rem; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase; padding: 0.9rem 2.2rem;
+      background: var(--surface); color: var(--accent);
+      border: 1.5px solid rgba(21,101,192,0.3); border-radius: 8px; text-decoration: none;
+      transition: all 0.25s;
+    }
+    .btn-ghost:hover { border-color: var(--accent); box-shadow: var(--glow2); }
+    .hero-stats {
+      display: flex; gap: 3rem; margin-top: 4rem; padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      animation: fadeUp 0.8s 0.65s ease both;
+    }
+    .stat-num { font-family: 'Oxanium', sans-serif; font-size: 2rem; font-weight: 800; color: var(--accent); }
+    .stat-label { font-size: 0.78rem; color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; margin-top: 0.2rem; }
+
+    .hero-visual {
+      position: absolute; right: 5rem; top: 50%; transform: translateY(-50%);
+      width: 380px; height: 380px;
+      animation: fadeUp 1s 0.3s ease both;
+    }
+    .ring {
+      position: absolute; border-radius: 50%;
+      border: 1.5px solid rgba(21,101,192,0.2);
+      animation: spin linear infinite;
+    }
+    .ring:nth-child(1) { inset: 0; animation-duration: 18s; }
+    .ring:nth-child(1)::after { content:''; position:absolute; top:-5px; left:50%; width:10px; height:10px; background:var(--accent); border-radius:50%; box-shadow:0 0 12px var(--accent); }
+    .ring:nth-child(2) { inset: 35px; animation-duration: 12s; animation-direction:reverse; border-color: rgba(66,165,245,0.3); }
+    .ring:nth-child(2)::after { content:''; position:absolute; bottom:-5px; right:20%; width:8px; height:8px; background:var(--accent3); border-radius:50%; box-shadow:0 0 10px var(--accent3); }
+    .ring:nth-child(3) { inset: 70px; animation-duration: 22s; border-color: rgba(21,101,192,0.12); }
+    .ring-center { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:6rem; }
+    @keyframes spin { from{transform:rotate(0)} to{transform:rotate(360deg)} }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes fadeDown { from{opacity:0;transform:translateY(-18px)} to{opacity:1;transform:translateY(0)} }
+
+    /* SECTION COMMON */
+    section { position: relative; z-index: 1; }
+    .section-header { text-align: center; margin-bottom: 3.5rem; }
+    .section-tag { font-family:'Rajdhani',sans-serif; font-size:0.78rem; font-weight:700; color:var(--accent); letter-spacing:4px; text-transform:uppercase; margin-bottom:0.8rem; }
+    h2 { font-family:'Oxanium',sans-serif; font-size:clamp(1.8rem,3.5vw,2.6rem); font-weight:800; color:var(--text); }
+    .section-desc { color:var(--muted); margin-top:0.9rem; line-height:1.75; max-width:530px; margin-inline:auto; }
+
+    /* ══════════ GAMES SECTION ══════════ */
+    .games-section { padding: 5rem 4rem 6rem; background: #0d1b3e; }
+    .games-section .section-tag { color: #42a5f5; }
+    .games-section h2 { color: #fff; }
+    .games-section .section-desc { color: rgba(255,255,255,0.55); }
+
+    /* GAME FILTER TABS */
+    .game-filter-tabs {
+      display: flex; gap: 0.6rem; justify-content: center;
+      flex-wrap: wrap; margin-bottom: 2.8rem;
+    }
+    .gf-tab {
+      font-family: 'Rajdhani', sans-serif; font-size: 0.9rem; font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      padding: 0.55rem 1.6rem; border-radius: 100px;
+      border: 2px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.6);
+      cursor: pointer; transition: all 0.22s;
+    }
+    .gf-tab:hover { border-color: rgba(66,165,245,0.5); color: #fff; }
+    .gf-tab.active {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border-color: transparent; color: #fff;
+      box-shadow: 0 4px 16px rgba(21,101,192,0.45);
+    }
+
+    /* JOKI CARD GRID — acursio style */
+    .joki-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
+      gap: 1.2rem;
+      max-width: 1200px; margin: 0 auto;
+      align-items: start;
+    }
+    .joki-card {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      cursor: pointer;
+      text-decoration: none;
+      /* Hapus aspect-ratio — biarkan gambar yang menentukan tinggi kartu */
+      display: block;
+      transition: transform 0.28s, box-shadow 0.28s;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.4);
+    }
+    .joki-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 16px 40px rgba(0,0,0,0.55); }
+    .joki-card:hover .joki-overlay { opacity: 1; }
+
+    /* BACKGROUND — wrap gambar, ikuti ukuran img */
+    .joki-bg {
+      position: relative;        /* bukan absolute lagi */
+      width: 100%;
+      display: block;
+      overflow: hidden;
+      transition: transform 0.4s ease;
+      line-height: 0;            /* hilangkan gap bawah img */
+    }
+    /* Gambar mengisi lebar penuh, tinggi otomatis sesuai asli */
+    .joki-bg img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+    /* Kalau isi joki-bg berupa div emoji (fallback), pakai min-height */
+    .joki-bg > div {
+      min-height: 240px;
+    }
+    .joki-card:hover .joki-bg img { transform: scale(1.06); }
+
+    /* Dark gradient overlay bottom — menempel di atas .joki-bg (pakai margin-top negatif) */
+    .joki-grad {
+      position: absolute; inset: 0; z-index: 1;
+      background: linear-gradient(
+        to bottom,
+        transparent 0%,
+        transparent 38%,
+        rgba(0,0,0,0.55) 60%,
+        rgba(0,0,0,0.92) 100%
+      );
+      pointer-events: none;
+    }
+
+    /* Lightning bolt deco (top left watermark) */
+    .joki-watermark {
+      position: absolute; top: 0.6rem; left: 0.6rem; z-index: 3;
+      display: flex; align-items: center; gap: 0.3rem;
+    }
+    .joki-bolt {
+      font-size: 0.9rem; opacity: 0.85;
+      filter: drop-shadow(0 0 4px rgba(0,200,255,0.8));
+    }
+    .joki-game-logo {
+      font-family: 'Rajdhani', sans-serif; font-size: 0.62rem; font-weight: 700;
+      color: rgba(255,255,255,0.85); letter-spacing: 1px; text-transform: uppercase;
+    }
+
+    /* Bottom text block */
+    .joki-bottom {
+      position: absolute; bottom: 0; left: 0; right: 0; z-index: 3;
+      padding: 0 0.9rem 1rem;
+    }
+    .joki-order-label {
+      font-family: 'Rajdhani', sans-serif; font-size: 0.72rem; font-weight: 700;
+      color: #f5c518; letter-spacing: 3px; text-transform: uppercase;
+      text-shadow: 0 0 12px rgba(245,197,24,0.7);
+      margin-bottom: 0.18rem;
+    }
+    .joki-title {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: clamp(1rem, 2vw, 1.35rem);
+      font-weight: 700; color: #fff; line-height: 1.15;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.7);
+    }
+    .joki-price {
+      font-family: 'Oxanium', sans-serif; font-size: 0.78rem; font-weight: 700;
+      color: #42a5f5; margin-top: 0.3rem;
+      text-shadow: 0 0 8px rgba(66,165,245,0.5);
+    }
+
+    /* Glow border on hover */
+    .joki-overlay {
+      position: absolute; inset: 0; z-index: 5;
+      border: 2px solid rgba(0,212,255,0.7);
+      border-radius: 16px;
+      opacity: 0; transition: opacity 0.25s;
+      box-shadow: inset 0 0 20px rgba(0,212,255,0.15);
+      pointer-events: none;
+    }
+
+    /* Lightning deco bottom corners */
+    .joki-lightning {
+      position: absolute; bottom: 0; right: 0; z-index: 2;
+      font-size: 2.5rem; opacity: 0.12; line-height: 1;
+      pointer-events: none;
+    }
+
+    /* ══════════ LAYANAN ══════════ */
+    .layanan-section { padding: 6rem 4rem; background: var(--bg2); }
+    .layanan-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:1.5rem; max-width:1100px; margin:0 auto; }
+    .layanan-card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 16px; padding: 2rem;
+      transition: all 0.3s;
+      box-shadow: 0 2px 12px rgba(21,101,192,0.05);
+    }
+    .layanan-card:hover { border-color: var(--accent2); transform: translateY(-5px); box-shadow: var(--glow); }
+    .layanan-icon { font-size:2rem; margin-bottom:1.1rem; }
+    .layanan-name { font-family:'Rajdhani',sans-serif; font-size:1.1rem; font-weight:700; letter-spacing:0.5px; margin-bottom:0.7rem; color:var(--text); }
+    .layanan-desc { font-size:0.88rem; color:var(--muted); line-height:1.7; }
+
+    /* ══════════ HOW ══════════ */
+    .how-section { padding: 6rem 4rem; background: var(--surface); }
+    .steps { display:flex; max-width:1000px; margin:0 auto; position:relative; }
+    .steps::before { content:''; position:absolute; top:2.1rem; left:6rem; right:6rem; height:2px; background:linear-gradient(90deg,var(--accent),var(--accent3)); opacity:0.2; }
+    .step { flex:1; text-align:center; padding:0 1.5rem; }
+    .step-num { width:4.2rem; height:4.2rem; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Oxanium',sans-serif; font-size:1.3rem; font-weight:800; margin:0 auto 1.4rem; position:relative; z-index:1; background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff; box-shadow:0 6px 18px rgba(21,101,192,0.35); }
+    .step-title { font-family:'Rajdhani',sans-serif; font-size:1.05rem; font-weight:700; letter-spacing:0.5px; margin-bottom:0.6rem; color:var(--text); }
+    .step-desc { font-size:0.88rem; color:var(--muted); line-height:1.65; }
+
+    /* ══════════ ULASAN ══════════ */
+    .ulasan-section { padding: 6rem 4rem; background: var(--bg2); }
+    .ulasan-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; max-width:1100px; margin:0 auto; }
+    .ulasan-card { background:var(--surface); border:1.5px solid var(--border); border-radius:14px; padding:1.8rem; box-shadow:0 2px 12px rgba(21,101,192,0.05); }
+    .stars { color:var(--gold); font-size:0.9rem; letter-spacing:2px; margin-bottom:1rem; }
+    .ulasan-text { font-size:0.9rem; line-height:1.7; color:var(--muted); margin-bottom:1.2rem; }
+    .ulasan-user { display:flex; align-items:center; gap:0.8rem; }
+    .ulasan-avatar { width:38px; height:38px; border-radius:50%; background:linear-gradient(135deg,var(--accent),var(--accent3)); display:flex; align-items:center; justify-content:center; font-size:1.1rem; color:#fff; }
+    .ulasan-name { font-family:'Rajdhani',sans-serif; font-size:0.95rem; font-weight:700; color:var(--text); }
+    .ulasan-game { font-size:0.72rem; color:var(--muted); text-transform:uppercase; letter-spacing:1px; }
+
+    /* ══════════ CTA ══════════ */
+    .cta-section {
+      padding: 6rem 4rem; text-align:center;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 60%, var(--accent3) 100%);
+      position:relative; overflow:hidden;
+    }
+    .cta-section::before { content:''; position:absolute; inset:0; background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); }
+    .cta-section h2 { color:#fff; margin-bottom:1rem; }
+    .cta-section p { color:rgba(255,255,255,0.8); margin-bottom:2.5rem; }
+    .cta-btns { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; }
+    .btn-white { font-family:'Rajdhani',sans-serif; font-size:1rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; padding:0.9rem 2.2rem; background:#fff; color:var(--accent); border-radius:8px; text-decoration:none; transition:all 0.25s; box-shadow:0 6px 20px rgba(0,0,0,0.15); }
+    .btn-white:hover { transform:translateY(-3px); box-shadow:0 10px 28px rgba(0,0,0,0.2); }
+    .btn-wa { font-family:'Rajdhani',sans-serif; font-size:1rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; padding:0.9rem 2.2rem; background:rgba(255,255,255,0.15); color:#fff; border:2px solid rgba(255,255,255,0.5); border-radius:8px; text-decoration:none; transition:all 0.25s; }
+    .btn-wa:hover { background:rgba(255,255,255,0.25); }
+
+    /* FOOTER */
+    footer { padding:2.5rem 4rem; background:var(--text); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; }
+    .footer-logo { font-family:'Oxanium',sans-serif; font-size:1.3rem; font-weight:800; color:#fff; }
+    .footer-logo span { color:var(--accent3); }
+    .footer-links { display:flex; gap:2rem; }
+    .footer-links a { font-size:0.85rem; color:rgba(255,255,255,0.5); text-decoration:none; transition:color 0.2s; }
+    .footer-links a:hover { color:#fff; }
+    .footer-copy { font-size:0.8rem; color:rgba(255,255,255,0.4); }
+
+    /* WA FAB */
+    .wa-fab { position:fixed; bottom:2rem; right:2rem; z-index:999; width:58px; height:58px; background:#f2f7f4; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.7rem; box-shadow:0 6px 24px rgba(37,211,102,0.45); cursor:pointer; text-decoration:none; animation: wabounce 2s ease infinite; }
+    .wa-fab:hover { transform:scale(1.1); }
+    @keyframes wabounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-7px)} }
+
+    /* RESPONSIVE */
+    @media(max-width:1024px) {
+      nav { padding:1rem 2rem; }
+      .hero,.games-section,.layanan-section,.how-section,.ulasan-section,.cta-section { padding-left:2rem; padding-right:2rem; }
+      .hero-visual { display:none; }
+      .layanan-grid,.ulasan-grid { grid-template-columns:1fr 1fr; }
+      footer { padding:2rem; }
+      .joki-grid { grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); }
+    }
+    @media(max-width:640px) {
+      .nav-links { display:none; }
+      nav { padding:1rem 1.5rem; }
+      .hero { padding:7rem 1.5rem 4rem; }
+      .hero-stats { gap:1.5rem; }
+      h1 { font-size:2.2rem; }
+      .layanan-grid,.ulasan-grid { grid-template-columns:1fr; }
+      .steps { flex-direction:column; gap:2rem; }
+      .steps::before { display:none; }
+      .games-section,.layanan-section,.how-section,.ulasan-section,.cta-section { padding-left:1.5rem; padding-right:1.5rem; }
+      footer { padding:2rem 1.5rem; flex-direction:column; text-align:center; }
+      .joki-grid { grid-template-columns: repeat(2, 1fr); gap:0.85rem; }
+    }
+  </style>
+</head>
+<body>
+<div id="particles"></div>
+
+<nav>
+  <a href="index.html" class="logo-area">
+    <div class="logo-img-wrap">
+      <img src="assets/dallas.png" alt="Pemandangan Alam" width="70" height="70">
+
+    </div>
+    <div class="logo-text">Dallas <span>JOKI</span></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#games">Game</a></li>
+    <li><a href="#layanan">Layanan</a></li>
+    <li><a href="#ulasan">Ulasan</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-dots"></div>
+  <div class="hero-content">
+    <div class="hero-badge">🔥 Joki Game Terpercaya #1</div>
+    <h1>Naik Rank<br><span class="line-blue">Lebih Cepat,</span><br><span class="line-sky">Lebih Aman</span></h1>
+    <p class="hero-desc">Joki game profesional Mobile Legends & Free Fire. Raih rank impianmu dalam waktu singkat — dijamin aman, rahasia, dan harga terjangkau.</p>
+    <div class="hero-btns">
+      <a class="btn-primary" href="#games">🚀 Pesan Joki Sekarang</a>
+      <a class="btn-ghost" href="#games">Lihat Game</a>
+    </div>
+    <div class="hero-stats">
+      <div><div class="stat-num">15K+</div><div class="stat-label">Pelanggan</div></div>
+      <div><div class="stat-num">50K+</div><div class="stat-label">Order Selesai</div></div>
+      <div><div class="stat-num">98%</div><div class="stat-label">Kepuasan</div></div>
+      <div><div class="stat-num">24/7</div><div class="stat-label">Support</div></div>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="ring"></div>
+    <div class="ring"></div>
+    <div class="ring"></div>
+    <div class="ring-center"><img src="assets/dallas.png" alt="Pemandangan Alam" width="300" height="300"></div>
+  </div>
+</section>
+
+<section class="games-section" id="games">
+  <div class="section-header">
+    <div class="section-tag">Pilih Layanan</div>
+    <h2>Order Joki Sekarang</h2>
+    <p class="section-desc">Pilih game dan jenis layanan joki yang kamu butuhkan.</p>
+  </div>
+
+  <div class="game-filter-tabs">
+    <button class="gf-tab active" onclick="filterGame('all',this)">🎮 Semua</button>
+    <button class="gf-tab" onclick="filterGame('ml',this)">Mobile Legends</button>
+    <button class="gf-tab" onclick="filterGame('ff',this)">Free Fire</button>
+  </div>
+
+  <div class="joki-grid" id="joki-grid">
+
+    <a href="orderrankml.html" class="joki-card" data-game="ml">
+      <div class="joki-bg" style="background: linear-gradient(160deg,#0f286e 0%,#0a0060 35%,#2448be 65%,#4579eb 100%); min-height: 280px; display:flex; align-items:center; justify-content:center; font-size:5.5rem;">
+        <img src="assets/rank.png" alt="Joki Rank ML" style="width:100%;height:auto;display:block;">
+      </div>
+      <div class="joki-grad"></div>
+      <div class="joki-watermark">
+        <span class="joki-bolt">⚡</span>
+        <span class="joki-game-logo">Mobile Legends</span>
+      </div>
+      <div class="joki-lightning">⚡</div>
+      <div class="joki-bottom">
+        <div class="joki-order-label">ORDER</div>
+        <div class="joki-title">Joki Rank</div>
+        <div class="joki-price">Mulai Rp 5.500 aja perbintang</div>
+      </div>
+      <div class="joki-overlay"></div>
+    </a>
+
+    <a href="ordergendongml.html" class="joki-card" data-game="ml">
+      <div class="joki-bg" style="background: linear-gradient(160deg,#062040 0%,#0a5080 35%,#15a0c0 65%,#40d8f0 100%); min-height: 280px; display:flex; align-items:center; justify-content:center; font-size:5.5rem;">
+        <img src="assets/mabar.png" alt="Joki Mabar ML" style="width:100%;height:auto;display:block;">
+      </div>
+      <div class="joki-grad"></div>
+      <div class="joki-watermark">
+        <span class="joki-bolt">⚡</span>
+        <span class="joki-game-logo">Mobile Legends</span>
+      </div>
+      <div class="joki-lightning">⚡</div>
+      <div class="joki-bottom">
+        <div class="joki-order-label">ORDER</div>
+        <div class="joki-title">Joki gendong</div>
+        <div class="joki-price">Mulai Rp 6.500 aja per bintang</div>
+      </div>
+      <div class="joki-overlay"></div>
+    </a>
+
+    <a href="order_ff_rankbr.html" class="joki-card" data-game="ff">
+      <div class="joki-bg" style="background: linear-gradient(160deg,#3a0800 0%,#a02000 35%,#e05000 65%,#ff9030 100%); min-height: 280px; display:flex; align-items:center; justify-content:center; font-size:5.5rem;">
+    <img src="assets/ff.png" alt="Joki Rank ML" style="width:100%;height:auto;display:block;">
+      </div>
+      <div class="joki-grad"></div>
+      <div class="joki-watermark">
+        <span class="joki-bolt">⚡</span>
+        <span class="joki-game-logo">Free Fire</span>
+      </div>
+      <div class="joki-lightning">⚡</div>
+      <div class="joki-bottom">
+        <div class="joki-order-label">ORDER</div>
+        <div class="joki-title">Joki BR Rank</div>
+        <div class="joki-price">Mulai Rp 24.500</div>
+      </div>
+      <div class="joki-overlay"></div>
+    </a>
+
+<a href="order_ff_gendong.html" class="joki-card" data-game="ff">
+      <div class="joki-bg" style="background: linear-gradient(160deg,#d41414 0%,#9b1111 35%,#d80b04 65%,#e70808 100%); min-height: 280px; display:flex; align-items:center; justify-content:center; font-size:5.5rem;">
+    <img src="assets/jasgen.png" alt="Joki Rank ML" style="width:100%;height:auto;display:block;">
+      </div>
+      <div class="joki-grad"></div>
+      <div class="joki-watermark">
+        <span class="joki-bolt">⚡</span>
+        <span class="joki-game-logo">Free Fire</span>
+      </div>
+      <div class="joki-lightning">⚡</div>
+      <div class="joki-bottom">
+        <div class="joki-order-label">ORDER</div>
+        <div class="joki-title">Joki Gendong Isian/Clash Squad</div>
+        <div class="joki-price">Mulai dari Rp 3.500</div>
+      </div>
+      <div class="joki-overlay"></div>
+    </a>
+
+    <a href="order_ff_cs.html" class="joki-card" data-game="ff">
+      <div class="joki-bg" style="background: linear-gradient(160deg,#d41414 0%,#9b1111 35%,#d80b04 65%,#e70808 100%); min-height: 280px; display:flex; align-items:center; justify-content:center; font-size:5.5rem;">
+    <img src="assets/jasgen  cs.png" alt="Joki Rank ML" style="width:100%;height:auto;display:block;">
+      </div>
+      <div class="joki-grad"></div>
+      <div class="joki-watermark">
+        <span class="joki-bolt">⚡</span>
+        <span class="joki-game-logo">Free Fire</span>
+      </div>
+      <div class="joki-lightning">⚡</div>
+      <div class="joki-bottom">
+        <div class="joki-order-label">ORDER</div>
+        <div class="joki-title">Joki isian/Clash Squad</div>
+        <div class="joki-price">Mulai dari Rp 3.500</div>
+      </div>
+      <div class="joki-overlay"></div>
+    </a>
+     <a href="order ff.html" class="joki-card" data-game="ff">
+      <div class="joki-bg" style="background: linear-gradient(160deg,#d41414 0%,#9b1111 35%,#d80b04 65%,#e70808 100%); min-height: 280px; display:flex; align-items:center; justify-content:center; font-size:5.5rem;">
+    <img src="assets/cs.png" alt="Joki Rank ML" style="width:100%;height:auto;display:block;">
+      </div>
+      <div class="joki-grad"></div>
+      <div class="joki-watermark">
+        <span class="joki-bolt">⚡</span>
+        <span class="joki-game-logo">Free Fire</span>
+      </div>
+      <div class="joki-lightning">⚡</div>
+      <div class="joki-bottom">
+        <div class="joki-order-label">jadwal lengkap</div>
+        <div class="joki-title">FT CS</div>
+        <div class="joki-price">Mulai Rp 6.000</div>
+      </div>
+      <div class="joki-overlay"></div>
+    </a>
+  </div>
+</section>
+
+<section class="layanan-section" id="layanan">
+  <div class="section-header">
+    <div class="section-tag">Layanan Kami</div>
+    <h2>Semua yang Kamu Butuhkan</h2>
+    <p class="section-desc">Layanan lengkap untuk memaksimalkan pengalaman gaming kamu.</p>
+  </div>
+  <div class="layanan-grid">
+    <div class="layanan-card">
+      <div class="layanan-icon">🚀</div>
+      <div class="layanan-name">Rank Boosting</div>
+      <div class="layanan-desc">Naik rank dari bawah hingga top rank dengan win rate tinggi. Dikerjakan pemain profesional berpengalaman.</div>
+    </div>
+    <div class="layanan-card">
+      <div class="layanan-icon">👫</div>
+      <div class="layanan-name">Jasa Gendong ff/ml</div>
+      <div class="layanan-desc">Bermain bareng teman jago. Kamu tetap main, kami pastikan menang. Cocok untuk belajar sambil naik rank.</div>
+    </div>
+    <div class="layanan-card">
+      <div class="layanan-icon">🎯</div>
+      <div class="layanan-name">joki isian Clash Squad (FF)</div>
+      <div class="layanan-desc">Joki bermain ff cs .</div>
+    </div>
+    <div class="layanan-card">
+      <div class="layanan-icon">🔒</div>
+      <div class="layanan-name">Keamanan Akun</div>
+      <div class="layanan-desc">Tidak ada bot, tidak ada exploit. Semua dikerjakan manual oleh pemain manusia asli. Akun 100% aman.</div>
+    </div>
+  </div>
+</section>
+
+<section class="how-section">
+  <div class="section-header">
+    <div class="section-tag">Cara Kerja</div>
+    <h2>Mudah & Cepat dalam 4 Langkah</h2>
+    <p class="section-desc">Proses pemesanan yang simpel, transparan, dan aman.</p>
+  </div>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-title">Pilih Layanan</div>
+      <div class="step-desc">Pilih game dan paket yang sesuai kebutuhanmu dari daftar di atas.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-title">Isi Form Order</div>
+      <div class="step-desc">Lengkapi data akun dan target rank di halaman form pemesanan.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-title">Bayar & Konfirmasi</div>
+      <div class="step-desc">Bayar via e-wallet / bank. Joki langsung dikerjakan setelah konfirmasi pembayaran.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <div class="step-title">Rank Naik! 🎉</div>
+      <div class="step-desc">Pantau progress via WhatsApp. Akun dikembalikan setelah target tercapai.</div>
+    </div>
+  </div>
+</section>
+
+<section class="ulasan-section" id="ulasan">
+  <div class="section-header">
+    <div class="section-tag">Ulasan Pelanggan</div>
+    <h2>Kata Mereka yang Sudah Merasakan</h2>
+    <p class="section-desc">Ribuan pelanggan sudah mempercayakan rank mereka kepada kami.</p>
+  </div>
+  <div class="ulasan-grid">
+    <div class="ulasan-card">
+      <div class="stars">★★★★★</div>
+      <div class="ulasan-text">"Cepat banget! Order malem, pagi udah naik 3 bintang. Joki-nya profesional dan sopan. Recommended banget!"</div>
+      <div class="ulasan-user"><div class="ulasan-avatar">🧑</div><div><div class="ulasan-name">Farhan R.</div><div class="ulasan-game">ML · Mythic</div></div></div>
+    </div>
+    <div class="ulasan-card">
+      <div class="stars">★★★★★</div>
+      <div class="ulasan-text">"Joki/mabar Clash Squad FF-nya keren! Dari CS Silver naik ke CS Diamond dalam 2 hari. Puas banget, bakal repeat order!"</div>
+      <div class="ulasan-user"><div class="ulasan-avatar">👩</div><div><div class="ulasan-name">Siti A.</div><div class="ulasan-game">FF Clash Squad · Diamond</div></div></div>
+    </div>
+    <div class="ulasan-card">
+      <div class="stars">★★★★★</div>
+      <div class="ulasan-text">"Gendong ML-nya seru! Main bareng boosternya sambil ngejer rank. Bisa belajar cara play yang bener juga!"</div>
+      <div class="ulasan-user"><div class="ulasan-avatar">🧒</div><div><div class="ulasan-name">Dimas P.</div><div class="ulasan-game">ML · Gendong</div></div></div>
+    </div>
+    <div class="ulasan-card">
+      <div class="stars">★★★★☆</div>
+      <div class="ulasan-text">"Harga terjangkau, hasil bagus. Admin responsif 24 jam. Tiap update rank langsung dikasih tau di WA."</div>
+      <div class="ulasan-user"><div class="ulasan-avatar">🧑</div><div><div class="ulasan-name">Rizky M.</div><div class="ulasan-game">FF · Heroic</div></div></div>
+    </div>
+    <div class="ulasan-card">
+      <div class="stars">★★★★★</div>
+      <div class="ulasan-text">"Udah 4x order di sini! Service Gendong FF paling worth. Booster-nya ramah dan pro banget. 10/10!"</div>
+      <div class="ulasan-user"><div class="ulasan-avatar">👩</div><div><div class="ulasan-name">Nadia K.</div><div class="ulasan-game">FF · Gendong</div></div></div>
+    </div>
+    <div class="ulasan-card">
+      <div class="stars">★★★★★</div>
+      <div class="ulasan-text">"Dari Epic V ke Mythic selesai 5 hari. Gila cepet! Paling top deh joki ML-nya. Ga nyesel order di sini."</div>
+      <div class="ulasan-user"><div class="ulasan-avatar">🧒</div><div><div class="ulasan-name">Bagas W.</div><div class="ulasan-game">ML · Mythic</div></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section">
+  <div class="section-tag" style="color:rgba(255,255,255,0.7)">Mulai Sekarang</div>
+  <h2>Rank Impianmu<br>Selangkah Lagi!</h2>
+  <p>Jangan biarkan rank terjebak di sana. Hubungi kami sekarang dan dapatkan konsultasi gratis!</p>
+  <div class="cta-btns">
+    <a class="btn-white" href="order.html">🎮 Pesan Joki Sekarang</a>
+    <a class="btn-wa" href="https://wa.me/6285719195001" target="_blank">💬>
+ Chat WhatsApp</a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Dallas <span>Boost</span></div>
+  <div class="footer-links">
+    <a href="#">Syarat & Ketentuan</a>
+    <a href="#">Kebijakan Privasi</a>
+    <a href="#">FAQ</a>
+    <a href="#">Kontak</a>
+  </div>
+  <div class="footer-copy">© 2026 PT. Dallas  Sukses Abadi. All rights reserved.</div>
+</footer>
+
+<a class="wa-fab" href="https://wa.me/6285719195001" target="_blank" title="Chat WhatsApp"><img src="assets/wa.png" alt="Pemandangan Alam" width="58" height="58"></a>
+
+<script>
+  // Game filter
+  function filterGame(game, btn) {
+    document.querySelectorAll('.gf-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.joki-card').forEach(card => {
+      if (game === 'all' || card.dataset.game === game) {
+        card.style.display = 'block';
+        card.style.animation = 'fadeUp 0.4s ease both';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+
+  // Particles
+  const pc = document.getElementById('particles');
+  for (let i = 0; i < 35; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = Math.random() * 5 + 2;
+    p.style.cssText = `
+      left:${Math.random()*100}%;
+      width:${size}px; height:${size}px;
+      background:rgba(21,101,192,${0.08+Math.random()*0.12});
+      animation-duration:${10+Math.random()*18}s;
+      animation-delay:${Math.random()*12}s;
+    `;
+    pc.appendChild(p);
+  }
+
+  // Scroll reveal
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if(e.isIntersecting) { e.target.style.opacity='1'; e.target.style.transform='translateY(0)'; }
+    });
+  }, {threshold:0.1});
+  document.querySelectorAll('.joki-card,.layanan-card,.ulasan-card,.step').forEach(el => {
+    el.style.cssText += 'opacity:0;transform:translateY(25px);transition:opacity 0.5s ease,transform 0.5s ease;';
+    obs.observe(el);
+  });
+</script>
+</body>
+</html>

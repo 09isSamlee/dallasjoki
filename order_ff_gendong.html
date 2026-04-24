@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Jasa Gendong FF - Dallas FF</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Oxanium:wght@300;400;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+  
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <style>
+    .price-card-mini span img {
+      width: 40px;      
+      height: 40px;     
+      object-fit: contain;
+      display: block;
+    }
+    :root {
+      --bg: #f0f6ff; --bg2: #e4eeff; --bg3: #d6e8ff;
+      --surface: #ffffff;
+      --accent: #1565c0; --accent2: #1e88e5; --accent3: #42a5f5;
+      --gold: #f59e0b;
+      --text: #0d1b3e; --muted: #5a7aaa;
+      --card: #ffffff; --border: rgba(21,101,192,0.15);
+      --glow: 0 8px 32px rgba(21,101,192,0.18);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; min-height: 100vh; }
+
+    /* NAV */
+    nav {
+      padding: 1rem 4rem;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      box-shadow: 0 2px 16px rgba(21,101,192,0.08);
+      position: sticky; top:0; z-index:100;
+    }
+    .logo-area { display:flex; align-items:center; gap:0.8rem; text-decoration:none; }
+    .logo-img-wrap {
+      width: 40px; height: 40px;
+      background: linear-gradient(135deg, var(--accent), var(--accent3));
+      border-radius: 9px; display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem;
+      box-shadow: 0 4px 12px rgba(21,101,192,0.3);
+    }
+    .logo-text { font-family: 'Oxanium', sans-serif; font-size: 1.4rem; font-weight: 800; color: var(--accent); }
+    .logo-text span { color: var(--accent3); }
+    .back-btn { color: var(--muted); text-decoration: none; font-family: 'Rajdhani'; font-weight: 600; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px; transition: color 0.2s; display:flex; align-items:center; gap:0.4rem; }
+    .back-btn:hover { color: var(--accent); }
+
+   .page-header {
+      background: none; 
+      padding: 0;       
+      text-align: center;
+      display: block;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .header-banner-container {
+      width: 100%;
+      max-width: 100%;  
+      border-radius: 0; 
+      overflow: hidden;
+      line-height: 0;
+      box-shadow: none; 
+    }
+
+    .header-static-img {
+      width: 100%;
+      height: 180px;    
+      display: block;
+      object-fit: cover; 
+      object-position: center;
+    }
+    
+    /* ORDER SECTION */
+    .order-section { padding: 3rem 4rem 5rem; max-width: 1400px; margin: 0 auto; }
+    .order-container { display: grid; grid-template-columns: 1fr 360px; gap: 2.5rem; align-items: start; }
+    .order-steps { display: flex; flex-direction: column; gap: 1.8rem; }
+
+    /* STEP CARD */
+    .step-card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 16px; overflow: hidden;
+      box-shadow: 0 4px 20px rgba(21,101,192,0.07);
+      transition: box-shadow 0.2s;
+    }
+    .step-card:focus-within { box-shadow: var(--glow); border-color: var(--accent2); }
+    .step-header {
+      background: linear-gradient(135deg, rgba(21,101,192,0.05), rgba(66,165,245,0.05));
+      padding: 1.1rem 1.5rem;
+      display: flex; align-items: center; gap: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .step-number {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff; width: 34px; height: 34px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 8px; font-weight: 800; font-family: 'Oxanium'; font-size: 1rem;
+    }
+    .step-title { font-family:'Rajdhani'; font-size:1.2rem; font-weight:700; color:var(--text); letter-spacing:0.5px; }
+    .step-body { padding: 1.5rem; }
+
+    /* FORMS */
+    .input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
+    .form-label { font-family:'Rajdhani'; font-size:0.82rem; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:1.2px; }
+    .form-input, .form-select {
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 10px; color: var(--text);
+      font-size: 0.95rem; padding: 0.75rem 1rem;
+      font-family: 'Inter'; transition: all 0.2s; outline: none;
+    }
+    .form-input:focus, .form-select:focus { border-color: var(--accent); background: var(--surface); box-shadow: 0 0 0 3px rgba(21,101,192,0.1); }
+    .form-select option { background: #fff; color: var(--text); }
+    .form-input::placeholder { color: var(--muted); }
+
+    /* SERVICE TABS */
+    .service-tabs { display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:1.2rem; }
+    .svc-tab {
+      font-family:'Rajdhani'; font-size:0.8rem; font-weight:700;
+      letter-spacing:1px; text-transform:uppercase;
+      padding:0.4rem 1rem; border-radius:100px;
+      border: 1.5px solid var(--border); background:var(--bg);
+      color:var(--muted); cursor:pointer; transition:all 0.2s;
+    }
+    .svc-tab.active { background:var(--accent); color:#fff; border-color:var(--accent); box-shadow:0 4px 12px rgba(21,101,192,0.3); }
+
+    /* SELECTION GRID */
+    .selection-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(155px, 1fr)); gap: 1rem; }
+    .select-card {
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 12px; padding: 1.1rem;
+      text-align: center; cursor: pointer;
+      transition: all 0.25s; position: relative;
+    }
+    .select-card:hover { border-color: var(--accent2); background: rgba(30,136,229,0.06); transform: translateY(-2px); }
+    .select-card.active { border-color: var(--accent); background: rgba(21,101,192,0.08); box-shadow: 0 0 0 3px rgba(21,101,192,0.12); }
+    .select-card.active::before {
+      content:'✓'; position:absolute; top:-10px; right:-10px;
+      width:22px; height:22px; background:var(--accent); color:#fff;
+      border-radius:50%; font-weight:bold; display:flex; align-items:center; justify-content:center; font-size:0.75rem;
+    }
+    .sc-title { font-family:'Rajdhani'; font-size:0.92rem; font-weight:700; color:var(--text); margin-bottom:0.4rem; line-height:1.3; }
+    .sc-price { color:var(--accent); font-family:'Oxanium'; font-size:1rem; font-weight:700; }
+
+    /* PRICE LIST STYLES */
+    .price-card-mini {
+      background: #fff; padding: 10px; border-radius: 8px; display: flex; 
+      align-items: center; gap: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      border: 1px solid var(--border);
+    }
+    .price-card-mini .info .rank { font-size: 0.75rem; font-weight: 700; color: var(--muted); }
+    .price-card-mini .info .price { font-size: 0.9rem; font-weight: 800; color: var(--accent); }
+
+    /* QTY */
+    .qty-control { display:flex; align-items:center; gap:1rem; }
+    .qty-btn { width:38px; height:38px; border-radius:8px; background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff; border:none; font-size:1.2rem; font-weight:bold; cursor:pointer; transition:opacity 0.2s; box-shadow:0 3px 10px rgba(21,101,192,0.3); }
+    .qty-btn:hover { opacity:0.85; }
+    .qty-input { width:70px; text-align:center; font-family:'Oxanium'; font-size:1.1rem; font-weight:800; color:var(--accent); }
+
+    /* PAYMENT */
+    .payment-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(130px,1fr)); gap:1rem; }
+    .pay-card {
+      background: var(--bg); border: 1.5px solid var(--border); border-radius: 10px;
+      padding: 1rem 0.8rem; text-align:center; cursor:pointer; transition:all 0.2s;
+    }
+    .pay-card:hover { border-color:var(--accent2); }
+    .pay-card.active { border-color:var(--accent); background:rgba(21,101,192,0.08); box-shadow:0 0 0 3px rgba(21,101,192,0.1); }
+    .pay-icon-img { width: 55px; height: auto; max-height: 40px; object-fit: contain; margin-bottom: 0.5rem; display: block; margin-left: auto; margin-right: auto; }
+    .pay-name { font-family:'Rajdhani'; font-size:0.85rem; font-weight:700; color:var(--text); }
+    .pay-note { font-size:0.7rem; color:var(--muted); margin-top:0.2rem; }
+
+    /* SUMMARY */
+    .summary-wrapper { position:sticky; top:90px; }
+    .summary-card {
+      background: var(--surface); border: 1.5px solid var(--border);
+      border-radius: 18px; padding: 1.8rem;
+      box-shadow: 0 6px 28px rgba(21,101,192,0.1);
+    }
+    .sum-title {
+      font-family:'Oxanium'; font-size:1.2rem; font-weight:800;
+      color:var(--accent); margin-bottom:1.5rem;
+      padding-bottom:0.8rem; border-bottom: 2px solid var(--bg3);
+    }
+    .sum-row { display:flex; justify-content:space-between; margin-bottom:0.9rem; font-size:0.9rem; align-items:flex-start; gap:0.5rem; }
+    .sum-label { color:var(--muted); font-family:'Rajdhani'; font-weight:600; text-transform:uppercase; font-size:0.78rem; letter-spacing:1px; padding-top:2px; }
+    .sum-value { font-weight:600; color:var(--text); text-align:right; font-size:0.9rem; }
+    .sum-divider { height:1px; background:var(--bg3); margin:1rem 0; }
+    .sum-total-label { font-family:'Rajdhani'; font-size:0.85rem; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:0.4rem; }
+    .sum-total-value { font-family:'Oxanium'; font-size:2.1rem; color:var(--accent); font-weight:800; }
+    
+    .btn-submit {
+      width:100%; font-family:'Rajdhani'; font-size:1.05rem; font-weight:700;
+      letter-spacing:1px; text-transform:uppercase; padding:1rem;
+      margin-top:1.5rem;
+      background:linear-gradient(135deg, var(--accent), var(--accent2));
+      color:#fff; border:none; border-radius:10px; cursor:pointer;
+      transition:all 0.25s; box-shadow:0 6px 20px rgba(21,101,192,0.35);
+    }
+    .btn-submit:hover { transform:translateY(-2px); box-shadow:0 10px 28px rgba(21,101,192,0.5); }
+    .btn-submit:disabled { opacity:0.6; cursor:not-allowed; transform:none; }
+
+    /* MODAL CHECKOUT STYLES */
+    .modal-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(13, 27, 62, 0.6); backdrop-filter: blur(5px);
+      display: none; align-items: center; justify-content: center;
+      z-index: 9999; opacity: 0; transition: opacity 0.3s ease;
+    }
+    .modal-overlay.show { opacity: 1; }
+    .modal-content {
+      background: var(--surface); border-radius: 20px;
+      width: 90%; max-width: 420px; overflow-y: auto; max-height: 90vh;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      transform: translateY(20px); transition: transform 0.3s ease;
+    }
+    .modal-overlay.show .modal-content { transform: translateY(0); }
+    
+    .modal-header {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      padding: 1.5rem; color: #fff; text-align: center; position: relative;
+    }
+    .modal-header h2 { font-family: 'Oxanium'; font-size: 1.4rem; margin: 0; font-weight: 800; }
+    .close-modal {
+      position: absolute; right: 1.5rem; top: 1.2rem; color: #fff;
+      font-size: 1.8rem; cursor: pointer; line-height: 1; opacity: 0.8;
+    }
+    .close-modal:hover { opacity: 1; }
+    
+    .modal-body { padding: 1.5rem; text-align: center; }
+    .invoice-status {
+      display: inline-block; background: #fff3cd; color: #856404;
+      padding: 0.5rem 1.2rem; border-radius: 50px; font-size: 0.85rem;
+      font-weight: bold; margin-bottom: 1.5rem;
+    }
+    
+    .qr-placeholder { margin: 1rem 0; }
+    .qr-placeholder img { 
+      width: 180px; height: 180px; border-radius: 12px; 
+      border: 3px solid var(--accent3); padding: 8px; background: #fff; 
+    }
+    .qr-placeholder p { font-size: 0.85rem; color: var(--muted); margin-top: 0.8rem; font-weight: 500;}
+    
+    .inv-details { 
+      text-align: left; background: var(--bg); padding: 1.2rem; 
+      border-radius: 12px; margin: 1.5rem 0; font-size: 0.9rem; 
+      border: 1px dashed var(--accent3); 
+    }
+    .inv-details p { margin-bottom: 0.6rem; display: flex; justify-content: space-between; border-bottom: 1px solid var(--bg3); padding-bottom: 0.4rem; }
+    .inv-details p:last-child { margin-bottom: 0; border-bottom: none; padding-bottom: 0; }
+    
+    /* STYLE UPLOAD BUKTI TF */
+    .upload-tf-section {
+      margin: 1.5rem 0; border: 2px dashed var(--accent3); 
+      padding: 1.2rem; border-radius: 12px; background: #f8fbff;
+      text-align: center;
+    }
+    .upload-label { font-family: 'Rajdhani'; font-weight: 700; color: var(--accent); font-size: 0.9rem; display: block; margin-bottom: 10px; }
+    .upload-tf-section input[type="file"] { font-size: 0.8rem; color: var(--muted); width: 100%; }
+    .warning-text { color: #d32f2f; font-size: 11px; margin-top: 5px; font-weight: 600; display: block; }
+
+    .inv-total { font-family: 'Oxanium'; font-size: 1.6rem; font-weight: 800; color: var(--accent); margin-top: 1rem;}
+    .modal-footer { padding: 0 1.5rem 1.5rem; }
+
+    /* RESPONSIVE */
+    @media(max-width:1024px) { .order-container{grid-template-columns:1fr;} .summary-wrapper{position:static;} nav,.page-header,.order-section{padding-left:2rem;padding-right:2rem;} }
+    @media(max-width:640px) { .input-grid{grid-template-columns:1fr;} .selection-grid{grid-template-columns:1fr 1fr;} .order-section{padding:2rem 1.5rem 4rem;} nav{padding:1rem 1.5rem;} .page-header{padding:2rem 1.5rem;} }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo-area">
+    <div class="logo-img-wrap"><img src="assets/dallas.png" alt="Pemandangan Alam" width="70" height="70"></div>
+    <div class="logo-text">Dallas <span>JOKI FF</span></div>
+  </a>
+  <a href="index.html" class="back-btn">← Kembali ke Beranda</a>
+</nav>
+
+<div class="page-header">
+  <div class="header-banner-container">
+    <img src="assets/banner2.jpg" alt="Banner Dallas Joki" class="header-static-img">
+  </div>
+</div>
+
+<section class="order-section">
+  <div class="order-container">
+    <div class="order-steps">
+
+      <div class="step-card">
+        <div class="step-header">
+          <div class="step-number">1</div>
+          <div class="step-title">Jasa Gendong Free Fire</div>
+        </div>
+        <div class="step-body">
+          <div class="input-grid" style="margin-bottom:1.5rem; display:none;">
+            <div class="form-group" style="grid-column:1/-1;">
+              <label class="form-label">Pilih Game</label>
+              <select id="acc-game" class="form-select">
+                <option value="Free Fire" selected>🔥 Free Fire</option>
+              </select>
+            </div>
+          </div>
+          <div style="display:none;"><div class="form-label">Jenis Layanan</div><div class="service-tabs" id="service-tabs"></div></div>
+        </div>
+      </div>
+
+      <div class="step-card" id="ff-info-section" style="display:none;">
+        <div class="step-header">
+          <div class="step-number">2</div>
+          <div class="step-title">INFO JOKI RANK BR</div>
+        </div>
+        <div class="step-body">
+          <div style="margin-bottom: 0.5rem; padding: 1rem; background: var(--bg2); border-radius: 12px; border: 1px solid var(--border);">
+            <h4 style="font-family: 'Rajdhani'; margin-bottom: 1rem; color: var(--accent); border-bottom: 2px solid var(--accent3); display: inline-block;">Daftar Harga Estimasi</h4>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px;">
+              <div class="price-card-mini">
+                <span><img src="assets/heroic.webp"></span>
+                <div class="info"><div class="rank">Heroic/Elite</div><div class="price">Rp 17.000</div></div>
+              </div>
+              <div class="price-card-mini">
+                <span><img src="assets/masterff.webp"></span>
+                <div class="info"><div class="rank">Master</div><div class="price">Rp 35.000</div></div>
+              </div>
+              <div class="price-card-mini">
+                <span><img src="assets/elitemaster.webp"></span>
+                <div class="info"><div class="rank">Grandmaster</div><div class="price">Rp 50K/250pt</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-header">
+          <div class="step-number">3</div>
+          <div class="step-title">Lengkapi Data</div>
+        </div>
+        <div class="step-body">
+          <div class="input-grid">
+            
+            <div class="form-group" style="grid-column: 1/-1;">
+              <label class="form-label">Catatan/Keterangan</label>
+              <input type="text" id="acc-notes-global" class="form-input" placeholder="Contoh: Jam Login / Request Khusus" />
+            </div>
+
+            <div class="form-group br-only">
+              <label class="form-label">Email/No HP Login</label>
+              <input type="text" id="acc-id-usn-rank" class="form-input" placeholder="Email/No HP" />
+            </div>
+            <div class="form-group br-only">
+              <label class="form-label">Password</label>
+              <input type="password" id="acc-pass-rank" class="form-input" placeholder="Masukkan Password" />
+            </div>
+            <div class="form-group br-only">
+              <label class="form-label">Login Via</label>
+              <select id="acc-login-rank" class="form-select">
+                <option value="Facebook">Facebook</option>
+                <option value="Google">Google</option>
+                <option value="VK">VK</option>
+              </select>
+            </div>
+
+            <div class="form-group cs-only" style="display:none;">
+              <label class="form-label">Pilih Perangkat (Device) penjoki</label>
+              <select id="acc-device" class="form-select">
+                <option value="HP (Mobile)">HP (Mobile)</option>
+                <option value="PC (Emulator)">PC (Emulator)</option>
+              </select>
+            </div>
+
+            <div class="form-group" id="wa-joki-container">
+              <label class="form-label">No. Whatsapp Aktif</label>
+              <input type="text" id="acc-wa-rank" class="form-input" placeholder="0812xxxx" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
+            </div>
+
+            <div class="form-group mabar-only" style="display:none;">
+              <label class="form-label">Nickname FF</label>
+              <input type="text" id="acc-nickname-gendong" class="form-input" placeholder="Masukkan Nickname" />
+            </div>
+            <div class="form-group mabar-only" style="display:none;">
+              <label class="form-label">No. Whatsapp</label>
+              <input type="text" id="acc-wa-rank" class="form-input" placeholder="0812xxxx" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
+
+          </div>
+          <p id="note-joki" style="font-size:0.8rem;color:var(--muted);margin-top:1rem;">🔒 Data akunmu aman & terjamin kerahasiaannya.</p>
+          <p id="note-mabar" style="font-size:0.8rem;color:var(--muted);margin-top:1rem;display:none;">🤝 Booster kami akan menghubungi Anda via WhatsApp untuk mulai mabar.</p>
+        </div>
+      </div>
+
+      <div class="step-card" id="paket-section">
+        <div class="step-header">
+          <div class="step-number">4</div>
+          <div class="step-title">Pilih Paket</div>
+        </div>
+        <div class="step-body">
+          <div class="form-label" style="margin-bottom: 10px; display: block;" id="label-rank-1">Pilih Paket</div>
+          <div class="selection-grid" id="nominal-grid"></div>
+
+          <div id="container-paket-2" style="display: none;">
+            <div class="sum-divider" style="margin: 2rem 0;"></div>
+            <div class="form-label" style="margin-bottom: 10px; display: block;">Pilih Paket Per Bintang</div>
+            <div class="selection-grid" id="nominal-grid-2"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-header">
+          <div class="step-number">5</div>
+          <div class="step-title">Jumlah Pembelian</div>
+        </div>
+        <div class="step-body">
+          <div class="qty-control">
+            <button class="qty-btn" onclick="changeQty(-1)">−</button>
+            <input type="number" id="order-qty" class="form-input qty-input" value="1" readonly />
+            <button class="qty-btn" onclick="changeQty(1)">+</button>
+            <span style="font-size:0.85rem;color:var(--muted);">paket / bintang</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-header">
+          <div class="step-number">6</div>
+          <div class="step-title">Metode Pembayaran</div>
+        </div>
+        <div class="step-body">
+          <div class="payment-grid">
+            <div class="pay-card active">
+              <div class="pay-icon"><img src="assets/qris.png" alt="Logo QRIS" class="pay-icon-img"></div>
+              <div class="pay-name">QRIS</div>
+              <div class="pay-note">Semua E-Wallet / M-Banking</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="summary-wrapper">
+      <div class="summary-card">
+        <div class="sum-title">📋 Ringkasan Pesanan</div>
+        <div class="sum-row">
+          <span class="sum-label">Game</span>
+          <span class="sum-value" id="sum-game">-</span>
+        </div>
+        <div class="sum-row">
+          <span class="sum-label">Layanan</span>
+          <span class="sum-value" id="sum-svc">-</span>
+        </div>
+        <div class="sum-row">
+          <span class="sum-label">Paket</span>
+          <span class="sum-value" id="sum-item">-</span>
+        </div>
+        <div class="sum-divider"></div>
+        <div class="sum-row" style="margin-bottom:0;">
+          <span class="sum-total-label">Total Pembayaran</span>
+        </div>
+        <div class="sum-row">
+          <span class="sum-total-value" id="sum-total">Rp 0</span>
+        </div>
+        <button class="btn-submit" onclick="submitOrder()">Proses Pesanan Sekarang 💳</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="checkout-modal" class="modal-overlay">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Invoice Pesanan</h2>
+      <span class="close-modal" onclick="closeModal()">×</span>
+    </div>
+    <div class="modal-body">
+      <div class="invoice-status">Menunggu Pembayaran</div>
+      <p style="font-family: 'Rajdhani'; font-weight: 700; color: var(--muted); text-transform: uppercase;">Order ID: <strong id="inv-order-id" style="color: var(--text);"></strong></p>
+      
+      <div class="qr-placeholder" id="qr-container">
+        <img src="assets/qris.png" alt="QRIS Dallas Joki" />
+        <p>Scan QRIS di atas untuk membayar</p>
+      </div>
+
+      <div class="upload-tf-section" id="upload-section">
+        <span class="upload-label">📤 Upload Bukti Transfer (Gambar)</span>
+        <input type="file" id="bukti-tf-file" accept="image/*">
+        <span class="warning-text">Wajib melampirkan foto bukti transfer!</span>
+      </div>
+
+      <div class="inv-details" id="inv-details"></div>
+      <div class="inv-total" id="inv-total-price"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-submit" onclick="kirimKeTelegramDenganFoto()" id="btn-konfirmasi">Saya Sudah Bayar & Kirim</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // --- DATA LAYANAN FF ---
+  const SERVICES = {
+    "Free Fire": {
+      "gendong": { label: "Jasa Gendong isian/cs", pkgs: [{name: "2vs2", price: 3500},{name: "3vs3", price: 4500},{name: "4vs4", price: 6500}], pkgs2: [] }
+    }
+  };
+
+  const TELEGRAM_TOKEN = '8074314633:AAHBAVptcU-P496oJJHoWyyc8JpB1pVZf04';
+  const TELEGRAM_CHAT_ID = '-1003881733798';
+
+  let state = { game:'Free Fire', svc:'gendong', pkg:null, pkgPrice:0, pay:'QRIS', qty:1, orderId:'' };
+
+  window.onload = () => {
+    renderServiceTabs();
+    renderPackages();
+    toggleFormType();
+    updateSummary();
+  };
+
+  function renderServiceTabs() {
+    const tabs = document.getElementById('service-tabs');
+    tabs.innerHTML = Object.entries(SERVICES[state.game]).map(([key,val]) =>
+      `<button class="svc-tab${state.svc===key?' active':''}" onclick="selectSvc('${key}')">${val.label}</button>`
+    ).join('');
+  }
+
+  function selectSvc(key) {
+    state.svc = key; state.pkg = null; state.pkgPrice = 0; state.qty = 1;
+    document.getElementById('order-qty').value = 1;
+    renderServiceTabs(); renderPackages(); toggleFormType(); updateSummary();
+  }
+
+  function toggleFormType() {
+    const isBR = state.svc === 'rank';
+    const isCS = state.svc === 'gendong_cs';
+    const isGendong = state.svc === 'gendong';
+
+    // Menampilkan input berdasarkan layanan
+    document.querySelectorAll('.br-only').forEach(el => el.style.display = isBR ? 'flex' : 'none');
+    document.querySelectorAll('.cs-only').forEach(el => el.style.display = isCS ? 'flex' : 'none');
+    document.querySelectorAll('.mabar-only').forEach(el => el.style.display = isGendong ? 'flex' : 'none');
+    
+    // PENYELESAIAN BUG: Pastikan kolom WA muncul di Joki Rank maupun CS
+    document.getElementById('wa-joki-container').style.display = (isBR || isCS) ? 'flex' : 'none';
+
+    document.getElementById('ff-info-section').style.display = isBR ? 'block' : 'none';
+    document.getElementById('note-joki').style.display = isGendong ? 'none' : 'block';
+    document.getElementById('note-mabar').style.display = isGendong ? 'block' : 'none';
+  }
+
+  function renderPackages() {
+    const grid1 = document.getElementById('nominal-grid');
+    const grid2 = document.getElementById('nominal-grid-2');
+    const container2 = document.getElementById('container-paket-2');
+    const labelRank1 = document.getElementById('label-rank-1');
+    const serviceData = SERVICES[state.game][state.svc];
+
+    grid1.innerHTML = serviceData.pkgs.map(p => `
+      <div class="select-card${state.pkg===p.name?' active':''}" onclick="selectPkg(this,'${p.name}',${p.price})">
+        <div class="sc-title">${p.name}</div>
+        <div class="sc-price">Rp ${p.price.toLocaleString('id-ID')}</div>
+      </div>`).join('');
+
+    if (state.svc === 'rank' && serviceData.pkgs2 && serviceData.pkgs2.length > 0) {
+      if(container2) container2.style.display = 'block';
+      if(labelRank1) labelRank1.innerText = "Pilih Paket Rank";
+      grid2.innerHTML = serviceData.pkgs2.map(p => `
+        <div class="select-card${state.pkg===p.name?' active':''}" onclick="selectPkg(this,'${p.name}',${p.price})">
+          <div class="sc-title">${p.name}</div>
+          <div class="sc-price">Rp ${p.price.toLocaleString('id-ID')}</div>
+        </div>`).join('');
+    } else {
+      if(container2) container2.style.display = 'none';
+      if(labelRank1) labelRank1.innerText = "Pilih Paket";
+    }
+  }
+
+  function selectPkg(el, name, price) {
+    document.querySelectorAll('.select-card').forEach(c => c.classList.remove('active'));
+    el.classList.add('active'); state.pkg = name; state.pkgPrice = price; updateSummary();
+  }
+
+  function changeQty(d) {
+    if (state.qty + d >= 1) { state.qty += d; document.getElementById('order-qty').value = state.qty; updateSummary(); }
+  }
+
+  function updateSummary() {
+    document.getElementById('sum-game').textContent = state.game;
+    document.getElementById('sum-svc').textContent = SERVICES[state.game][state.svc].label;
+    document.getElementById('sum-item').textContent = state.pkg || '-';
+    document.getElementById('sum-total').textContent = 'Rp ' + (state.pkgPrice * state.qty).toLocaleString('id-ID');
+  }
+
+  function submitOrder() {
+    if (!state.pkg) {
+        return Swal.fire({ icon: 'warning', title: 'Oops!', text: 'Silakan pilih paket joki terlebih dahulu!'});
+    }
+    
+    let accountDetailHTML = '';
+
+    if (state.svc === 'gendong') {
+      const nick = document.getElementById('acc-nickname-gendong').value;
+      const wa = document.getElementById('acc-wa-gendong').value;
+      if (!nick || !wa) return Swal.fire({ icon: 'error', title: 'Data Kurang', text: 'Lengkapi data Nickname dan No. WhatsApp!'});
+      accountDetailHTML = `<p><span>Nick:</span> <strong>${nick}</strong></p>`;
+    } else if (state.svc === 'gendong_cs') {
+      const device = document.getElementById('acc-device').value;
+      const wa = document.getElementById('acc-wa-rank').value;
+      if (!wa) return Swal.fire({ icon: 'error', title: 'Data Kurang', text: 'Lengkapi No. WhatsApp Anda!'});
+      accountDetailHTML = `<p><span>Device:</span> <strong>${device}</strong></p>`;
+    } else {
+      const id = document.getElementById('acc-id-usn-rank').value;
+      const pass = document.getElementById('acc-pass-rank').value;
+      const wa = document.getElementById('acc-wa-rank').value;
+      if (!id || !pass || !wa) return Swal.fire({ icon: 'error', title: 'Data Kurang', text: 'Lengkapi Email/ID, Password, dan No. WA!'});
+      accountDetailHTML = `<p><span>Akun:</span> <strong>${id}</strong></p><p><span>Login:</span> <strong>${document.getElementById('acc-login-rank').value}</strong></p>`;
+    }
+
+    state.orderId = 'DLS-FF-' + Math.floor(100000 + Math.random() * 900000);
+    document.getElementById('inv-order-id').innerText = state.orderId;
+    document.getElementById('inv-total-price').innerText = 'Rp ' + (state.pkgPrice * state.qty).toLocaleString('id-ID');
+    document.getElementById('inv-details').innerHTML = `
+      <p><span>Game:</span> <strong>${state.game}</strong></p>
+      <p><span>Layanan:</span> <strong>${SERVICES[state.game][state.svc].label}</strong></p>
+      <p><span>Paket:</span> <strong>${state.pkg} (x${state.qty})</strong></p>
+      ${accountDetailHTML}
+    `;
+
+    document.getElementById('checkout-modal').style.display = 'flex';
+    setTimeout(() => { document.getElementById('checkout-modal').classList.add('show'); }, 10);
+  }
+
+  function closeModal() {
+    document.getElementById('checkout-modal').classList.remove('show');
+    setTimeout(() => { document.getElementById('checkout-modal').style.display = 'none'; }, 300);
+  }
+
+  async function kirimKeTelegramDenganFoto() {
+    const fileInput = document.getElementById('bukti-tf-file');
+    const btn = document.getElementById('btn-konfirmasi');
+
+    if (fileInput.files.length === 0) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Oops...',
+        text: 'Wajib melampirkan foto bukti transfer!',
+        confirmButtonColor: '#1565c0',
+        didOpen: () => { Swal.getContainer().style.zIndex = "10000"; }
+      });
+      return;
+    }
+
+    btn.innerText = 'Mengirim Bukti... ⏳';
+    btn.disabled = true;
+
+    let detailAkun = "";
+    const notesGlobal = document.getElementById('acc-notes-global').value || '-';
+
+    if (state.svc === 'gendong') {
+      detailAkun = `🎮 Nick: \`${document.getElementById('acc-nickname-gendong').value}\`\n📱 WA: ${document.getElementById('acc-wa-gendong').value}\n📝 Catatan: ${notesGlobal}`;
+    } else if (state.svc === 'gendong_cs') {
+      detailAkun = `🖥️ Device: ${document.getElementById('acc-device').value}\n📱 WA: ${document.getElementById('acc-wa-rank').value}\n📝 Catatan: ${notesGlobal}`;
+    } else {
+      detailAkun = `📧 ID: \`${document.getElementById('acc-id-usn-rank').value}\`\n🔐 Pass: \`${document.getElementById('acc-pass-rank').value}\`\n🌐 Login: ${document.getElementById('acc-login-rank').value}\n📱 WA: ${document.getElementById('acc-wa-rank').value}\n📝 Catatan: ${notesGlobal}`;
+    }
+
+    const caption = `🔥 *PESANAN BARU FF + BUKTI TF*\n` +
+                    `----------------------------\n` +
+                    `🆔 *Order ID:* \`${state.orderId}\`\n` +
+                    `🎮 *Game:* ${state.game}\n` +
+                    `📦 *Paket:* ${state.pkg} (x${state.qty})\n` +
+                    `💰 *Total:* Rp ${(state.pkgPrice * state.qty).toLocaleString('id-ID')}\n\n` +
+                    `👤 *DATA LOGIN/KONTAK:* \n${detailAkun}\n` +
+                    `----------------------------\n` +
+                    `✅ *Status:* Verifikasi Bukti TF & Proses!`;
+
+    const formData = new FormData();
+    formData.append('chat_id', TELEGRAM_CHAT_ID);
+    formData.append('photo', fileInput.files[0]);
+    formData.append('caption', caption);
+    formData.append('parse_mode', 'Markdown');
+
+    try {
+      const res = await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendPhoto`, {
+        method: 'POST',
+        body: formData
+      });
+
+      if (res.ok) {
+        document.querySelector('.invoice-status').innerText = '✅ Terkirim & Berhasil';
+        document.querySelector('.invoice-status').style.background = '#d4edda';
+        document.querySelector('.invoice-status').style.color = '#155724';
+        document.getElementById('qr-container').style.display = 'none';
+        document.getElementById('upload-section').style.display = 'none';
+
+        Swal.fire({
+          title: 'BERHASIL TERKIRIM!',
+          html: `
+            <div style="text-align: left; font-size: 14px; line-height: 1.6;">
+              <p style="color: #d32f2f; font-weight: bold; text-align: center; font-size: 16px;">⚠️ INFORMASI PENTING JOKI FF</p>
+              <hr>
+              <ul style="padding-left: 20px;">
+                <li>Matikan <b>Verifikasi 2 Langkah</b> di pengaturan akun agar admin mudah login.</li>
+                <li>Jika akun ditabrak / dilogin oleh pemilik selama proses joki, maka joki dianggap <b>selesai dan uang hangus</b>.</li>
+                <li>Proses pengerjaan tergantung antrean, maksimal <b>1x24 - 3 Hari</b>.</li>
+              </ul>
+            </div>
+          `,
+          icon: 'success',
+          confirmButtonText: 'Saya Mengerti',
+          confirmButtonColor: '#1565c0',
+          allowOutsideClick: false,
+          didOpen: () => { Swal.getContainer().style.zIndex = "10000"; }
+        }).then((result) => {
+          if (result.isConfirmed) {
+            location.reload();
+          }
+        });
+
+        btn.innerText = 'Tutup & Selesai';
+        btn.disabled = false;
+        btn.onclick = () => { location.reload(); };
+      } else {
+        throw new Error();
+      }
+    } catch (err) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Gagal Mengirim',
+        text: 'Periksa koneksi internet Anda atau ukuran file terlalu besar.',
+        confirmButtonColor: '#1565c0',
+        didOpen: () => { Swal.getContainer().style.zIndex = "10000"; }
+      });
+      btn.innerText = 'Coba Lagi';
+      btn.disabled = false;
+    }
+  }
+</script>
+</body>
+</html>
