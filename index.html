@@ -72,30 +72,31 @@
   .nav-cta { font-family:'Syne',sans-serif; font-size:0.8rem; font-weight:700; letter-spacing:1px; text-transform:uppercase; padding:0.52rem 1.3rem; background:var(--blue); color:#fff; border-radius:8px; box-shadow:0 4px 14px rgba(59,130,246,0.35); transition:all 0.2s; }
   .nav-cta:hover { background:var(--blue2); transform:translateY(-2px); }
 
-  /* BANNER SLIDER */
-  .banner { margin-top: 64px; position: relative; overflow: hidden; height: clamp(230px,36vw,430px); }
+  /* BANNER SLIDER - MODIFIED FOR FULL IMAGE */
+  .banner { margin-top: 64px; position: relative; overflow: hidden; height: clamp(230px,45vw,550px); }
   .banner-track { display: flex; height: 100%; transition: transform 0.65s cubic-bezier(.77,0,.18,1); }
   .banner-slide { min-width: 100%; height: 100%; position: relative; overflow: hidden; display: flex; align-items: center; flex-shrink: 0; }
-  .bs-ml  { background: linear-gradient(115deg,#050c2a 0%,#0b1a66 45%,#1a3abf 75%,#2563eb 100%); }
-  .bs-ff  { background: linear-gradient(115deg,#0f0500 0%,#5c1800 45%,#c43500 75%,#ea580c 100%); }
-  .bs-gen { background: linear-gradient(115deg,#050f07 0%,#0a3d17 45%,#15803d 75%,#16a34a 100%); }
-  .bs-hok { background: linear-gradient(115deg,#1e1b4b 0%,#312e81 45%,#4338ca 75%,#4f46e5 100%); }
-  .banner-slide::before { content:''; position:absolute; inset:0; background-image:radial-gradient(rgba(255,255,255,0.04) 1px,transparent 1px); background-size:26px 26px; pointer-events:none; }
-  .banner-slide::after { content:''; position:absolute; right:24%; top:50%; transform:translateY(-50%); width:380px; height:380px; border-radius:50%; background:radial-gradient(circle,rgba(255,255,255,0.09) 0%,transparent 65%); pointer-events:none; }
-  .banner-img { position:absolute; right:0; bottom:0; height:110%; max-width:52%; object-fit:contain; object-position:right bottom; pointer-events:none; z-index:1; filter:drop-shadow(-10px 0 36px rgba(0,0,0,0.55)); }
-  .banner-content { position:relative; z-index:2; padding:0 0 0 clamp(1.5rem,5vw,5rem); max-width:56%; }
-  .banner-eyebrow { display:inline-flex; align-items:center; gap:0.4rem; font-family:'Syne',sans-serif; font-size:0.68rem; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:rgba(255,255,255,0.65); border:1px solid rgba(255,255,255,0.18); border-radius:100px; padding:0.26rem 0.82rem; margin-bottom:0.85rem; backdrop-filter:blur(4px); }
-  .banner-h { font-family:'Syne',sans-serif; font-size:clamp(1.5rem,3.8vw,3rem); font-weight:900; line-height:1.04; color:#fff; text-transform:uppercase; letter-spacing:0.3px; text-shadow:0 4px 24px rgba(0,0,0,0.5); margin-bottom:0.8rem; }
-  .banner-h .hl-gold  { color:#fbbf24; }
-  .banner-h .hl-green { color:#86efac; }
-  .banner-sub { font-size:clamp(0.74rem,1.3vw,0.9rem); color:rgba(255,255,255,0.68); line-height:1.7; margin-bottom:1.3rem; max-width:360px; }
-  .banner-btns { display:flex; gap:0.6rem; flex-wrap:wrap; }
-  .bbtn-main { font-family:'Syne',sans-serif; font-size:0.8rem; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; padding:0.6rem 1.5rem; background:#fbbf24; color:#0d1200; border-radius:8px; box-shadow:0 4px 18px rgba(251,191,36,0.45); transition:all 0.2s; display:flex; align-items:center; gap:0.35rem; }
-  .bbtn-main:hover { transform:translateY(-2px); box-shadow:0 8px 26px rgba(251,191,36,0.6); }
-  .bbtn-ghost { font-family:'Syne',sans-serif; font-size:0.8rem; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; padding:0.6rem 1.5rem; background:rgba(255,255,255,0.08); color:rgba(255,255,255,0.85); border:1px solid rgba(255,255,255,0.22); border-radius:8px; backdrop-filter:blur(6px); transition:all 0.2s; }
-  .bbtn-ghost:hover { background:rgba(255,255,255,0.15); }
-  .banner-socials { display:flex; gap:0.6rem; margin-top:1.2rem; flex-wrap:wrap; }
-  .bsocial { display:flex; align-items:center; gap:0.3rem; font-size:0.7rem; font-weight:600; color:rgba(255,255,255,0.7); background:rgba(0,0,0,0.25); border:1px solid rgba(255,255,255,0.13); border-radius:6px; padding:0.26rem 0.6rem; backdrop-filter:blur(4px); }
+  .bs-ml  { background: #050c2a; }
+  .bs-ff  { background: #0f0500; }
+  .bs-gen { background: #050f07; }
+  .bs-hok { background: #1e1b4b; }
+  
+  /* Menjadikan gambar memenuhi seluruh area slide */
+  .banner-img { 
+    position: absolute; 
+    inset: 0; 
+    width: 100%; 
+    height: 100%; 
+    max-width: 100%; 
+    object-fit: cover; 
+    object-position: center;
+    pointer-events: none; 
+    z-index: 1; 
+  }
+
+  /* Menghilangkan teks dan konten di atas banner */
+  .banner-content { display: none !important; }
+
   .banner-arr { position:absolute; top:50%; transform:translateY(-50%); z-index:10; width:36px; height:36px; background:rgba(0,0,0,0.38); border:1px solid rgba(255,255,255,0.15); border-radius:50%; backdrop-filter:blur(6px); display:flex; align-items:center; justify-content:center; cursor:pointer; color:rgba(255,255,255,0.85); font-size:1.1rem; user-select:none; transition:all 0.2s; }
   .banner-arr:hover { background:rgba(0,0,0,0.65); border-color:rgba(255,255,255,0.4); }
   .banner-prev { left:1.1rem; }
@@ -227,9 +228,6 @@
     .steps-line { display:none; }
   }
   @media (max-width:600px) {
-    .banner-content { max-width:78%; padding-left:1.2rem; }
-    .banner-img { max-width:40%; }
-    .banner-socials { display:none; }
     .hero { padding:4rem 1.2rem; min-height:auto; }
     .hero-stats { gap:1.4rem; flex-wrap:wrap; }
     .ulasan-grid { grid-template-columns:1fr; }
@@ -260,60 +258,23 @@
   <div class="banner-track" id="bannerTrack">
 
     <div class="banner-slide bs-ml">
-      <img class="banner-img" src="assets/ftkun.png" alt="ML" onerror="this.style.display='none'">
-      <div class="banner-content">
-        <div class="banner-eyebrow">🔥 Promo Terbatas</div>
-        <div class="banner-h">FT CS<br>FREE <span class="hl-gold">FIRE</span><br>MUSUHNYA GAMPANG!</div>
-        <div class="banner-sub">Fast Tour gampang harga terjangkau mulai Rp 6.000.</div>
-        <div class="banner-btns">
-          <a class="bbtn-main" href="ftcs.html">🚀 GASS IKUT</a>
-          <a class="bbtn-ghost" href="#games">Lihat Semua</a>
-        </div>
-        <div class="banner-socials">
-          <div class="bsocial">🌐 dallas-joki.store</div>
-          <div class="bsocial">📱 @dallas.joki</div>
-          <div class="bsocial">💬 0857-1919-5001</div>
-        </div>
-      </div>
-    </div>
+      <img class="banner-img" src="assets/ftkun.png" alt="Banner 1" onerror="this.style.display='none'">
+      <div class="banner-content"></div> </div>
 
     <div class="banner-slide bs-ff">
-      <img class="banner-img" src="assets/ff.png" alt="FF" onerror="this.style.display='none'">
-      <div class="banner-content">
-        <div class="banner-eyebrow">⚡ Hot Deal</div>
-        <div class="banner-h">JOKI BR RANK<br><span class="hl-gold">FREE FIRE</span><br>MULAI 24RB!</div>
-        <div class="banner-sub">Dari Bronze sampai Heroic dikerjakan booster berpengalaman. Progress update real-time via WhatsApp.</div>
-        <div class="banner-btns">
-          <a class="bbtn-main" href="order_ff_rankbr.html">🎯 ORDER SEKARANG</a>
-          <a class="bbtn-ghost" href="#games">Lihat Semua</a>
-        </div>
-        <div class="banner-socials">
-          <div class="bsocial">🌐 dallas-joki.store</div>
-          <div class="bsocial">📱 @dallas.joki</div>
-          <div class="bsocial">💬 0857-1919-5001</div>
-        </div>
-      </div>
+      <img class="banner-img" src="assets/ff.png" alt="Banner 2" onerror="this.style.display='none'">
+      <div class="banner-content"></div>
     </div>
 
     <div class="banner-slide bs-ml">
-      <img class="banner-img" src="assets/rank.png" alt="ML" onerror="this.style.display='none'">
-      <div class="banner-content">
-        <div class="banner-eyebrow">🔥 Promo Terbatas</div>
-        <div class="banner-h">JOKI RANK<br>MOBILE <span class="hl-gold">LEGENDS</span><br>TERPERCAYA!</div>
-        <div class="banner-sub">Naik rank cepat bersama joki profesional. Aman, rahasia, dan harga terjangkau mulai Rp 5.500.</div>
-        <div class="banner-btns">
-          <a class="bbtn-main" href="orderrankml.html">🚀 ORDER SEKARANG</a>
-          <a class="bbtn-ghost" href="#games">Lihat Semua</a>
-        </div>
-        <div class="banner-socials">
-          <div class="bsocial">🌐 dallas-joki.store</div>
-          <div class="bsocial">📱 @dallas.joki</div>
-          <div class="bsocial">💬 0857-1919-5001</div>
-        </div>
-      </div>
+      <img class="banner-img" src="assets/rank.png" alt="Banner 3" onerror="this.style.display='none'">
+      <div class="banner-content"></div>
     </div>
 
-     <div class="banner-slide bs-gen"> <img class="banner-img" src="assets/mabar.png" alt="Gendong" onerror="this.style.display='none'"> <div class="banner-content"> <div class="banner-eyebrow">👑 Layanan Premium</div> <div class="banner-h">JASA<br><span class="hl-green">GENDONG</span><br>ML & FF!</div> <div class="banner-sub">Main bareng booster jago. Kamu tetap pegang akun sendiri — rank naik, skill ikut meningkat!</div> <div class="banner-btns"> <a class="bbtn-main" href="ordergendongml.html">👫 ORDER SEKARANG</a> <a class="bbtn-ghost" href="#games">Lihat Semua</a> </div> <div class="banner-socials"> <div class="bsocial">🌐 dallas-joki.store</div> <div class="bsocial">📱 @dallas.joki</div> <div class="bsocial">💬 0857-1919-5001</div> </div> </div> </div>
+     <div class="banner-slide bs-gen"> 
+      <img class="banner-img" src="assets/mabar.png" alt="Banner 4" onerror="this.style.display='none'"> 
+      <div class="banner-content"></div> 
+     </div>
 
   </div>
   <div class="banner-arr banner-prev" onclick="bannerMove(-1)">&#8249;</div>
