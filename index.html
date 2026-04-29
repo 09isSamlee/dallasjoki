@@ -72,31 +72,13 @@
   .nav-cta { font-family:'Syne',sans-serif; font-size:0.8rem; font-weight:700; letter-spacing:1px; text-transform:uppercase; padding:0.52rem 1.3rem; background:var(--blue); color:#fff; border-radius:8px; box-shadow:0 4px 14px rgba(59,130,246,0.35); transition:all 0.2s; }
   .nav-cta:hover { background:var(--blue2); transform:translateY(-2px); }
 
-  /* BANNER SLIDER - MODIFIED TO 16:9 & NO TEXT */
-  .banner { 
-    margin-top: 64px; 
-    position: relative; 
-    overflow: hidden; 
-    width: 100%;
-    aspect-ratio: 16 / 9; /* Ukuran 16:9 */
-  }
+  /* BANNER SLIDER - UPDATED TO 16:9 & CLICKABLE IMAGE */
+  .banner { margin-top: 64px; position: relative; overflow: hidden; width: 100%; aspect-ratio: 16 / 9; }
   .banner-track { display: flex; height: 100%; transition: transform 0.65s cubic-bezier(.77,0,.18,1); }
-  .banner-slide { min-width: 100%; height: 100%; position: relative; overflow: hidden; display: flex; align-items: center; flex-shrink: 0; }
+  .banner-slide { min-width: 100%; height: 100%; position: relative; overflow: hidden; display: block; flex-shrink: 0; }
+  .banner-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; z-index: 1; transition: transform 0.5s ease; }
+  .banner-slide:hover .banner-img { transform: scale(1.03); }
   
-  .banner-img { 
-    position: absolute; 
-    inset: 0; 
-    width: 100%; 
-    height: 100%; 
-    max-width: 100%; 
-    object-fit: cover; 
-    object-position: center;
-    pointer-events: none; 
-    z-index: 1; 
-  }
-
-  .banner-content { display: none !important; } /* Hilangkan Teks */
-
   .banner-arr { position:absolute; top:50%; transform:translateY(-50%); z-index:10; width:36px; height:36px; background:rgba(0,0,0,0.38); border:1px solid rgba(255,255,255,0.15); border-radius:50%; backdrop-filter:blur(6px); display:flex; align-items:center; justify-content:center; cursor:pointer; color:rgba(255,255,255,0.85); font-size:1.1rem; user-select:none; transition:all 0.2s; }
   .banner-arr:hover { background:rgba(0,0,0,0.65); border-color:rgba(255,255,255,0.4); }
   .banner-prev { left:1.1rem; }
@@ -168,29 +150,6 @@
   .lc-name { font-family:'Syne',sans-serif; font-size:1rem; font-weight:700; color:var(--text); margin-bottom:0.55rem; }
   .lc-desc { font-size:0.86rem; color:var(--muted2); line-height:1.7; }
 
-  /* HOW */
-  .how-section { padding:6rem 2rem; background:var(--bg2); border-top:1px solid var(--border); }
-  .steps { display:flex; max-width:1000px; margin:0 auto; position:relative; }
-  .steps-line { position:absolute; top:27px; left:10%; right:10%; height:1px; background:linear-gradient(90deg,transparent,var(--border2),var(--blue),var(--border2),transparent); }
-  .step { flex:1; text-align:center; padding:0 1.1rem; position:relative; z-index:1; }
-  .step-num { width:54px; height:54px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Syne',sans-serif; font-size:1.05rem; font-weight:800; margin:0 auto 1.25rem; background:var(--surface2); border:1.5px solid rgba(59,130,246,0.35); color:var(--blue2); box-shadow:0 0 0 6px var(--bg2),0 4px 18px rgba(59,130,246,0.18); transition:all 0.3s; }
-  .step:hover .step-num { background:var(--blue); border-color:var(--blue); color:#fff; box-shadow:0 0 0 6px var(--bg2),0 8px 26px rgba(59,130,246,0.45); }
-  .step-title { font-family:'Syne',sans-serif; font-size:0.92rem; font-weight:700; color:var(--text); margin-bottom:0.5rem; }
-  .step-desc { font-size:0.83rem; color:var(--muted2); line-height:1.65; }
-
-  /* ULASAN */
-  .ulasan-section { padding:6rem 2rem; background:var(--bg); border-top:1px solid var(--border); }
-  .ulasan-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.15rem; max-width:1100px; margin:0 auto; }
-  .ulasan-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--r); padding:1.5rem; transition:all 0.3s; }
-  .ulasan-card:hover { border-color:rgba(59,130,246,0.25); transform:translateY(-4px); box-shadow:0 12px 30px rgba(0,0,0,0.35); }
-  .ulasan-quote { font-size:2.2rem; color:var(--blue); opacity:0.22; font-family:Georgia,serif; line-height:1; margin-bottom:0.4rem; }
-  .stars { color:var(--gold2); font-size:0.82rem; letter-spacing:1px; margin-bottom:0.75rem; }
-  .ulasan-text { font-size:0.86rem; color:var(--muted2); line-height:1.75; margin-bottom:1.1rem; }
-  .ulasan-user { display:flex; align-items:center; gap:0.7rem; }
-  .u-avatar { width:36px; height:36px; border-radius:50%; background:var(--surface2); border:1.5px solid var(--border2); display:flex; align-items:center; justify-content:center; font-size:1rem; flex-shrink:0; }
-  .u-name { font-size:0.86rem; font-weight:600; color:var(--text); }
-  .u-game { font-size:0.73rem; color:var(--muted); margin-top:0.1rem; }
-
   /* FOOTER */
   footer { background:var(--bg); border-top:1px solid var(--border); padding:2.2rem 2.5rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1.4rem; }
   .footer-logo { font-family:'Syne',sans-serif; font-size:1.15rem; font-weight:800; color:var(--text); }
@@ -211,11 +170,6 @@
     .nav-links { display:none; }
     .hero-inner { grid-template-columns:1fr; }
     .hero-visual { display:none; }
-    .ulasan-grid { grid-template-columns:1fr 1fr; }
-    .steps { flex-wrap:wrap; gap:2rem; }
-    .steps-line { display:none; }
-  }
-  @media (max-width:600px) {
     .joki-grid { grid-template-columns:repeat(2,1fr); }
     footer { flex-direction:column; text-align:center; }
   }
@@ -240,22 +194,23 @@
 
 <div class="banner">
   <div class="banner-track" id="bannerTrack">
-    <div class="banner-slide">
-      <img class="banner-img" src="assets/ftkun.png" alt="Banner 1">
-      <div class="banner-content"></div>
-    </div>
-    <div class="banner-slide">
-      <img class="banner-img" src="assets/ff.png" alt="Banner 2">
-      <div class="banner-content"></div>
-    </div>
-    <div class="banner-slide">
-      <img class="banner-img" src="assets/rank.png" alt="Banner 3">
-      <div class="banner-content"></div>
-    </div>
-    <div class="banner-slide">
-      <img class="banner-img" src="assets/mabar.png" alt="Banner 4">
-      <div class="banner-content"></div>
-    </div>
+    
+    <a href="ftcs.html" class="banner-slide">
+      <img class="banner-img" src="assets/ftkun.png" alt="Promo FT CS">
+    </a>
+
+    <a href="order_ff_rankbr.html" class="banner-slide">
+      <img class="banner-img" src="assets/ff.png" alt="Joki BR FF">
+    </a>
+
+    <a href="orderrankml.html" class="banner-slide">
+      <img class="banner-img" src="assets/rank.png" alt="Joki Rank ML">
+    </a>
+
+    <a href="ordergendongml.html" class="banner-slide">
+      <img class="banner-img" src="assets/mabar.png" alt="Jasa Gendong">
+    </a>
+
   </div>
   <div class="banner-arr banner-prev" onclick="bannerMove(-1)">&#8249;</div>
   <div class="banner-arr banner-next" onclick="bannerMove(1)">&#8250;</div>
@@ -300,7 +255,6 @@
     <div class="section-header center">
       <div class="tag">Pilih Layanan</div>
       <h2 class="section-title">Order <span>Joki Sekarang</span></h2>
-      <p class="section-desc">Pilih game dan jenis layanan joki yang kamu butuhkan.</p>
     </div>
     <div class="game-tabs">
       <button class="gtab active" onclick="filterGame('all',this)">🎮 Semua</button>
@@ -358,36 +312,6 @@
       <div class="layanan-card"><div class="lc-icon">🚀</div><div class="lc-name">Rank Boosting</div><div class="lc-desc">Naik rank dengan win rate tinggi dikerjakan pemain profesional.</div></div>
       <div class="layanan-card"><div class="lc-icon">👫</div><div class="lc-name">Jasa Gendong</div><div class="lc-desc">Bermain bareng pro player, kami pastikan kamu menang.</div></div>
       <div class="layanan-card"><div class="lc-icon">🔒</div><div class="lc-name">Keamanan Akun</div><div class="lc-desc">100% aman, dikerjakan manual tanpa cheat/bot.</div></div>
-    </div>
-  </div>
-</section>
-
-<section class="how-section">
-  <div class="container">
-    <div class="section-header center">
-      <div class="tag">Cara Kerja</div>
-      <h2 class="section-title">Mudah & Cepat dalam <span>4 Langkah</span></h2>
-    </div>
-    <div class="steps">
-      <div class="steps-line"></div>
-      <div class="step"><div class="step-num">01</div><div class="step-title">Pilih Layanan</div></div>
-      <div class="step"><div class="step-num">02</div><div class="step-title">Isi Form</div></div>
-      <div class="step"><div class="step-num">03</div><div class="step-title">Bayar</div></div>
-      <div class="step"><div class="step-num">04</div><div class="step-title">Selesai!</div></div>
-    </div>
-  </div>
-</section>
-
-<section class="ulasan-section" id="ulasan">
-  <div class="container">
-    <div class="section-header center">
-      <div class="tag">Ulasan</div>
-      <h2 class="section-title">Kata <span>Pelanggan</span></h2>
-    </div>
-    <div class="ulasan-grid">
-      <div class="ulasan-card"><div class="stars">★★★★★</div><div class="ulasan-text">Cepat banget! Recommended banget joki di sini.</div><div class="u-name">Farhan R.</div></div>
-      <div class="ulasan-card"><div class="stars">★★★★★</div><div class="ulasan-text">Admin responsif 24 jam. Mantap hasilnya!</div><div class="u-name">Dimas P.</div></div>
-      <div class="ulasan-card"><div class="stars">★★★★★</div><div class="ulasan-text">Amanah dan prosesnya ga pake lama.</div><div class="u-name">Nadia K.</div></div>
     </div>
   </div>
 </section>
