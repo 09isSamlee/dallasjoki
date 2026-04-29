@@ -72,28 +72,37 @@
   .nav-cta { font-family:'Syne',sans-serif; font-size:0.8rem; font-weight:700; letter-spacing:1px; text-transform:uppercase; padding:0.52rem 1.3rem; background:var(--blue); color:#fff; border-radius:8px; box-shadow:0 4px 14px rgba(59,130,246,0.35); transition:all 0.2s; }
   .nav-cta:hover { background:var(--blue2); transform:translateY(-2px); }
 
-  /* BANNER SLIDER MODIFIED */
+  /* BANNER SLIDER */
   .banner { 
     margin: 90px auto 2rem auto;
     position: relative; 
     overflow: hidden; 
     max-width: 1180px; 
     width: calc(100% - 4rem); 
-    aspect-ratio: 16 / 9; /* Ditambahkan untuk rasio ukuran 16:9 */
+    aspect-ratio: 16 / 9; 
     border-radius: 24px; 
     box-shadow: 0 8px 30px rgba(0,0,0,0.5); 
   }
-  .banner-track { display: flex; width: 100%; height: 100%; transition: transform 0.65s cubic-bezier(.77,0,.18,1); }
-  .banner-slide { min-width: 100%; height: 100%; flex-shrink: 0; cursor: pointer; line-height: 0; position: relative; display: block; }
-  
-  /* Hilangkan background gradient dan pattern agar gambar bersih */
-  .bs-ml, .bs-ff, .bs-gen, .bs-hok { background: none; }
-  .banner-slide::before, .banner-slide::after { display: none; }
-
-  .banner-img { width: 100%; height: 100%; display: block; position: relative; right: auto; bottom: auto; max-width: 100%; object-fit: cover; pointer-events: auto; z-index: 1; filter: none; }
-  
-  /* Sembunyikan Teks Banner */
-  .banner-content { display: none !important; }
+  .banner-track { 
+    display: flex; 
+    width: 100%; 
+    height: 100%; 
+    transition: transform 0.65s cubic-bezier(.77,0,.18,1); 
+  }
+  .banner-slide { 
+    min-width: 100%; 
+    height: 100%; 
+    flex-shrink: 0; 
+    cursor: pointer; 
+    position: relative; 
+    display: block; 
+  }
+  .banner-img { 
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+    display: block; 
+  }
 
   .banner-arr { position:absolute; top:50%; transform:translateY(-50%); z-index:10; width:36px; height:36px; background:rgba(0,0,0,0.38); border:1px solid rgba(255,255,255,0.15); border-radius:50%; backdrop-filter:blur(6px); display:flex; align-items:center; justify-content:center; cursor:pointer; color:rgba(255,255,255,0.85); font-size:1.1rem; user-select:none; transition:all 0.2s; }
   .banner-arr:hover { background:rgba(0,0,0,0.65); border-color:rgba(255,255,255,0.4); }
@@ -255,23 +264,18 @@
 
 <div class="banner">
   <div class="banner-track" id="bannerTrack">
-
-    <div class="banner-slide bs-ml" onclick="bannerMove(1)">
+    <div class="banner-slide" onclick="bannerMove(1)">
       <img class="banner-img" src="assets/ftkun.png" alt="Promo 1">
     </div>
-
-    <div class="banner-slide bs-ff" onclick="bannerMove(1)">
+    <div class="banner-slide" onclick="bannerMove(1)">
       <img class="banner-img" src="assets/FF.png" alt="Promo 2">
     </div>
-
-    <div class="banner-slide bs-ml" onclick="bannerMove(1)">
+    <div class="banner-slide" onclick="bannerMove(1)">
       <img class="banner-img" src="assets/ML.png" alt="Promo 3">
     </div>
-
-     <div class="banner-slide bs-gen" onclick="bannerMove(1)">
+     <div class="banner-slide" onclick="bannerMove(1)">
       <img class="banner-img" src="assets/jasgen.png" alt="Promo 4">
     </div>
-
   </div>
   <div class="banner-arr banner-prev" onclick="event.stopPropagation(); bannerMove(-1)">&#8249;</div>
   <div class="banner-arr banner-next" onclick="event.stopPropagation(); bannerMove(1)">&#8250;</div>
