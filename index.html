@@ -30,6 +30,153 @@
     ::-webkit-scrollbar-track { background: var(--bg2); }
     ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
 
+    /* ══════════ BANNER SLIDER ══════════ */
+    .banner-slider {
+      position: relative; width: 100%; overflow: hidden;
+      margin-top: 72px; /* offset nav height */
+      background: #0a0f1e;
+      z-index: 1;
+    }
+    .banner-track {
+      display: flex;
+      transition: transform 0.6s cubic-bezier(.77,0,.18,1);
+      will-change: transform;
+    }
+    .banner-slide {
+      min-width: 100%; position: relative;
+      height: clamp(220px, 38vw, 420px);
+      overflow: hidden;
+      flex-shrink: 0;
+      display: flex; align-items: center;
+    }
+    /* Background gradient per slide */
+    .bs-1 { background: linear-gradient(120deg, #040c2e 0%, #0a1a6e 40%, #1a3dbf 70%, #2563eb 100%); }
+    .bs-2 { background: linear-gradient(120deg, #0f0800 0%, #5a1200 40%, #c43000 70%, #f97316 100%); }
+    .bs-3 { background: linear-gradient(120deg, #04150a 0%, #0a4020 40%, #16803a 70%, #22c55e 100%); }
+
+    /* Decorative grid overlay */
+    .banner-slide::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none;
+    }
+    /* Right light flare */
+    .banner-slide::after {
+      content: '';
+      position: absolute; top: -40%; right: 15%;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .banner-img {
+      position: absolute; right: 0; bottom: 0;
+      height: 100%; max-width: 55%;
+      object-fit: contain; object-position: right bottom;
+      pointer-events: none;
+      filter: drop-shadow(-8px 0 40px rgba(0,0,0,0.5));
+    }
+    .banner-content {
+      position: relative; z-index: 2;
+      padding: 2.5rem 4rem;
+      max-width: 55%;
+    }
+    .banner-tag {
+      display: inline-block;
+      font-family: 'Rajdhani', sans-serif; font-size: 0.75rem; font-weight: 700;
+      letter-spacing: 3px; text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 100px; padding: 0.25rem 0.9rem;
+      margin-bottom: 0.9rem;
+      backdrop-filter: blur(4px);
+    }
+    .banner-title {
+      font-family: 'Oxanium', sans-serif;
+      font-size: clamp(1.6rem, 4.5vw, 3.2rem);
+      font-weight: 900; line-height: 1.05;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      text-shadow: 0 4px 24px rgba(0,0,0,0.5);
+      margin-bottom: 1rem;
+    }
+    .banner-title .hl { color: #fbbf24; }
+    .banner-subtitle {
+      font-size: clamp(0.78rem, 1.5vw, 0.95rem);
+      color: rgba(255,255,255,0.75);
+      line-height: 1.65;
+      margin-bottom: 1.5rem;
+      max-width: 400px;
+    }
+    .banner-btns { display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center; }
+    .banner-btn-main {
+      font-family: 'Rajdhani', sans-serif; font-size: 0.9rem; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase;
+      padding: 0.65rem 1.8rem;
+      background: #fbbf24;
+      color: #0d1b3e; border-radius: 8px;
+      text-decoration: none; display: flex; align-items: center; gap: 0.4rem;
+      transition: all 0.22s;
+      box-shadow: 0 4px 18px rgba(251,191,36,0.5);
+    }
+    .banner-btn-main:hover { transform: translateY(-3px); box-shadow: 0 8px 28px rgba(251,191,36,0.65); }
+    .banner-btn-ghost {
+      font-family: 'Rajdhani', sans-serif; font-size: 0.9rem; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase;
+      padding: 0.65rem 1.8rem;
+      background: rgba(255,255,255,0.1);
+      color: #fff; border-radius: 8px; border: 1.5px solid rgba(255,255,255,0.3);
+      text-decoration: none; backdrop-filter: blur(6px);
+      transition: all 0.22s;
+    }
+    .banner-btn-ghost:hover { background: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.6); }
+
+    /* Social badges row */
+    .banner-socials {
+      display: flex; align-items: center; gap: 1.2rem;
+      margin-top: 1.4rem; flex-wrap: wrap;
+    }
+    .banner-social-badge {
+      display: flex; align-items: center; gap: 0.4rem;
+      font-family: 'Rajdhani', sans-serif; font-size: 0.78rem; font-weight: 700;
+      color: rgba(255,255,255,0.8); letter-spacing: 1px;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 6px; padding: 0.3rem 0.75rem;
+      backdrop-filter: blur(4px); background: rgba(0,0,0,0.2);
+    }
+    .banner-social-badge .ico { font-size: 0.9rem; }
+
+    /* Arrow buttons */
+    .banner-arrow {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      z-index: 10;
+      width: 40px; height: 40px;
+      background: rgba(0,0,0,0.35); border: 1.5px solid rgba(255,255,255,0.2);
+      border-radius: 50%; backdrop-filter: blur(6px);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: #fff; font-size: 1.1rem;
+      transition: all 0.2s; user-select: none;
+    }
+    .banner-arrow:hover { background: rgba(0,0,0,0.6); border-color: rgba(255,255,255,0.5); }
+    .banner-prev { left: 1rem; }
+    .banner-next { right: 1rem; }
+
+    /* Dot indicators */
+    .banner-dots {
+      position: absolute; bottom: 1rem; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 0.45rem; z-index: 10;
+    }
+    .banner-dot {
+      width: 8px; height: 8px; border-radius: 100px;
+      background: rgba(255,255,255,0.3);
+      cursor: pointer; transition: all 0.3s;
+    }
+    .banner-dot.active { background: #fbbf24; width: 24px; }
+
     /* PARTICLES */
     #particles { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
     .particle { position: absolute; border-radius: 50%; animation: float linear infinite; opacity: 0; }
@@ -78,9 +225,9 @@
     /* HERO */
     .hero {
       position: relative; z-index: 1;
-      min-height: 100vh;
+      min-height: 90vh;
       display: flex; align-items: center;
-      padding: 8rem 4rem 5rem;
+      padding: 5rem 4rem 5rem;
       overflow: hidden;
     }
     .hero-bg {
@@ -410,6 +557,82 @@
   </ul>
 </nav>
 
+<!-- ═══════════ BANNER SLIDER ═══════════ -->
+<div class="banner-slider">
+  <div class="banner-track" id="bannerTrack">
+
+    <!-- Slide 1: ML -->
+    <div class="banner-slide bs-1">
+      <img class="banner-img" src="assets/rank.png" alt="Mobile Legends Banner" onerror="this.style.display='none'">
+      <div class="banner-content">
+        <div class="banner-tag">🔥 Promo Terbatas</div>
+        <div class="banner-title">JOKI RANK<br>MOBILE <span class="hl">LEGENDS</span><br>TERPERCAYA!</div>
+        <div class="banner-subtitle">Naik rank cepat bersama joki profesional. Aman, rahasia, dan harga terjangkau mulai Rp 5.500.</div>
+        <div class="banner-btns">
+          <a class="banner-btn-main" href="orderrankml.html">🚀 ORDER SEKARANG ›</a>
+          <a class="banner-btn-ghost" href="#games">Lihat Semua</a>
+        </div>
+        <div class="banner-socials">
+          <div class="banner-social-badge"><span class="ico">🌐</span> dallas-joki.store</div>
+          <div class="banner-social-badge"><span class="ico">📱</span> @dallas.joki</div>
+          <div class="banner-social-badge"><span class="ico">💬</span> 0857-1919-5001</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2: FF -->
+    <div class="banner-slide bs-2">
+      <img class="banner-img" src="assets/ff.png" alt="Free Fire Banner" onerror="this.style.display='none'">
+      <div class="banner-content">
+        <div class="banner-tag">⚡ Hot Deal</div>
+        <div class="banner-title">JOKI BR RANK<br><span class="hl">FREE FIRE</span><br>MULAI 24RB!</div>
+        <div class="banner-subtitle">Dari Bronze sampai Heroic dikerjakan booster berpengalaman. Progress update real-time via WhatsApp.</div>
+        <div class="banner-btns">
+          <a class="banner-btn-main" href="order_ff_rankbr.html">🎯 ORDER SEKARANG ›</a>
+          <a class="banner-btn-ghost" href="#games">Lihat Semua</a>
+        </div>
+        <div class="banner-socials">
+          <div class="banner-social-badge"><span class="ico">🌐</span> dallas-joki.store</div>
+          <div class="banner-social-badge"><span class="ico">📱</span> @dallas.joki</div>
+          <div class="banner-social-badge"><span class="ico">💬</span> 0857-1919-5001</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3: Gendong -->
+    <div class="banner-slide bs-3">
+      <img class="banner-img" src="assets/mabar.png" alt="Gendong Banner" onerror="this.style.display='none'">
+      <div class="banner-content">
+        <div class="banner-tag">👑 Layanan Premium</div>
+        <div class="banner-title">JASA<br><span class="hl">GENDONG</span><br>ML & FF!</div>
+        <div class="banner-subtitle">Main bareng booster jago. Kamu tetap pegang akun sendiri — rank naik, skill ikut meningkat!</div>
+        <div class="banner-btns">
+          <a class="banner-btn-main" href="ordergendongml.html">👫 ORDER SEKARANG ›</a>
+          <a class="banner-btn-ghost" href="#games">Lihat Semua</a>
+        </div>
+        <div class="banner-socials">
+          <div class="banner-social-badge"><span class="ico">🌐</span> dallas-joki.store</div>
+          <div class="banner-social-badge"><span class="ico">📱</span> @dallas.joki</div>
+          <div class="banner-social-badge"><span class="ico">💬</span> 0857-1919-5001</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Arrows -->
+  <div class="banner-arrow banner-prev" onclick="bannerMove(-1)">&#8249;</div>
+  <div class="banner-arrow banner-next" onclick="bannerMove(1)">&#8250;</div>
+
+  <!-- Dots -->
+  <div class="banner-dots" id="bannerDots">
+    <div class="banner-dot active" onclick="bannerGoTo(0)"></div>
+    <div class="banner-dot" onclick="bannerGoTo(1)"></div>
+    <div class="banner-dot" onclick="bannerGoTo(2)"></div>
+  </div>
+</div>
+<!-- ════════════════════════════════════ -->
+
 <section class="hero">
   <div class="hero-bg"></div>
   <div class="hero-dots"></div>
@@ -685,6 +908,31 @@
 <a class="wa-fab" href="https://wa.me/6285719195001" target="_blank" title="Chat WhatsApp"><img src="assets/wa.png" alt="Pemandangan Alam" width="58" height="58"></a>
 
 <script>
+  // ── BANNER SLIDER ──────────────────────────────
+  (function() {
+    let cur = 0;
+    const slides = document.querySelectorAll('.banner-slide');
+    const track  = document.getElementById('bannerTrack');
+    const dots   = document.querySelectorAll('.banner-dot');
+    const total  = slides.length;
+    let timer;
+
+    function goTo(n) {
+      cur = (n + total) % total;
+      track.style.transform = `translateX(-${cur * 100}%)`;
+      dots.forEach((d, i) => d.classList.toggle('active', i === cur));
+    }
+    window.bannerMove = d => { goTo(cur + d); resetTimer(); };
+    window.bannerGoTo = n => { goTo(n); resetTimer(); };
+
+    function resetTimer() {
+      clearInterval(timer);
+      timer = setInterval(() => goTo(cur + 1), 4500);
+    }
+    resetTimer();
+  })();
+  // ───────────────────────────────────────────────
+
   // Game filter
   function filterGame(game, btn) {
     document.querySelectorAll('.gf-tab').forEach(t => t.classList.remove('active'));
