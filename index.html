@@ -32,6 +32,28 @@
   a { color: inherit; text-decoration: none; }
   img { display: block; }
 
+  .container { max-width: 1180px; margin: 0 auto; padding: 0 2rem; }
+  .tag {
+    display: inline-block;
+    font-family: 'Syne', sans-serif; font-size: 0.68rem; font-weight: 700;
+    letter-spacing: 3px; text-transform: uppercase; color: var(--blue2);
+    border: 1px solid rgba(59,130,246,0.3);
+    border-radius: 100px; padding: 0.28rem 0.9rem;
+    background: rgba(59,130,246,0.07); margin-bottom: 0.9rem;
+  }
+  .section-title { font-family: 'Syne', sans-serif; font-size: clamp(1.8rem,3.5vw,2.5rem); font-weight: 800; line-height: 1.15; color: var(--text); }
+  .section-title span { color: var(--blue2); }
+  .section-desc { color: var(--muted2); font-size: 0.96rem; line-height: 1.75; max-width: 520px; margin-top: 0.65rem; }
+  .section-header { margin-bottom: 3rem; }
+  .section-header.center { text-align: center; }
+  .section-header.center .section-desc { margin-inline: auto; }
+
+  @keyframes fadeUp   { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes fadeDown { from{opacity:0;transform:translateY(-14px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes blink    { 0%,100%{opacity:1} 50%{opacity:0.2} }
+  @keyframes spin     { to{transform:rotate(360deg)} }
+  @keyframes pulse    { 0%,100%{opacity:0.7;transform:scale(1)} 50%{opacity:1;transform:scale(1.04)} }
+
   /* NAV */
   nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 200;
@@ -48,63 +70,159 @@
   .nav-links a { font-size: 0.88rem; font-weight: 500; color: var(--muted2); transition: color 0.2s; }
   .nav-links a:hover { color: var(--text); }
   .nav-cta { font-family:'Syne',sans-serif; font-size:0.8rem; font-weight:700; letter-spacing:1px; text-transform:uppercase; padding:0.52rem 1.3rem; background:var(--blue); color:#fff; border-radius:8px; box-shadow:0 4px 14px rgba(59,130,246,0.35); transition:all 0.2s; }
+  .nav-cta:hover { background:var(--blue2); transform:translateY(-2px); }
 
-  /* BANNER SLIDER - DISESUAIKAN KE GAMBAR */
-  .banner { 
-    margin-top: 64px; 
-    position: relative; 
-    overflow: hidden; 
-    width: 100%;
-    /* Menggunakan rasio 16:9 agar banner konsisten mengikuti gambar promo umum */
-    aspect-ratio: 16 / 9; 
-    background: var(--bg2);
-  }
-  .banner-track { display: flex; height: 100%; transition: transform 0.65s cubic-bezier(.77,0,.18,1); }
-  .banner-slide { 
-    min-width: 100%; 
-    height: 100%; 
-    position: relative; 
-    display: block; 
-  }
-  .banner-img-full { 
-    width: 100%; 
-    height: 100%; 
-    object-fit: cover; 
-    object-position: center;
-  }
-
-  .banner-arr { position:absolute; top:50%; transform:translateY(-50%); z-index:10; width:36px; height:36px; background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.1); border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; color:#fff; font-size:1.2rem; user-select:none; }
-  .banner-prev { left:1rem; }
-  .banner-next { right:1rem; }
-  .banner-dots { position:absolute; bottom:1rem; left:50%; transform:translateX(-50%); display:flex; gap:0.5rem; z-index:10; }
-  .bdot { width:8px; height:8px; border-radius:50%; background:rgba(255,255,255,0.3); cursor:pointer; transition: 0.3s; }
-  .bdot.active { background: var(--gold2); width: 20px; border-radius: 4px; }
-
-  /* HERO & SECTIONS */
-  .hero { position:relative; overflow:hidden; padding:6rem 2rem; min-height:60vh; display:flex; align-items:center; justify-content:center; text-align:center; }
-  .container { max-width: 1180px; margin: 0 auto; padding: 4rem 2rem; }
-  .section-header.center { text-align: center; margin-bottom: 3rem; }
-  .tag { display:inline-block; padding:0.3rem 1rem; background:rgba(59,130,246,0.1); color:var(--blue2); border-radius:100px; font-size:0.75rem; font-weight:700; text-transform:uppercase; margin-bottom:1rem; }
-  .section-title { font-family:'Syne', sans-serif; font-size:2.5rem; font-weight:800; }
-  .section-title span { color: var(--blue2); }
+  /* BANNER SLIDER MODIFIED */
+  .banner { margin-top: 64px; position: relative; overflow: hidden; width: 100%; height: auto; }
+  .banner-track { display: flex; width: 100%; transition: transform 0.65s cubic-bezier(.77,0,.18,1); }
+  .banner-slide { min-width: 100%; flex-shrink: 0; cursor: pointer; line-height: 0; position: relative; display: block; }
   
-  /* GRID */
-  .joki-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(240px, 1fr)); gap:1.5rem; }
-  .joki-card { background:var(--surface); border-radius:var(--r); overflow:hidden; border:1px solid var(--border); transition:0.3s; display:block; position: relative; }
-  .joki-card:hover { transform:translateY(-5px); border-color:var(--blue); }
-  .jcard-img-wrap { aspect-ratio: 4/3; overflow:hidden; }
-  .jcard-img { width:100%; height:100%; object-fit:cover; }
-  .jcard-body { padding:1.25rem; }
-  .jcard-title { font-family:'Syne',sans-serif; font-size:1.1rem; margin-bottom:0.5rem; color: #fff; }
-  .jcard-price { color:var(--blue2); font-weight:600; font-size:0.9rem; }
+  /* Hilangkan background gradient dan pattern agar gambar bersih */
+  .bs-ml, .bs-ff, .bs-gen, .bs-hok { background: none; }
+  .banner-slide::before, .banner-slide::after { display: none; }
 
-  footer { padding: 3rem 2rem; border-top:1px solid var(--border); text-align:center; color:var(--muted); font-size:0.85rem; }
-  .wa-fab { position:fixed; bottom:1.5rem; right:1.5rem; z-index:100; background:#16a34a; width:55px; height:55px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 15px rgba(0,0,0,0.3); }
-  .wa-fab img { width:30px; }
+  .banner-img { width: 100%; height: auto; display: block; position: relative; right: auto; bottom: auto; max-width: 100%; object-fit: contain; pointer-events: auto; z-index: 1; filter: none; }
+  
+  /* Sembunyikan Teks Banner */
+  .banner-content { display: none !important; }
 
-  @media (max-width: 768px) {
-    .banner { aspect-ratio: 4 / 3; } /* Lebih kotak di HP agar gambar jelas */
-    .section-title { font-size: 2rem; }
+  .banner-arr { position:absolute; top:50%; transform:translateY(-50%); z-index:10; width:36px; height:36px; background:rgba(0,0,0,0.38); border:1px solid rgba(255,255,255,0.15); border-radius:50%; backdrop-filter:blur(6px); display:flex; align-items:center; justify-content:center; cursor:pointer; color:rgba(255,255,255,0.85); font-size:1.1rem; user-select:none; transition:all 0.2s; }
+  .banner-arr:hover { background:rgba(0,0,0,0.65); border-color:rgba(255,255,255,0.4); }
+  .banner-prev { left:1.1rem; }
+  .banner-next { right:1.1rem; }
+  .banner-dots { position:absolute; bottom:0.9rem; left:50%; transform:translateX(-50%); display:flex; gap:0.4rem; z-index:10; }
+  .bdot { width:7px; height:7px; border-radius:100px; background:rgba(255,255,255,0.25); cursor:pointer; transition:all 0.3s; }
+  .bdot.active { background:#fbbf24; width:20px; }
+
+  /* HERO */
+  .hero { position:relative; overflow:hidden; padding:6rem 2rem 5rem; min-height:88vh; display:flex; align-items:center; }
+  .hero-bg { position:absolute; inset:0; background:radial-gradient(ellipse 50% 60% at 72% 40%,rgba(59,130,246,0.12) 0%,transparent 60%),radial-gradient(ellipse 35% 45% at 12% 70%,rgba(30,64,175,0.09) 0%,transparent 55%); }
+  .hero-grid { position:absolute; inset:0; background-image:radial-gradient(rgba(255,255,255,0.045) 1px,transparent 1px); background-size:36px 36px; mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 30%,transparent 100%); }
+  .hero-inner { position:relative; z-index:1; max-width:1180px; margin:0 auto; width:100%; display:grid; grid-template-columns:1fr 400px; gap:4rem; align-items:center; }
+  .hero-badge { display:inline-flex; align-items:center; gap:0.5rem; font-size:0.78rem; font-weight:600; color:var(--green); background:rgba(34,197,94,0.08); border:1px solid rgba(34,197,94,0.25); border-radius:100px; padding:0.32rem 0.95rem; margin-bottom:1.4rem; animation:fadeDown 0.7s ease both; }
+  .hero-badge::before { content:''; width:6px; height:6px; background:var(--green); border-radius:50%; box-shadow:0 0 8px var(--green); animation:blink 1.6s ease infinite; }
+  .hero h1 { font-family:'Syne',sans-serif; font-size:clamp(2.5rem,5.2vw,4.2rem); font-weight:800; line-height:1.07; color:var(--text); animation:fadeUp 0.7s 0.15s ease both; }
+  .hero h1 .blue { color:var(--blue2); }
+  .hero-p { font-size:1.02rem; line-height:1.8; color:var(--muted2); margin:1.3rem 0 2rem; animation:fadeUp 0.7s 0.3s ease both; }
+  .hero-btns { display:flex; gap:0.8rem; flex-wrap:wrap; animation:fadeUp 0.7s 0.45s ease both; }
+  .btn-primary { font-family:'Syne',sans-serif; font-size:0.88rem; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; padding:0.82rem 1.9rem; background:var(--blue); color:#fff; border-radius:10px; box-shadow:0 6px 22px rgba(59,130,246,0.4); transition:all 0.25s; }
+  .btn-primary:hover { transform:translateY(-3px); box-shadow:0 10px 30px rgba(59,130,246,0.55); background:var(--blue2); }
+  .btn-outline { font-family:'Syne',sans-serif; font-size:0.88rem; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; padding:0.82rem 1.9rem; background:var(--surface); color:var(--text); border:1px solid var(--border2); border-radius:10px; transition:all 0.25s; }
+  .btn-outline:hover { border-color:var(--blue); color:var(--blue2); }
+  .hero-stats { display:flex; gap:2.5rem; margin-top:3.2rem; padding-top:2.2rem; border-top:1px solid var(--border); animation:fadeUp 0.7s 0.6s ease both; }
+  .stat-n { font-family:'Syne',sans-serif; font-size:2rem; font-weight:800; color:var(--text); }
+  .stat-l { font-size:0.72rem; color:var(--muted); letter-spacing:1.5px; text-transform:uppercase; margin-top:0.12rem; }
+  .hero-visual { animation:fadeUp 0.9s 0.25s ease both; }
+  .hv-ring { width:370px; height:370px; position:relative; margin:0 auto; }
+  .ring { position:absolute; border-radius:50%; border:1px solid rgba(59,130,246,0.16); animation:spin linear infinite; }
+  .ring:nth-child(1) { inset:0; animation-duration:20s; }
+  .ring:nth-child(1)::after { content:''; position:absolute; top:-4px; left:50%; width:8px; height:8px; background:var(--blue); border-radius:50%; box-shadow:0 0 12px var(--blue); }
+  .ring:nth-child(2) { inset:36px; animation-duration:14s; animation-direction:reverse; border-color:rgba(96,165,250,0.22); }
+  .ring:nth-child(2)::after { content:''; position:absolute; bottom:-4px; right:18%; width:6px; height:6px; background:var(--gold2); border-radius:50%; box-shadow:0 0 10px var(--gold2); }
+  .ring:nth-child(3) { inset:72px; animation-duration:26s; border-color:rgba(59,130,246,0.09); }
+  .ring-center { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
+  .ring-center img { width:175px; height:175px; object-fit:contain; border-radius:50%; filter:drop-shadow(0 0 30px rgba(59,130,246,0.5)); animation:pulse 3s ease infinite; }
+
+  /* GAMES */
+  .games-section { padding:5rem 2rem 6rem; background:var(--bg2); border-top:1px solid var(--border); }
+  .game-tabs { display:flex; gap:0.5rem; justify-content:center; flex-wrap:wrap; margin-bottom:2.8rem; }
+  .gtab { font-family:'Syne',sans-serif; font-size:0.78rem; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; padding:0.48rem 1.3rem; border-radius:8px; border:1px solid var(--border2); background:var(--surface); color:var(--muted2); cursor:pointer; transition:all 0.2s; }
+  .gtab:hover { border-color:var(--blue); color:var(--text); }
+  .gtab.active { background:var(--blue); border-color:var(--blue); color:#fff; box-shadow:0 4px 16px rgba(59,130,246,0.4); }
+  .joki-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:1.15rem; max-width:1180px; margin:0 auto; }
+  .joki-card { position:relative; border-radius:var(--r); overflow:hidden; display:block; cursor:pointer; transition:transform 0.28s,box-shadow 0.28s; box-shadow:0 4px 20px rgba(0,0,0,0.5); background:var(--surface); border:1px solid var(--border); }
+  .joki-card:hover { transform:translateY(-8px) scale(1.02); box-shadow:0 16px 40px rgba(0,0,0,0.65); border-color:rgba(59,130,246,0.35); }
+  .joki-card:hover .joki-glow { opacity:1; }
+  .joki-card:hover .jcard-img { transform:scale(1.06); }
+  .jcard-img-wrap { width:100%; overflow:hidden; line-height:0; }
+  .jcard-img { width:100%; height:auto; display:block; transition:transform 0.4s ease; }
+  .jcard-grad { position:absolute; inset:0; background:linear-gradient(to bottom,transparent 30%,rgba(0,0,0,0.5) 62%,rgba(0,0,0,0.94) 100%); pointer-events:none; }
+  .jcard-watermark { position:absolute; top:0.6rem; left:0.6rem; z-index:3; display:flex; align-items:center; gap:0.25rem; }
+  .jwm-icon { font-size:0.78rem; filter:drop-shadow(0 0 4px rgba(0,200,255,0.8)); }
+  .jwm-label { font-size:0.58rem; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:rgba(255,255,255,0.8); background:rgba(0,0,0,0.4); border-radius:4px; padding:0.14rem 0.38rem; backdrop-filter:blur(4px); }
+  .jcard-body { position:absolute; bottom:0; left:0; right:0; z-index:3; padding:0 0.85rem 0.9rem; }
+  .jcard-order { font-size:0.6rem; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--gold2); text-shadow:0 0 12px rgba(251,191,36,0.55); margin-bottom:0.12rem; }
+  .jcard-title { font-family:'Syne',sans-serif; font-size:0.97rem; font-weight:700; color:#fff; line-height:1.2; text-transform:uppercase; text-shadow:0 2px 8px rgba(0,0,0,0.7); }
+  .jcard-price { font-size:0.7rem; font-weight:600; color:var(--blue2); margin-top:0.28rem; text-shadow:0 0 8px rgba(96,165,250,0.4); }
+  .joki-glow { position:absolute; inset:0; z-index:5; border:1.5px solid rgba(59,130,246,0.65); border-radius:var(--r); opacity:0; transition:opacity 0.25s; pointer-events:none; box-shadow:inset 0 0 22px rgba(59,130,246,0.1); }
+
+  /* LAYANAN */
+  .layanan-section { padding:6rem 2rem; background:var(--bg); border-top:1px solid var(--border); }
+  .layanan-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1.2rem; max-width:1180px; margin:0 auto; }
+  .layanan-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--r); padding:1.7rem 1.9rem; transition:all 0.3s; position:relative; overflow:hidden; }
+  .layanan-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--blue),var(--blue2),transparent); opacity:0; transition:opacity 0.3s; }
+  .layanan-card:hover { border-color:rgba(59,130,246,0.3); transform:translateY(-4px); box-shadow:0 12px 32px rgba(0,0,0,0.4); }
+  .layanan-card:hover::before { opacity:1; }
+  .lc-icon { font-size:1.75rem; margin-bottom:0.95rem; }
+  .lc-name { font-family:'Syne',sans-serif; font-size:1rem; font-weight:700; color:var(--text); margin-bottom:0.55rem; }
+  .lc-desc { font-size:0.86rem; color:var(--muted2); line-height:1.7; }
+
+  /* HOW */
+  .how-section { padding:6rem 2rem; background:var(--bg2); border-top:1px solid var(--border); }
+  .steps { display:flex; max-width:1000px; margin:0 auto; position:relative; }
+  .steps-line { position:absolute; top:27px; left:10%; right:10%; height:1px; background:linear-gradient(90deg,transparent,var(--border2),var(--blue),var(--border2),transparent); }
+  .step { flex:1; text-align:center; padding:0 1.1rem; position:relative; z-index:1; }
+  .step-num { width:54px; height:54px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Syne',sans-serif; font-size:1.05rem; font-weight:800; margin:0 auto 1.25rem; background:var(--surface2); border:1.5px solid rgba(59,130,246,0.35); color:var(--blue2); box-shadow:0 0 0 6px var(--bg2),0 4px 18px rgba(59,130,246,0.18); transition:all 0.3s; }
+  .step:hover .step-num { background:var(--blue); border-color:var(--blue); color:#fff; box-shadow:0 0 0 6px var(--bg2),0 8px 26px rgba(59,130,246,0.45); }
+  .step-title { font-family:'Syne',sans-serif; font-size:0.92rem; font-weight:700; color:var(--text); margin-bottom:0.5rem; }
+  .step-desc { font-size:0.83rem; color:var(--muted2); line-height:1.65; }
+
+  /* ULASAN */
+  .ulasan-section { padding:6rem 2rem; background:var(--bg); border-top:1px solid var(--border); }
+  .ulasan-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.15rem; max-width:1100px; margin:0 auto; }
+  .ulasan-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--r); padding:1.5rem; transition:all 0.3s; }
+  .ulasan-card:hover { border-color:rgba(59,130,246,0.25); transform:translateY(-4px); box-shadow:0 12px 30px rgba(0,0,0,0.35); }
+  .ulasan-quote { font-size:2.2rem; color:var(--blue); opacity:0.22; font-family:Georgia,serif; line-height:1; margin-bottom:0.4rem; }
+  .stars { color:var(--gold2); font-size:0.82rem; letter-spacing:1px; margin-bottom:0.75rem; }
+  .ulasan-text { font-size:0.86rem; color:var(--muted2); line-height:1.75; margin-bottom:1.1rem; }
+  .ulasan-user { display:flex; align-items:center; gap:0.7rem; }
+  .u-avatar { width:36px; height:36px; border-radius:50%; background:var(--surface2); border:1.5px solid var(--border2); display:flex; align-items:center; justify-content:center; font-size:1rem; flex-shrink:0; }
+  .u-name { font-size:0.86rem; font-weight:600; color:var(--text); }
+  .u-game { font-size:0.73rem; color:var(--muted); margin-top:0.1rem; }
+
+  /* CTA */
+  .cta-section { position:relative; overflow:hidden; padding:6rem 2rem; text-align:center; background:var(--bg2); border-top:1px solid var(--border); }
+  .cta-section::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 70% 80% at 50% 50%,rgba(59,130,246,0.11) 0%,transparent 65%); pointer-events:none; }
+  .cta-section .tag { color:rgba(255,255,255,0.55); border-color:rgba(255,255,255,0.14); background:rgba(255,255,255,0.05); }
+  .cta-section h2 { font-family:'Syne',sans-serif; font-size:clamp(2rem,4.5vw,3rem); font-weight:800; color:var(--text); margin-bottom:1rem; position:relative; }
+  .cta-section p { color:var(--muted2); max-width:460px; margin:0 auto 2.4rem; line-height:1.75; position:relative; }
+  .cta-btns { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; position:relative; }
+  .btn-cta-main { font-family:'Syne',sans-serif; font-size:0.88rem; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; padding:0.85rem 2.1rem; background:var(--blue); color:#fff; border-radius:10px; box-shadow:0 6px 22px rgba(59,130,246,0.42); transition:all 0.25s; }
+  .btn-cta-main:hover { transform:translateY(-3px); box-shadow:0 10px 30px rgba(59,130,246,0.58); }
+  .btn-cta-wa { font-family:'Syne',sans-serif; font-size:0.88rem; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; padding:0.85rem 2.1rem; background:#16a34a; color:#fff; border-radius:10px; box-shadow:0 6px 22px rgba(22,163,74,0.38); transition:all 0.25s; }
+  .btn-cta-wa:hover { transform:translateY(-3px); box-shadow:0 10px 30px rgba(22,163,74,0.52); }
+
+  /* FOOTER */
+  footer { background:var(--bg); border-top:1px solid var(--border); padding:2.2rem 2.5rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1.4rem; }
+  .footer-logo { font-family:'Syne',sans-serif; font-size:1.15rem; font-weight:800; color:var(--text); }
+  .footer-logo span { color:var(--blue2); }
+  .footer-links { display:flex; gap:1.8rem; flex-wrap:wrap; }
+  .footer-links a { font-size:0.82rem; color:var(--muted); transition:color 0.2s; }
+  .footer-links a:hover { color:var(--text); }
+  .footer-copy { font-size:0.76rem; color:var(--muted); }
+
+  /* WA FAB */
+  .wa-fab { position:fixed; bottom:1.7rem; right:1.7rem; z-index:300; width:54px; height:54px; border-radius:50%; background:#16a34a; display:flex; align-items:center; justify-content:center; box-shadow:0 6px 22px rgba(22,163,74,0.5); transition:all 0.25s; overflow:hidden; }
+  .wa-fab:hover { transform:scale(1.1); box-shadow:0 10px 30px rgba(22,163,74,0.65); }
+  .wa-fab img { width:34px; height:34px; object-fit:contain; }
+
+  /* RESPONSIVE */
+  @media (max-width:900px) {
+    nav { padding:0 1.2rem; }
+    .nav-links { display:none; }
+    .hero-inner { grid-template-columns:1fr; }
+    .hero-visual { display:none; }
+    .ulasan-grid { grid-template-columns:1fr 1fr; }
+    .steps { flex-wrap:wrap; gap:2rem; }
+    .steps-line { display:none; }
+  }
+  @media (max-width:600px) {
+    .hero { padding:4rem 1.2rem; min-height:auto; }
+    .hero-stats { gap:1.4rem; flex-wrap:wrap; }
+    .ulasan-grid { grid-template-columns:1fr; }
+    .joki-grid { grid-template-columns:repeat(2,1fr); }
+    footer { flex-direction:column; text-align:center; }
+    .games-section,.layanan-section,.how-section,.ulasan-section,.cta-section { padding:4rem 1.2rem; }
   }
   </style>
 </head>
@@ -112,7 +230,9 @@
 
 <nav>
   <a href="index.html" class="logo">
-    <div class="logo-icon"><img src="assets/dallas.png" alt=""></div>
+    <div class="logo-icon">
+      <img src="assets/dallas.png" alt="Logo" onerror="this.parentElement.textContent='D'">
+    </div>
     Dallas <span>JOKI</span>
   </a>
   <ul class="nav-links">
@@ -120,92 +240,242 @@
     <li><a href="#layanan">Layanan</a></li>
     <li><a href="#ulasan">Ulasan</a></li>
   </ul>
-  <a class="nav-cta" href="https://wa.me/6285719195001" target="_blank">Chat WA</a>
+  <a class="nav-cta" href="https://wa.me/6285719195001" target="_blank">💬 Chat WA</a>
 </nav>
 
 <div class="banner">
   <div class="banner-track" id="bannerTrack">
-    <a href="ftcs.html" class="banner-slide">
-      <img src="assets/ftkun.png" class="banner-img-full" alt="Promo FT CS">
-    </a>
-    <a href="order_ff_rankbr.html" class="banner-slide">
-      <img src="assets/ff.png" class="banner-img-full" alt="Joki Free Fire">
-    </a>
-    <a href="orderrankml.html" class="banner-slide">
-      <img src="assets/rank.png" class="banner-img-full" alt="Joki Rank ML">
-    </a>
-    <a href="ordergendongml.html" class="banner-slide">
-      <img src="assets/mabar.png" class="banner-img-full" alt="Jasa Gendong">
-    </a>
+
+    <div class="banner-slide bs-ml" onclick="bannerMove(1)">
+      <img class="banner-img" src="assets/ftkun.png" alt="Promo 1">
+    </div>
+
+    <div class="banner-slide bs-ff" onclick="bannerMove(1)">
+      <img class="banner-img" src="assets/ff.png" alt="Promo 2">
+    </div>
+
+    <div class="banner-slide bs-ml" onclick="bannerMove(1)">
+      <img class="banner-img" src="assets/rank.png" alt="Promo 3">
+    </div>
+
+     <div class="banner-slide bs-gen" onclick="bannerMove(1)">
+      <img class="banner-img" src="assets/mabar.png" alt="Promo 4">
+    </div>
+
   </div>
-  
-  <div class="banner-arr banner-prev" onclick="bannerMove(-1)">&#8249;</div>
-  <div class="banner-arr banner-next" onclick="bannerMove(1)">&#8250;</div>
-  
+  <div class="banner-arr banner-prev" onclick="event.stopPropagation(); bannerMove(-1)">&#8249;</div>
+  <div class="banner-arr banner-next" onclick="event.stopPropagation(); bannerMove(1)">&#8250;</div>
   <div class="banner-dots" id="bannerDots">
-    <div class="bdot active" onclick="bannerGoTo(0)"></div>
-    <div class="bdot" onclick="bannerGoTo(1)"></div>
-    <div class="bdot" onclick="bannerGoTo(2)"></div>
-    <div class="bdot" onclick="bannerGoTo(3)"></div>
+    <div class="bdot active" onclick="event.stopPropagation(); bannerGoTo(0)"></div>
+    <div class="bdot" onclick="event.stopPropagation(); bannerGoTo(1)"></div>
+    <div class="bdot" onclick="event.stopPropagation(); bannerGoTo(2)"></div>
+    <div class="bdot" onclick="event.stopPropagation(); bannerGoTo(3)"></div>
   </div>
 </div>
 
-<section class="hero">
-  <div class="container">
-    <div class="tag">Joki Game #1 Terpercaya</div>
-    <h1 class="section-title">Naik Rank <span>Lebih Cepat</span></h1>
-    <p style="color:var(--muted2); margin-top:1rem;">Layanan joki profesional Mobile Legends & Free Fire dengan keamanan terjamin.</p>
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-badge">🔥 Joki Game Terpercaya #1</div>
+      <h1>Naik Rank<br><span class="blue">Lebih Cepat,</span><br>Lebih Aman</h1>
+      <p class="hero-p">Joki game profesional Mobile Legends & Free Fire. Raih rank impianmu dalam waktu singkat — dijamin aman, rahasia, dan harga terjangkau.</p>
+      <div class="hero-btns">
+        <a class="btn-primary" href="#games">🚀 Pesan Joki Sekarang</a>
+        <a class="btn-outline" href="#games">Lihat Game</a>
+      </div>
+      <div class="hero-stats">
+        <div><div class="stat-n">15K+</div><div class="stat-l">Pelanggan</div></div>
+        <div><div class="stat-n">50K+</div><div class="stat-l">Order Selesai</div></div>
+        <div><div class="stat-n">98%</div><div class="stat-l">Kepuasan</div></div>
+        <div><div class="stat-n">24/7</div><div class="stat-l">Support</div></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hv-ring">
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring-center">
+          <img src="assets/dallas.png" alt="Dallas" onerror="this.style.display='none'">
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
-<section class="container" id="games">
-  <div class="section-header center">
-    <h2 class="section-title">Order <span>Joki Sekarang</span></h2>
+<section class="games-section" id="games">
+  <div class="container">
+    <div class="section-header center">
+      <div class="tag">Pilih Layanan</div>
+      <h2 class="section-title">Order <span>Joki Sekarang</span></h2>
+      <p class="section-desc">Pilih game dan jenis layanan joki yang kamu butuhkan.</p>
+    </div>
+    <div class="game-tabs">
+      <button class="gtab active" onclick="filterGame('all',this)">🎮 Semua</button>
+      <button class="gtab" onclick="filterGame('ml',this)">Mobile Legends</button>
+      <button class="gtab" onclick="filterGame('ff',this)">Free Fire</button>
+    </div>
+    <div class="joki-grid" id="joki-grid">
+      <a href="orderrankml.html" class="joki-card" data-game="ml">
+        <div class="jcard-img-wrap"><img class="jcard-img" src="assets/rank.png" alt="Joki Rank ML" onerror="this.parentElement.style.minHeight='220px'"></div>
+        <div class="jcard-grad"></div>
+        <div class="jcard-watermark"><span class="jwm-icon">⚡</span><span class="jwm-label">Mobile Legends</span></div>
+        <div class="jcard-body"><div class="jcard-order">ORDER</div><div class="jcard-title">Joki Rank</div><div class="jcard-price">Mulai Rp 5.500 / bintang</div></div>
+        <div class="joki-glow"></div>
+      </a>
+      <a href="ordergendongml.html" class="joki-card" data-game="ml">
+        <div class="jcard-img-wrap"><img class="jcard-img" src="assets/mabar.png" alt="Joki Gendong ML" onerror="this.parentElement.style.minHeight='220px'"></div>
+        <div class="jcard-grad"></div>
+        <div class="jcard-watermark"><span class="jwm-icon">⚡</span><span class="jwm-label">Mobile Legends</span></div>
+        <div class="jcard-body"><div class="jcard-order">ORDER</div><div class="jcard-title">Joki Gendong</div><div class="jcard-price">Mulai Rp 6.500 / bintang</div></div>
+        <div class="joki-glow"></div>
+      </a>
+      <a href="order_ff_rankbr.html" class="joki-card" data-game="ff">
+        <div class="jcard-img-wrap"><img class="jcard-img" src="assets/ff.png" alt="Joki BR FF" onerror="this.parentElement.style.minHeight='220px'"></div>
+        <div class="jcard-grad"></div>
+        <div class="jcard-watermark"><span class="jwm-icon">⚡</span><span class="jwm-label">Free Fire</span></div>
+        <div class="jcard-body"><div class="jcard-order">ORDER</div><div class="jcard-title">Joki BR Rank</div><div class="jcard-price">Mulai Rp 24.500</div></div>
+        <div class="joki-glow"></div>
+      </a>
+      <a href="order_ff_gendong.html" class="joki-card" data-game="ff">
+        <div class="jcard-img-wrap"><img class="jcard-img" src="assets/jasgen.png" alt="Joki Gendong FF" onerror="this.parentElement.style.minHeight='220px'"></div>
+        <div class="jcard-grad"></div>
+        <div class="jcard-watermark"><span class="jwm-icon">⚡</span><span class="jwm-label">Free Fire</span></div>
+        <div class="jcard-body"><div class="jcard-order">ORDER</div><div class="jcard-title">Joki Gendong / CS</div><div class="jcard-price">Mulai dari Rp 3.500</div></div>
+        <div class="joki-glow"></div>
+      </a>
+      <a href="order_ff_cs.html" class="joki-card" data-game="ff">
+        <div class="jcard-img-wrap"><img class="jcard-img" src="assets/jasgen  cs.png" alt="Joki Isian CS" onerror="this.parentElement.style.minHeight='220px'"></div>
+        <div class="jcard-grad"></div>
+        <div class="jcard-watermark"><span class="jwm-icon">⚡</span><span class="jwm-label">Free Fire</span></div>
+        <div class="jcard-body"><div class="jcard-order">ORDER</div><div class="jcard-title">Joki Isian / Clash Squad</div><div class="jcard-price">Mulai dari Rp 3.500</div></div>
+        <div class="joki-glow"></div>
+      </a>
+      <a href="ftcs.html" class="joki-card" data-game="ff">
+        <div class="jcard-img-wrap"><img class="jcard-img" src="assets/cs.png" alt="FT CS" onerror="this.parentElement.style.minHeight='220px'"></div>
+        <div class="jcard-grad"></div>
+        <div class="jcard-watermark"><span class="jwm-icon">⚡</span><span class="jwm-label">Free Fire</span></div>
+        <div class="jcard-body"><div class="jcard-order">Jadwal Lengkap</div><div class="jcard-title">FT Clash Squad</div><div class="jcard-price">Mulai Rp 6.000</div></div>
+        <div class="joki-glow"></div>
+      </a>
+    </div>
   </div>
-  <div class="joki-grid">
-    <a href="orderrankml.html" class="joki-card">
-      <div class="jcard-img-wrap"><img class="jcard-img" src="assets/rank.png" alt=""></div>
-      <div class="jcard-body">
-        <div class="jcard-title">Joki Rank ML</div>
-        <div class="jcard-price">Mulai Rp 5.500</div>
-      </div>
-    </a>
-    <a href="order_ff_rankbr.html" class="joki-card">
-      <div class="jcard-img-wrap"><img class="jcard-img" src="assets/ff.png" alt=""></div>
-      <div class="jcard-body">
-        <div class="jcard-title">Joki BR FF</div>
-        <div class="jcard-price">Mulai Rp 24.500</div>
-      </div>
-    </a>
+</section>
+
+<section class="layanan-section" id="layanan">
+  <div class="container">
+    <div class="section-header center">
+      <div class="tag">Layanan Kami</div>
+      <h2 class="section-title">Semua yang Kamu <span>Butuhkan</span></h2>
+      <p class="section-desc">Layanan lengkap untuk memaksimalkan pengalaman gaming kamu.</p>
+    </div>
+    <div class="layanan-grid">
+      <div class="layanan-card"><div class="lc-icon">🚀</div><div class="lc-name">Rank Boosting</div><div class="lc-desc">Naik rank dari bawah hingga top rank dengan win rate tinggi. Dikerjakan pemain profesional berpengalaman.</div></div>
+      <div class="layanan-card"><div class="lc-icon">👫</div><div class="lc-name">Jasa Gendong FF/ML</div><div class="lc-desc">Bermain bareng teman jago. Kamu tetap main, kami pastikan menang. Cocok untuk belajar sambil naik rank.</div></div>
+      <div class="layanan-card"><div class="lc-icon">🎯</div><div class="lc-name">Joki Isian Clash Squad</div><div class="lc-desc">Joki bermain FF Clash Squad dengan strategi terbaik untuk hasil optimal di setiap season.</div></div>
+      <div class="layanan-card"><div class="lc-icon">🔒</div><div class="lc-name">Keamanan Akun</div><div class="lc-desc">Tidak ada bot, tidak ada exploit. Semua dikerjakan manual oleh pemain manusia asli. Akun 100% aman.</div></div>
+      <div class="layanan-card"><div class="lc-icon">⚡</div><div class="lc-name">Proses Cepat</div><div class="lc-desc">Order langsung diproses setelah konfirmasi pembayaran. Update progress real-time via WhatsApp.</div></div>
+      <div class="layanan-card"><div class="lc-icon">💬</div><div class="lc-name">Support 24/7</div><div class="lc-desc">Tim customer service siap membantu kamu kapan saja. Konsultasi gratis sebelum order.</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="how-section">
+  <div class="container">
+    <div class="section-header center">
+      <div class="tag">Cara Kerja</div>
+      <h2 class="section-title">Mudah & Cepat dalam <span>4 Langkah</span></h2>
+      <p class="section-desc">Proses pemesanan yang simpel, transparan, dan aman.</p>
+    </div>
+    <div class="steps">
+      <div class="steps-line"></div>
+      <div class="step"><div class="step-num">01</div><div class="step-title">Pilih Layanan</div><div class="step-desc">Pilih game dan paket yang sesuai kebutuhanmu dari daftar layanan.</div></div>
+      <div class="step"><div class="step-num">02</div><div class="step-title">Isi Form Order</div><div class="step-desc">Lengkapi data akun dan target rank di halaman form pemesanan.</div></div>
+      <div class="step"><div class="step-num">03</div><div class="step-title">Bayar & Konfirmasi</div><div class="step-desc">Bayar via e-wallet / bank. Joki langsung dikerjakan setelah konfirmasi.</div></div>
+      <div class="step"><div class="step-num">04</div><div class="step-title">Rank Naik! 🎉</div><div class="step-desc">Pantau progress via WhatsApp. Akun dikembalikan setelah target tercapai.</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="ulasan-section" id="ulasan">
+  <div class="container">
+    <div class="section-header center">
+      <div class="tag">Ulasan Pelanggan</div>
+      <h2 class="section-title">Kata Mereka yang Sudah <span>Merasakan</span></h2>
+      <p class="section-desc">Ribuan pelanggan sudah mempercayakan rank mereka kepada kami.</p>
+    </div>
+    <div class="ulasan-grid">
+      <div class="ulasan-card"><div class="ulasan-quote">"</div><div class="stars">★★★★★</div><div class="ulasan-text">Cepat banget! Order malem, pagi udah naik 3 bintang. Joki-nya profesional dan sopan. Recommended banget!</div><div class="ulasan-user"><div class="u-avatar">🧑</div><div><div class="u-name">Farhan R.</div><div class="u-game">ML · Mythic</div></div></div></div>
+      <div class="ulasan-card"><div class="ulasan-quote">"</div><div class="stars">★★★★★</div><div class="ulasan-text">Joki Clash Squad FF-nya keren! Dari CS Silver naik ke CS Diamond dalam 2 hari. Bakal repeat order!</div><div class="ulasan-user"><div class="u-avatar">👩</div><div><div class="u-name">Siti A.</div><div class="u-game">FF Clash Squad · Diamond</div></div></div></div>
+      <div class="ulasan-card"><div class="ulasan-quote">"</div><div class="stars">★★★★★</div><div class="ulasan-text">Gendong ML-nya seru! Main bareng boosternya sambil ngejer rank. Bisa belajar cara play yang bener!</div><div class="ulasan-user"><div class="u-avatar">🧒</div><div><div class="u-name">Dimas P.</div><div class="u-game">ML · Gendong</div></div></div></div>
+      <div class="ulasan-card"><div class="ulasan-quote">"</div><div class="stars">★★★★☆</div><div class="ulasan-text">Harga terjangkau, hasil bagus. Admin responsif 24 jam. Tiap update rank langsung dikasih tau di WA.</div><div class="ulasan-user"><div class="u-avatar">🧑</div><div><div class="u-name">Rizky M.</div><div class="u-game">FF · Heroic</div></div></div></div>
+      <div class="ulasan-card"><div class="ulasan-quote">"</div><div class="stars">★★★★★</div><div class="ulasan-text">Udah 4x order di sini! Service Gendong FF paling worth. Booster-nya ramah dan pro banget. 10/10!</div><div class="ulasan-user"><div class="u-avatar">👩</div><div><div class="u-name">Nadia K.</div><div class="u-game">FF · Gendong</div></div></div></div>
+      <div class="ulasan-card"><div class="ulasan-quote">"</div><div class="stars">★★★★★</div><div class="ulasan-text">Dari Epic V ke Mythic selesai 5 hari. Gila cepet! Paling top deh joki ML-nya. Ga nyesel order sini.</div><div class="ulasan-user"><div class="u-avatar">🧒</div><div><div class="u-name">Bagas W.</div><div class="u-game">ML · Mythic</div></div></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section">
+  <div class="tag">Mulai Sekarang</div>
+  <h2>Rank Impianmu<br>Selangkah Lagi!</h2>
+  <p>Jangan biarkan rank terjebak di sana. Hubungi kami sekarang dan dapatkan konsultasi gratis!</p>
+  <div class="cta-btns">
+    <a class="btn-cta-main" href="order.html">🎮 Pesan Joki Sekarang</a>
+    <a class="btn-cta-wa" href="https://wa.me/6285719195001" target="_blank">💬 Chat WhatsApp</a>
   </div>
 </section>
 
 <footer>
-  <p>© 2026 Dallas Joki. All rights reserved.</p>
+  <div class="footer-logo">Dallas <span>JOKI</span></div>
+  <div class="footer-links">
+    <a href="#">Syarat & Ketentuan</a>
+    <a href="#">Kebijakan Privasi</a>
+    <a href="#">FAQ</a>
+    <a href="#">Kontak</a>
+  </div>
+  <div class="footer-copy">© 2026 Dallas Joki. All rights reserved.</div>
 </footer>
 
-<a class="wa-fab" href="https://wa.me/6285719195001" target="_blank">
-  <img src="assets/wa.png" alt="WA">
+<a class="wa-fab" href="https://wa.me/6285719195001" target="_blank" title="Chat WhatsApp">
+  <img src="assets/wa.png" alt="WA" onerror="this.parentElement.innerHTML='💬'">
 </a>
 
 <script>
-  let cur = 0;
-  const track = document.getElementById('bannerTrack');
-  const dots = document.querySelectorAll('.bdot');
-  const total = dots.length;
+/* BANNER SLIDER LOGIC */
+(function(){
+  let cur=0;
+  const track=document.getElementById('bannerTrack');
+  const dots=document.querySelectorAll('.bdot');
+  const total=dots.length;
+  let timer;
+  function goTo(n){ cur=(n+total)%total; track.style.transform=`translateX(-${cur*100}%)`; dots.forEach((d,i)=>d.classList.toggle('active',i===cur)); }
+  window.bannerMove=d=>{goTo(cur+d);reset();};
+  window.bannerGoTo=n=>{goTo(n);reset();};
+  function reset(){ clearInterval(timer); timer=setInterval(()=>goTo(cur+1),4800); }
+  reset();
+})();
 
-  function goTo(n) {
-    cur = (n + total) % total;
-    track.style.transform = `translateX(-${cur * 100}%)`;
-    dots.forEach((d, i) => d.classList.toggle('active', i === cur));
-  }
+/* GAME FILTER */
+function filterGame(game,btn){
+  document.querySelectorAll('.gtab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.joki-card').forEach(card=>{
+    const show=game==='all'||card.dataset.game===game;
+    card.style.display=show?'block':'none';
+    if(show)card.style.animation='fadeUp 0.4s ease both';
+  });
+}
 
-  window.bannerMove = (d) => goTo(cur + d);
-  window.bannerGoTo = (n) => goTo(n);
-
-  // Auto slide setiap 5 detik
-  setInterval(() => goTo(cur + 1), 5000);
+/* SCROLL REVEAL */
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)';}});
+},{threshold:0.08});
+document.querySelectorAll('.joki-card,.layanan-card,.ulasan-card,.step').forEach(el=>{
+  el.style.cssText+='opacity:0;transform:translateY(20px);transition:opacity 0.5s ease,transform 0.5s ease;';
+  obs.observe(el);
+});
 </script>
-
 </body>
 </html>
