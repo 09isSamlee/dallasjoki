@@ -79,6 +79,7 @@
   .bs-ml  { background: linear-gradient(115deg,#050c2a 0%,#0b1a66 45%,#1a3abf 75%,#2563eb 100%); }
   .bs-ff  { background: linear-gradient(115deg,#0f0500 0%,#5c1800 45%,#c43500 75%,#ea580c 100%); }
   .bs-gen { background: linear-gradient(115deg,#050f07 0%,#0a3d17 45%,#15803d 75%,#16a34a 100%); }
+  .bs-hok { background: linear-gradient(115deg,#1e1b4b 0%,#312e81 45%,#4338ca 75%,#4f46e5 100%); }
   .banner-slide::before { content:''; position:absolute; inset:0; background-image:radial-gradient(rgba(255,255,255,0.04) 1px,transparent 1px); background-size:26px 26px; pointer-events:none; }
   .banner-slide::after { content:''; position:absolute; right:24%; top:50%; transform:translateY(-50%); width:380px; height:380px; border-radius:50%; background:radial-gradient(circle,rgba(255,255,255,0.09) 0%,transparent 65%); pointer-events:none; }
   .banner-img { position:absolute; right:0; bottom:0; height:110%; max-width:52%; object-fit:contain; object-position:right bottom; pointer-events:none; z-index:1; filter:drop-shadow(-10px 0 36px rgba(0,0,0,0.55)); }
@@ -240,7 +241,6 @@
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
   <a href="index.html" class="logo">
     <div class="logo-icon">
@@ -256,7 +256,6 @@
   <a class="nav-cta" href="https://wa.me/6285719195001" target="_blank">💬 Chat WA</a>
 </nav>
 
-<!-- BANNER SLIDER -->
 <div class="banner">
   <div class="banner-track" id="bannerTrack">
 
@@ -314,6 +313,24 @@
       </div>
     </div>
 
+    <div class="banner-slide bs-hok">
+      <img class="banner-img" src="assets/hok.png" alt="HOK" onerror="this.style.display='none'">
+      <div class="banner-content">
+        <div class="banner-eyebrow">🆕 New Arrival</div>
+        <div class="banner-h">JOKI RANK<br><span class="hl-gold">HONOR OF KINGS</span><br>KINI HADIR!</div>
+        <div class="banner-sub">Jadilah King di HOK dengan bantuan booster top global kami. Proses kilat dan privasi terjamin 100%.</div>
+        <div class="banner-btns">
+          <a class="bbtn-main" href="order_hok.html">👑 ORDER SEKARANG</a>
+          <a class="bbtn-ghost" href="#games">Lihat Semua</a>
+        </div>
+        <div class="banner-socials">
+          <div class="bsocial">🌐 dallas-joki.store</div>
+          <div class="bsocial">📱 @dallas.joki</div>
+          <div class="bsocial">💬 0857-1919-5001</div>
+        </div>
+      </div>
+    </div>
+
   </div>
   <div class="banner-arr banner-prev" onclick="bannerMove(-1)">&#8249;</div>
   <div class="banner-arr banner-next" onclick="bannerMove(1)">&#8250;</div>
@@ -321,10 +338,10 @@
     <div class="bdot active" onclick="bannerGoTo(0)"></div>
     <div class="bdot" onclick="bannerGoTo(1)"></div>
     <div class="bdot" onclick="bannerGoTo(2)"></div>
+    <div class="bdot" onclick="bannerGoTo(3)"></div>
   </div>
 </div>
 
-<!-- HERO -->
 <section class="hero" id="home">
   <div class="hero-bg"></div>
   <div class="hero-grid"></div>
@@ -357,7 +374,6 @@
   </div>
 </section>
 
-<!-- GAMES -->
 <section class="games-section" id="games">
   <div class="container">
     <div class="section-header center">
@@ -417,7 +433,6 @@
   </div>
 </section>
 
-<!-- LAYANAN -->
 <section class="layanan-section" id="layanan">
   <div class="container">
     <div class="section-header center">
@@ -436,7 +451,6 @@
   </div>
 </section>
 
-<!-- HOW -->
 <section class="how-section">
   <div class="container">
     <div class="section-header center">
@@ -454,7 +468,6 @@
   </div>
 </section>
 
-<!-- ULASAN -->
 <section class="ulasan-section" id="ulasan">
   <div class="container">
     <div class="section-header center">
@@ -473,7 +486,6 @@
   </div>
 </section>
 
-<!-- CTA -->
 <section class="cta-section">
   <div class="tag">Mulai Sekarang</div>
   <h2>Rank Impianmu<br>Selangkah Lagi!</h2>
@@ -484,7 +496,6 @@
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
   <div class="footer-logo">Dallas <span>JOKI</span></div>
   <div class="footer-links">
@@ -496,7 +507,6 @@
   <div class="footer-copy">© 2026 Dallas Joki. All rights reserved.</div>
 </footer>
 
-<!-- WA FAB -->
 <a class="wa-fab" href="https://wa.me/6285719195001" target="_blank" title="Chat WhatsApp">
   <img src="assets/wa.png" alt="WA" onerror="this.parentElement.innerHTML='💬'">
 </a>
